@@ -1,3 +1,5 @@
+const functions = require('firebase-functions');
+
 const express = require('express')
 const app = express()
 const { v4: uuidv4 } = require('uuid');
@@ -44,3 +46,5 @@ app.post('/startGame', (req,res) => {
 
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+
+exports.app = functions.https.onRequest(app);
