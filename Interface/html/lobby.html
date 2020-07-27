@@ -5,40 +5,40 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/lobby.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="./../js/lobby.js"></script>
 </head>
 <body style="height: 100%;" onload="init()">
-<div class="container" style= "height: 100%;">
-  <div class='col-sm-9' style="height: 100% ;background-color: grey;">
-    <div class="row" style="height: 30%; background-color:green">
-      <div id="GameTitle" class="col-sm-7" style = "background-color: purple; height: 100%;border: thin solid black; border-radius: 5px;">
-        <h1 style="padding-left: 25%;">PictionAIry</h1>
+  <div class="container" style= "height: 100%;">
+    <div class='col-sm-9' style="height: 100% ;background-color: grey;">
+      <div class="row" style="height: 30%; background-color:green">
+        <div id="GameTitle" class="col-sm-7" style = "background-color: purple; height: 100%;border: thin solid black; border-radius: 5px;">
+          <h1 style="padding-left: 25%;">PictionAIry</h1>
+        </div>
+        <div class="col-sm-5" style="background-color: yellow; height: 100%;">
+          <div id="RoundNr" class="row" style="height: 50%; background-color: orange;border: thin solid black; border-radius: 5px;">
+            <h2>Round</h2>
+          </div>
+          <div id="ServerToken" class="row" style="height: 50%;border: thin solid black; border-radius: 5px;">
+            <h2>Server Token</h2>
+          </div>
+        </div>
       </div>
-      <div class="col-sm-5" style="background-color: yellow; height: 100%;">
-        <div id="RoundNr" class="row" style="height: 50%; background-color: orange;border: thin solid black; border-radius: 5px;">
-          <h2>Round</h2>
-        </div>
-        <div id="ServerToken" class="row" style="height: 50%;border: thin solid black; border-radius: 5px;">
-          <h2>Server Token</h2>
-        </div>
+      <div class="row" style="height: 70%; border: thin solid black; border-radius: 5px;">
+        <canvas id="Drawing" style="height: 100%; width: 100%;">
+        </canvas>
       </div>
     </div>
-    <div class="row" style="height: 70%; border: thin solid black; border-radius: 5px;">
-      <canvas id="Drawing" style="height: 100%; width: 100%;">
-
-      </canvas>
+    <div class='col-sm-3' style="height: 100%; background-color: white;">
+      <div class="row sideBar" style="height: 15%; text-align: center; padding: 1%; "><h1>Time Remaining <b id="timer">00</b></h1></div>
+      <div class="row sideBar" style="height: 45%"><textarea id = 'players' disabled>Players:&#13;&#10;</textarea></div>
+      <div class="row sideBar" style="height: 35%"><textarea id = 'guesses' disabled>Your Guesses Are Here:&#13;&#10;</textarea></div>
+      <div class="row sideBar" style="height: 5%">
+        <input id="guessSubmit" type="text" class="form-control" placeholder="Press Enter to submit answer" style="height: 100%; width: 100%;">
+      </div>
     </div>
   </div>
-  <div class='col-sm-3' style="height: 100%; background-color: blue;">
-    <div class="row" style="border: thin solid black; border-radius: 5px; height: 15%">Timer</div>
-    <div class="row" style="border: thin solid black; border-radius: 5px; height: 45%">Players</div>
-    <div class="row" style="border: thin solid black; border-radius: 5px; height: 35%">Guesses</div>
-    <div class="row" style="border: thin solid black; border-radius: 5px; height: 5%">
-    <input id="guesses" type="text" class="form-control" placeholder="Guess" style="height: 100%; width: 100%;">
-    </div>
-  </div>
-</div>
 </body>
 </html>

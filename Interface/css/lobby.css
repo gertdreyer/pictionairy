@@ -1,0 +1,11 @@
+textarea {
+    overflow-y: scroll;
+    height: 100%;
+    resize: none; /* Remove this if you want the user to resize the textarea */
+    width: 100%;
+}
+  
+.sideBar{
+    border: 1px solid black; 
+    border-radius: 5px;
+}
