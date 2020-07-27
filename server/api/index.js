@@ -35,11 +35,20 @@ app.post('/startGame', (req,res) => {
     if (!!req.body.userId && !!req.body.sessionId){
         res.json({started: true});
     }else{
-        res.json({started: true, error: "Missing sessionId or userId"})
+        res.json({started: false, error: "Missing sessionId or userId"})
     }  
     //startGame (session_id) return bool
     //Set round to 0
     //Make sure that all users have both viewing and drawing devices
+})
+
+app.post('/guess', (req,res) => {
+    if (!!req.body.userId && !!req.body.sessionId && !!req.body.guess){
+    //GE integration
+        res.json({correct: true})
+    }else{
+        res.json({correct: false, error: "Missing sessionId or userId of guess"})
+    }  
 })
 
 
