@@ -27,14 +27,14 @@
             </div>
         </div>
         <div class="col-sm-4">
-            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#join">Join Room</button>
+            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#join" onclick="hideOthers('join')">Join Room</button>
             <div id="join" class="collapse">
                 <input id="joinServer" type="text" class="form-control" name="joinServer" placeholder="Server ID">
                 <button type="button" class="btn btn-success" onclick="joinRoom()">Go!</button>
             </div>
         </div>
         <div class="col-sm-4">
-            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#connect">Connect Controller</button>
+            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#connect" onclick="hideOthers('connect')">Connect Controller</button>
             <div id="connect" class="collapse">
                 <input id="connectDevice" type="text" class="form-control" name="connectDevice" placeholder="Server ID">
                 <button type="button" class="btn btn-success" onclick="connectDevice()">Go!</button>
