@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Pictionairy</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Pictionairy</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/contoller.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="../js/controller.js"></script>
 </head>
-<body>
-<div class="container">
-    In controller
-</div>
+
+<body onload="init()">
+    
+    <div class="container">
+        <div class='page-header'>
+            <div class="row" style="height:5%; text-align: center;">
+                <h3 id='chosenWord'>Place Word Here</h3>
+            </div>
+            <div class="row">
+                <div id="app"></div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <button type="button" class="btn btn-primary btn-xl" onclick="canvasDraw()">Draw</button>
+        <div id="create" class="collapse">
+            <!-- BLANK -->
+        </div>
+    </div>
+    <br /><br />
+    <div class="row">
+        <button type="button" class="btn btn-primary btn-xl" onclick="canvasClear()">Clear</button>
+        <div id="create" class="collapse">
+            <!-- BLANK -->
+        </div>
+    </div>
+
+    <!-- Overlay for chosing words and disabling -->
+    <div id="disableOverlay">
+      <div id="disabled">Drawing Disabled! Another player busy drawing</div>
+    </div>
+
+    <div id="chooseOverlay">
+      <div class='row'>
+        <div></div>
+      </div>
+    </div>
 </body>
+
 </html>
