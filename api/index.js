@@ -24,9 +24,15 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+app.post('/register',(res, req) => {
+    if (!!req.body.username && !!req.body.password) {
+        return res.json({registered: true})
+    }
+});
+
 app.post('/auth', (res, req) => {
     if (!!req.body.username && !!req.body.password) {
-        return res.send(jwt.sign(payload, JWTSECRET, { expiresIn: "2 days" }))
+        return res.json({jwt: jwt.sign(payload, JWTSECRET, { expiresIn: "2 days" })});
     }
 });
 // #region oldrestapi
@@ -85,8 +91,10 @@ io.use(socketioJwt.authorize({
 io.on('connection', (socket) => {
     console.log('hello!', socket.decoded_token.name);
     socket.on('createroom', () => {
-        console.log("createroom");
-        socket.emit(uuidv4())
+        roomid = uuidv4()
+        console.log("createroom", roomid);
+        socket.emit(roomid)
+        socket.join(roomid)
     });
     socket.on('joinroom', (roomid) => {
         console.log("joinroom", roomid);
