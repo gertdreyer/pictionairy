@@ -3,6 +3,7 @@ function init(){
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "green";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    document.getElementById("serverID").innerHTML = '<h3>'+localStorage.getItem("Token").sessionID+'</h3>';
 
     var guess = document.getElementById("guessSubmit");
     guess.addEventListener("keyup", function(event) {
