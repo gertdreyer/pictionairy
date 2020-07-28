@@ -57,7 +57,7 @@ export function gameTest() {
     performUnitTest("Game ID", "game123", game.getGameId());
     performUnitTest("Game Ended", false, game.getGameEndedStatus());
     performUnitTest("Round Ended", false, game.checkRoundEndStatus());
-    performUnitTest("Round Number", 1, game.getRoundNumber());
+    performUnitTest("Round Number", 0, game.getRoundNumber());
     performUnitTest("Current Word", "", game.getWord());
     performUnitTest("Current Player", null, game.getDrawer());
     performUnitTest("Max Time", 60, game.maxTime);
@@ -67,6 +67,20 @@ export function gameTest() {
     performUnitTest("Add player one", true, addPlayerOne);
     let addDuplicatePlayerOne = game.addPlayer('nicpym','Nicholas');
     performUnitTest("Don't add duplicate player one", false, addDuplicatePlayerOne);
+
+    // Test start new round and start new turn functionality
+    game = new Game("game123");
+    performUnitTest("Start Round Without Players", false, game.startNewRound());
+    performUnitTest("Start Turn Without Players", false, game.startNewTurn());
+    for(let i = 0; i < 4; i++){
+        game.addPlayer(new Player(String(i), String(i)));
+    }
+    performUnitTest("Start Round With Players", true, game.startNewRound());
+    performUnitTest("Start Turn With Players", true, game.startNewTurn());
+    performUnitTest("Current Player Properly Assigned", true, game.getDrawer() != null);
+    performUnitTest("Start Round 2", true, game.startNewRound());
+    performUnitTest("Start Round 3", true, game.startNewRound());
+    performUnitTest("Attempt To Start Another Round After Max Round Reached", false, game.startNewRound());
 }
 
 
