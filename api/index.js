@@ -13,8 +13,8 @@ const port = 3000;
 const saltRounds = 10;
 
 const db_link = process.env.DB_HOST || "mongodb://vacweekapi.gdza.xyz:27017/db_test";
-
-const JWTSECRET = process.env.JWTSECRET || "this-should-be-some-super-secret-key";
+// const JWTSECRET = process.env.JWT_SECRET || "this-should-be-some-super-secret-key";
+const JWTSECRET = "this-should-be-some-super-secret-key";
 
 mongoose.connect(db_link, (err) => {
     if (err)
@@ -23,6 +23,7 @@ mongoose.connect(db_link, (err) => {
         console.log("Db Success");
 });
 const db = mongoose.connection;
+
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log("DB connected")
