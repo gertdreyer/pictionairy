@@ -1,9 +1,5 @@
 import Player from './player.js';
-<<<<<<< HEAD
 import Word from './word.js';
-=======
- import Word from './word.js';
->>>>>>> a8491b47b783eb4dda567c86de37720b581b2dd2
 
 export default class Game {
     MIN_PLAYERS = 2;                        // Const variable for minimum number of players allowed 
@@ -19,11 +15,7 @@ export default class Game {
         this.currentPlayer = null;          // Current drawer of the turn
         this.players = [];                  // List of current active players
         this.maxTime = 60;                  // Maximum time allowed to calculating points
-<<<<<<< HEAD
         this.wordGenerator = new Word();    // Instance of Word class used to generate words for the game
-=======
-         this.wordGenerator = new Word();    // Instance of Word class used to generate words for the game
->>>>>>> a8491b47b783eb4dda567c86de37720b581b2dd2
     }
 
     /**
