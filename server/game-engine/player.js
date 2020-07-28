@@ -1,11 +1,11 @@
-export default class Player{
-    constructor(uid, name){
-        this.playerUID = uid;                       //uid corresponding to account on firebase
-        this.playerName = name;                     //name corresponding to account on firebase
-        this.points = 0;                            //points associated with this instantiated Player object
-        this.drawTurnCount = 0;                     //counter used to determine whether or not the player has drawn in a given round
-        this.playerConnectionStatus = "connected";  //a string determining whether or not the player has disconnected from the session
-        this.guesses = [];                          //an array of objects where each object stores data about a particular guess
+export default class Player {
+    constructor(uid, name) {
+        this.playerUID = uid; //uid corresponding to account on firebase
+        this.playerName = name; //name corresponding to account on firebase
+        this.points = 0; //points associated with this instantiated Player object
+        this.drawTurnCount = 0; //counter used to determine whether or not the player has drawn in a given round
+        this.playerConnectionStatus = "connected"; //a string determining whether or not the player has disconnected from the session
+        this.guesses = []; //an array of objects where each object stores data about a particular guess
     }
 
     /**
@@ -14,7 +14,7 @@ export default class Player{
      * @readonly
      * @memberof Player
      */
-    getPlayerUID(){
+    getPlayerUID() {
         return this.playerUID;
     }
 
@@ -24,7 +24,7 @@ export default class Player{
      * @readonly
      * @memberof Player
      */
-    getPlayerName(){
+    getPlayerName() {
         return this.playerName;
     }
 
@@ -34,7 +34,7 @@ export default class Player{
      * @readonly
      * @memberof Player
      */
-    getPlayerPoints(){
+    getPlayerPoints() {
         return this.points;
     }
 
@@ -42,7 +42,7 @@ export default class Player{
      * @description Setter for player points
      * @memberof Player
      */
-    setPlayerPoints(points){
+    setPlayerPoints(points) {
         this.points = points;
     }
 
@@ -52,7 +52,7 @@ export default class Player{
      * @readonly
      * @memberof Player
      */
-    getDrawTurnCount(){
+    getDrawTurnCount() {
         return this.drawTurnCount;
     }
 
@@ -62,7 +62,7 @@ export default class Player{
      * @readonly
      * @memberof Player
      */
-    getPlayerConnectionStatus(){
+    getPlayerConnectionStatus() {
         return this.playerConnectionStatus;
     }
 
@@ -70,7 +70,7 @@ export default class Player{
      * @description Increments the player's last draw round
      * @memberof Player
      */
-    incrementDrawTurnCount(){
+    incrementDrawTurnCount() {
         this.drawTurnCount++;
     }
 
@@ -79,33 +79,36 @@ export default class Player{
      *
      * @memberof Player
      */
-    toggleConnection(){
-        this.playerConnectionStatus = this.playerConnectionStatus == "connected" ? "disconnected" : "connected";
+    toggleConnection() {
+        this.playerConnectionStatus =
+            this.playerConnectionStatus == "connected"
+                ? "disconnected"
+                : "connected";
     }
 
     /**
      * @correct determines whether or not the guess was correct
      */
-    addGuess(word, correct){
+    addGuess(word, correct) {
         let guess = {
-            guessedWord : word,
-            guessCorrectness : correct,
+            guessedWord: word,
+            guessCorrectness: correct,
         };
         this.guesses.push(guess);
     }
-    
+
     /**
      * @description Returns the guesses made by a player in a given turn
      */
-    getGuesses(){
+    getGuesses() {
         return this.guesses;
     }
 
-    getIncorrectGuessesAmount(){
-        return this.guesses.filter(guess => !guess.guessCorrectness).length;
+    getIncorrectGuessesAmount() {
+        return this.guesses.filter((guess) => !guess.guessCorrectness).length;
     }
 
-    clearGuesses(){
+    clearGuesses() {
         this.guesses = [];
     }
 }
