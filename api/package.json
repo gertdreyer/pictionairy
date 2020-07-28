@@ -1,24 +1,3 @@
-<<<<<<< HEAD:server/package.json
-{
-  "name": "server",
-  "version": "1.0.0",
-  "description": "Game Engine and API",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1",
-    "firebase-admin": "^9.0.0",
-    "firebase-functions": "^3.8.0",
-    "socket.io": "^2.3.0",
-    "uuid": "^8.2.0"
-  }
-}
-=======
 {
   "name": "server",
   "version": "1.0.0",
@@ -35,7 +14,6 @@
     "socket.io": "^2.3.0",
     "socketio-jwt": "^4.6.2",
     "uuid": "^8.3.0",
-    "mongoose" : "^5.4.10"
+    "mongoose": "^5.4.10"
   }
 }
->>>>>>> 8a4426438de74c01e5a5f1907d0ac1bc7b350f5a:api/package.json

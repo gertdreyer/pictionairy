@@ -92,11 +92,8 @@ io.on('disconnect', (socket) => {
     console.log('user disconnected');
 });
 
-<<<<<<< HEAD:server/functions/index.js
-=======
 //   io.on('connection', (socket) => {
 //     socket.on('chat message', (msg) => {
 //       console.log('message: ' + msg);
 //     });
 //   });
->>>>>>> 8a4426438de74c01e5a5f1907d0ac1bc7b350f5a:api/index.js
