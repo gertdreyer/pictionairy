@@ -2,7 +2,7 @@ function init(){
     if(!localStorage.getItem('token')){
         $('#myModal').modal('show');
     }else{
-        //TODO
+        replaceLogin();
     }
 }
 
@@ -73,10 +73,10 @@ function login(){
     var object;
     var success = true;
     if(success){
-        loggedIn = true;
         localStorage.setItem('token',object);
         document.getElementById('createRoom').disabled = false;
         $('#myModal').modal('hide');
+        replaceLogin();
     }else{
         alert('Something went wrong in login, please try again');
     }
@@ -102,10 +102,31 @@ function signup(){
     var object;
     var success;
     if(success){
-        loggedIn = true;
         localStorage.setItem('token',object);
         document.getElementById('createRoom').disabled = false;
+        $('#myModal').modal('hide');
+        replaceLogin();
     }else{
         alert('Something went wrong in signup, please try again');
     }
+}
+
+function replaceLogin(){
+    var p = document.getElementById('right');
+    p.innerHTML='<a style="float: right;" href="" id=""onclick="logout()">Logout</a>';
+    var elem = document.getElementById('loginSignup');
+    elem.parentNode.removeChild(elem);
+}
+
+function replaceLogout(){
+    var p = document.getElementById('right');
+    p.innerHTML='<a style="float: right;" href="" id="loginSignup" data-toggle="modal" data-target="#myModal" >Login/Signup</a>';
+    var elem = document.getElementById('logout');
+    elem.parentNode.removeChild(elem);
+}
+
+function logout(){
+    localStorage.removeItem('token');
+    document.getElementById('createRoom').disabled = true;
+    document.getElementById('joinRoom').disabled = true;
 }
