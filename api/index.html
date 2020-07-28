@@ -13,10 +13,19 @@
       , {
   query: `token=${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1OTU5MzU0MTIsImV4cCI6MTU5NjEwODIxMn0.FcJGjtjA0B_YC_jm2MF6EPQ7s0InlVGSC8X_M8ttxN4'}`
 });
-socket.emit('testing' ,{message: "echo"})
-socket.on('testing', (event)=> {
+function ng() {
+  socket.emit('newgame');
+}
+
+function jg(gameid) {
+  socket.emit('joingame', {gameid})
+}
+
+
+socket.on('gamestate', (event)=> {
   console.log(event)
 })
+
 </script>
   <body>
     <!-- page content -->

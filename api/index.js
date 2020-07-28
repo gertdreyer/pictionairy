@@ -1,15 +1,16 @@
-const express = require('express')
+import express from 'express'
 const app = express()
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 var server = app.listen(3000)
 var io = require('socket.io')(server);
-const jwt = require("jsonwebtoken")
-const socketioJwt = require('socketio-jwt');
-const { v4: uuidv4 } = require('uuid');
+import jwt from "jsonwebtoken";
+import socketioJwt from 'socketio-jwt';
+import { v4 as uuidv4 } from 'uuid';
+import mongoose from 'mongoose';
+import Game from "../server/game-engine/game.js";
 const port = 3000;
 const saltRounds = 10;
 
-const mongoose = require('mongoose');
 const db_link = process.env.DB_HOST || "mongodb://vacweekapi.gdza.xyz:27017/db_test";
 
 const JWTSECRET = process.env.JWTSECRET || "this-should-be-some-super-secret-key";
@@ -26,14 +27,21 @@ db.once('open', function () {
     console.log("DB connected")
 });
 
+const GameSchema = new mongoose.Schema({
+    gameid: String,
+    iat: Date,
+    gamestate: Object
+})
+
 const UserSchema = new mongoose.Schema({
     username: String,
+    name: String,
     passwordHash: String,
     previousGames: Object
 })
 
-const User = mongoose.model('User', UserSchema)
-
+const User = mongoose.model('User', UserSchema);
+const GameState = mongoose.model('GameState', GameSchema);
 
 app.use(express.static('public'))
 app.use(express.json());
@@ -45,7 +53,7 @@ app.get('/', (req, res) => {
 /// Registration Endpoint
 app.post('/register', async (req, res) => {
     try {
-        if (!!req.body.username && !!req.body.password) {
+        if (!!req.body.username && !!req.body.password && !!req.body.name) {
             // Register new User...
             if (await User.exists({ username: req.body.username })) {
                 console.log("Existing User")
@@ -54,6 +62,7 @@ app.post('/register', async (req, res) => {
                 bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
                     // Store hash in your password DB.
                     const user = new User({
+                        name: req.body.name,
                         username: req.body.username,
                         passwordHash: hash,
                         previousGames: {},
@@ -110,36 +119,88 @@ io.use(socketioJwt.authorize({
 }));
 
 io.on('connection', (socket) => {
-    let roomid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
-    console.log('hello!', socket.decoded_token.name);
-    socket.on('createroom', () => {
-        roomid = uuidv4()
-        console.log("createroom", roomid);
+    let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
+    let { username, name } = socket.decoded_token;
+    console.log(username, " connected");
+
+    socket.on('newgame', async () => {
+        console.log(gameid);
+        gameid = uuidv4(); //use shorter
         socket.leaveAll(); //leave all rooms
-        socket.emit("roomid", { roomid: roomid }); //reply with roomid
-        socket.join(roomid);
+
+        // Create Game Object
+        let gamestate = new Game(gameid);
+        // add player
+        gamestate.addPlayer(username, name);
+        let retobj = {...gamestate};
+        delete retobj.currentWord;
+        delete retobj.wordGenerator;
+
+        //join socket room
+        socket.join(gameid);
+
+        // Save Game instance
+        const newgamestate = new GameState({
+            gameid: gameid,
+            iat: new Date(),
+            gamestate: gamestate,
+        });
+
+
+        try {
+            await newgamestate.save(); 
+            socket.emit("gamestate", { gamestate: retobj });
+        } catch (err) {
+            socket.emit("gamestate", {error: "Error while creating game" , gamestate: null });
+        }
+        //reply with public gamestate
     });
-    socket.on('joinroom', (roomid) => {
-        console.log("joinroom", roomid);
-        socket.leaveAll(); //ensure only one room
-        socket.join(roomid)
-        socket.emit("joinroom", { roomid: roomid, joined: true })
+
+
+
+    socket.on('joingame', async (obj) => {
+        try {
+            let {gameid} = obj;
+            console.log(gameid);
+            // Find the current game state
+            let {gamestate} = await GameState.findOne({gameid : gameid});
+        
+            //ensure only one socket room and join
+            socket.leaveAll(); 
+            socket.join(gameid)
+
+            // Add Player
+            //TODO: GameEngine needs constructor overload.
+            // gamestate.addPlayer(username,name)
+            console.log(gamestate);    
+            
+            socket.emit("gamestate", { gamestate: gamestate })
+        } catch (error) {
+            console.log(error);
+            socket.emit("gamestate", { error: 'Soz...', gamestate: null })
+        }
     });
-    socket.on('startgame', () => {
-        console.log("startgame in room", roomid);
-        socket.to(roomid).emit("startgame", { started: true })
+
+
+    socket.on('startround', () => {
+        //Host check
+        if (!!gameid){
+            let game = new Game();
+            game.game
+            // Check that each player has an assigned controller.game
+            console.log("startgame in room", gameid);
+            socket.to(gameid).emit("startgame", { started: true })
+        }
     });
-    socket.on('drawdata', (data) => {
-        socket.to(roomid).emit(data);
-        console.log("drawdata")
-    });
+
+    
     socket.on('guess', (guess) => {
         console.log("guess");
-        socket.to(roomid).emit({ username: "user", guess: "someguess", correct: false });
+        socket.to(gameid).emit({ username: "user", guess: "someguess", correct: false });
     });
 
     socket.on('newround', () => {
-        socket.to(roomid).emit({ newround: true })
+        socket.to(gameid).emit({ newround: true })
 
     });
 
@@ -151,12 +212,19 @@ io.on('connection', (socket) => {
         socket.emit("testing", event)
         console.log(event);
     });
+    
+    socket.on('jointestroom', (event) => {
+        socket.join('test');
+    })
+    socket.on('drawdata', (data) => {
+        socket.to(gameid).emit(data);
+        console.log("drawdata", drawdata);
+    });
     socket.on('broadcast', (event) => {
-        socket.to(roomid).emit({ success: true })
+        socket.to(gameid).emit({ success: true })
     }
     )
 });
-
 
 io.on('disconnect', (socket) => {
     console.log('user disconnected');
