@@ -132,3 +132,31 @@ function choseOption(id){
 function leaveGame(){
   window.location.href = './../index.html';
 }
+
+function logout(){
+  localStorage.removeItem('token');
+  leaveGame();
+}
+
+function startFullRound(){
+
+}
+
+function startDrawing(){
+  //start timer, on timer end, disable buttons and whatever
+}
+
+function startChosing(){
+  //create overlay, fill buttons, start timer, randomly chose after time, then close overlay
+}
+function sendOption(){
+  //use this function to send data to server
+}
+
+function canvasDraw(){
+
+}
+
+function canvasClear(){
+
+}
