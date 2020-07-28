@@ -8,7 +8,7 @@ const { v4: uuidv4 } = require('uuid');
 const port = 3000;
 
 const mongoose = require('mongoose');
-const db_link = "mongodb://mongo:27017/db_test";
+const db_link = "mongodb://vacweekapi.gdza.xyz:27017/db_test";
 
 const JWTSECRET = "this-should-be-some-super-secret-key";
 
@@ -25,15 +25,15 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/register',(req, res) => {
+app.post('/register', (req, res) => {
     if (!!req.body.username && !!req.body.password) {
-        return res.json({registered: true})
+        return res.json({ registered: true })
     }
 });
 
 app.post('/auth', (req, res) => {
     if (!!req.body.username && !!req.body.password) {
-        return res.json({jwt: jwt.sign({username: "test"}, JWTSECRET, { expiresIn: "2 days" })});
+        return res.json({ jwt: jwt.sign({ username: "test", name: "NameOfUser" }, JWTSECRET, { expiresIn: "2 days" }) });
     }
 });
 // #region oldrestapi
@@ -90,19 +90,34 @@ io.use(socketioJwt.authorize({
 }));
 
 io.on('connection', (socket) => {
+    let roomid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
     console.log('hello!', socket.decoded_token.name);
     socket.on('createroom', () => {
         roomid = uuidv4()
         console.log("createroom", roomid);
-        socket.emit(roomid)
-        socket.join(roomid)
+        socket.leaveAll(); //leave all rooms
+        socket.emit(roomid); //reply with roomid
+        socket.join(roomid);
     });
     socket.on('joinroom', (roomid) => {
         console.log("joinroom", roomid);
+        socket.leaveAll(); //ensure only one room
         socket.join(roomid)
     });
-    socket.on('startgame', () => console.log("startgame in room", socket.rooms));
-    socket.on('drawdata', (event) => console.log("drawdata"));
+    socket.on('initgame', () => {
+        console.log("startgame in room", roomid);
+    });
+    socket.on('startgame', () => {
+        //select word choice
+    });
+    socket.on('drawdata', (data) => {
+        socket.to(roomid).emit(data);
+        console.log("drawdata")
+    });
+    socket.on('guess', (guess) => {
+        console.log("guess");
+        socket.to(roomid).emit({guess: "someguess", correct: false});
+    });
 });
 
 
