@@ -151,11 +151,11 @@ export async function getWordsTest() {
   if (ExpectedWordsHard.length != 3) {
     console.log(
       "\u2718  " +
-        " Medium words get" +
+        " Hard words get" +
         " expected to be: 3 but was " +
         ExpectedWordsHard.length
     );
   } else {
-    console.log("\u2713  " + "Medium words get passed test");
+    console.log("\u2713  " + "Hard words get passed test");
   }
 }
