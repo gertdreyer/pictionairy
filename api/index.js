@@ -1,11 +1,20 @@
-// const functions = require('firebase-functions');
 const express = require('express')
 const app = express()
 var server = app.listen(3000)
 var io = require('socket.io')(server);
 const socketioJwt = require('socketio-jwt');
 const { v4: uuidv4 } = require('uuid');
-const port = 3000
+const port = 3000;
+
+const mongoose = require('mongoose');
+const db_link = "mongodb://mongo:27017/db_test";
+
+mongoose.connect(db_link, (err) => {
+    if (err)
+        console.log("Error");
+    else
+        console.log("Db Success");
+});
 
 app.use(express.static('public'))
 app.use(express.json());
@@ -82,6 +91,3 @@ io.on('disconnect', (socket) => {
 //       console.log('message: ' + msg);
 //     });
 //   });
-
-
-// exports.app = functions.https.onRequest(app);
