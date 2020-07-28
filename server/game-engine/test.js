@@ -65,17 +65,8 @@ export function gameTest() {
     // Test add player functionality
     let addPlayerOne = game.addPlayer('nicpym','Nicholas');
     performUnitTest("Add player one", true, addPlayerOne);
-
-    let PlayerOneExpected = {
-          playerUID: 'nicpym',
-          playerName: 'Nicholas',
-          points: 0,
-          drawTurnCount: 0,
-          playerConnectionStatus: 'connected',
-          guesses: []
-        };
-    let players = game.getPlayers();
-    console.log(players[0]);
+    let addDuplicatePlayerOne = game.addPlayer('nicpym','Nicholas');
+    performUnitTest("Don't add duplicate player one", false, addDuplicatePlayerOne);
 }
 
 

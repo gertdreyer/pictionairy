@@ -77,7 +77,10 @@ export default class Game {
     addPlayer(uid, name) {
         if (this.players.length < this.MAX_PLAYERS) {
             let newPlayer = new Player(uid, name);
-            if (!this.players.includes(newPlayer)) {
+            if (this.players.some(player=>player.getPlayerUID() == uid)) {
+                return false;                
+            }
+            else {
                 this.players.push(newPlayer);
                 return true;
             }
