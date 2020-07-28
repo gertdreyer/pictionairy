@@ -1,43 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  style="height: 100%; width: 100%;">
 <head>
   <title>Pictionairy</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="./js/main.js"></script>
 </head>
-<body>
-<div class="container">
-    <div class='page-header'>
-        <h3>Pictionairy</h3>
-    </div>
-    <div class="input-group">
-        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-        <input id="username" type="text" class="form-control" name="username" placeholder="username">
-    </div>
-    <br>
+<body  style="height: 100%;">
+
+<div class="topnav" id="myTopnav">
+    <a href="#home" class="active">Pictionary</a>
+    <a href="javascript:void(0);" class="icon" onclick="navBar()">
+        <i class="fa fa-bars"></i>
+    </a>
+</div>
+
+<div style="margin: 10px; height: 100%;">
     <div class="row">
-        <div class="col-sm-4">
-            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#create" onclick="createRoom()">Create Room</button>
-            <div id="create" class="collapse">
-                <!-- BLANK -->
+        <div class="col-sm-8">
+            <div class="row" style="align-items: center;">
+                <button type="button" class="btn btn-primary" style="width: 80%; margin: 7% 7% 0% 7%;" onclick="createRoom()">Create Room</button>
+            </div>
+            <div class="input-group" style="width: 80%; margin: 7% 7% 0% 7%;">
+                <input type="text" class="form-control" placeholder="Server ID" name="joinRoom">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-primary" disabled onclick="joinRoom()">Join Room</button>
+                </div>
+            </div>
+            <div class="input-group" style="width: 80%; margin: 7% 7% 0% 7%;">
+                <input type="text" class="form-control" placeholder="Server ID" name="connectDevice">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-primary" disabled>Connect Device</button>
+                </div>
             </div>
         </div>
         <div class="col-sm-4">
-            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#join" onclick="hideOthers('join')">Join Room</button>
-            <div id="join" class="collapse">
-                <input id="joinServer" type="text" class="form-control" name="joinServer" placeholder="Server ID">
-                <button type="button" class="btn btn-success" onclick="joinRoom()">Go!</button>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#connect" onclick="hideOthers('connect')">Connect Controller</button>
-            <div id="connect" class="collapse">
-                <input id="connectDevice" type="text" class="form-control" name="connectDevice" placeholder="Server ID">
-                <button type="button" class="btn btn-success" onclick="connectDevice()">Go!</button>
+            <div class="panel-group informationTabs" id="accordion" role="tablist" aria-multiselectable="true">
+                <div id="tabUpdate" role="tab">
+                    <h3>
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseUpdate" aria-expanded="true" aria-controls="collapseUpdate" class>Instructions</a>
+                    </h3>
+                </div>
+                <div class="updateInfo collapse in" id="collapseUpdate" role="tabpanel" >
+                </div>></div>
             </div>
         </div>
     </div>
