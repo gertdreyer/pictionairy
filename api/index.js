@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 var server = app.listen(3000)
 var io = require('socket.io')(server);
 import jwt from "jsonwebtoken";
+import cors from 'cors';
 import socketioJwt from 'socketio-jwt';
 import { v4 as uuidv4 } from 'uuid';
 import mongoose from 'mongoose';
@@ -48,7 +49,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
-
+app.options('*', cors())
 
 /// Registration Endpoint
 app.post('/register', async (req, res) => {
@@ -132,7 +133,7 @@ io.on('connection', (socket) => {
         let gamestate = new Game(gameid);
         // add player
         gamestate.addPlayer(username, name);
-        let retobj = {...gamestate};
+        let retobj = { ...gamestate };
         delete retobj.currentWord;
         delete retobj.wordGenerator;
 
@@ -148,10 +149,10 @@ io.on('connection', (socket) => {
 
 
         try {
-            await newgamestate.save(); 
+            await newgamestate.save();
             socket.emit("gamestate", { gamestate: retobj });
         } catch (err) {
-            socket.emit("gamestate", {error: "Error while creating game" , gamestate: null });
+            socket.emit("gamestate", { error: "Error while creating game", gamestate: null });
         }
         //reply with public gamestate
     });
@@ -160,20 +161,20 @@ io.on('connection', (socket) => {
 
     socket.on('joingame', async (obj) => {
         try {
-            let {gameid} = obj;
+            let { gameid } = obj;
             console.log(gameid);
             // Find the current game state
-            let {gamestate} = await GameState.findOne({gameid : gameid});
-        
+            let { gamestate } = await GameState.findOne({ gameid: gameid });
+
             //ensure only one socket room and join
-            socket.leaveAll(); 
+            socket.leaveAll();
             socket.join(gameid)
 
             // Add Player
             //TODO: GameEngine needs constructor overload.
             // gamestate.addPlayer(username,name)
-            console.log(gamestate);    
-            
+            console.log(gamestate);
+
             socket.emit("gamestate", { gamestate: gamestate })
         } catch (error) {
             console.log(error);
@@ -184,7 +185,7 @@ io.on('connection', (socket) => {
 
     socket.on('startround', () => {
         //Host check
-        if (!!gameid){
+        if (!!gameid) {
             let game = new Game();
             game.game
             // Check that each player has an assigned controller.game
@@ -193,7 +194,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    
+
     socket.on('guess', (guess) => {
         console.log("guess");
         socket.to(gameid).emit({ username: "user", guess: "someguess", correct: false });
@@ -212,7 +213,7 @@ io.on('connection', (socket) => {
         socket.emit("testing", event)
         console.log(event);
     });
-    
+
     socket.on('jointestroom', (event) => {
         socket.join('test');
     })
