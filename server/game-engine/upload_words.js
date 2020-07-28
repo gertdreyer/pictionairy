@@ -13,7 +13,6 @@ export default function uploadWords() {
     let wordsToAdd = [];
 
     files.forEach(function (fileName) {
-        wordsToAdd = [];
         wordsToAdd = fs
             .readFileSync(`${process.env.word_file_dir}${fileName}.txt`, "utf8")
             .split("\n");

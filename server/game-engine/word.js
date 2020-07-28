@@ -10,6 +10,7 @@ let db = admin.firestore();
 export default class Word {
     constructor() {
         this.previousChosenWordsList = [];
+        this.words = null;
     }
 
     /**
@@ -22,40 +23,44 @@ export default class Word {
         let threeWordList = [];
         //check if word exists in the current wordlist
 
-        let docName = "";
-        let newWord = "";
-
-        switch (difficultyLevel) {
-            case 1:
-                docName = "easy";
-                break;
-            case 2:
-                docName = "medium";
-                break;
-            case 3:
-                docName = "hard";
-                break;
-            default:
-                docName = "medium";
-        }
-
         try {
-            const cityRef = db.collection("Words").doc(docName);
-            const doc =  await cityRef.get();
-            let words = doc.data().words;
+            let docNames = ["easy", "medium", "hard"];
+
+            if (this.words == null) {
+                this.words = {
+                    easy: [],
+                    medium: [],
+                    hard: [],
+                };
+
+                let docs = [];
+
+                docNames.forEach((docName) => {
+                    const cityRef = db.collection("Words").doc(docName);
+                    docs.push(cityRef.get());
+                });
+
+                (await Promise.all(docs)).forEach((doc, idx) => {
+                    this.words[docNames[idx]] = doc.data().words;
+                });
+            }
+
+            let difficulty = docNames[difficultyLevel - 1];
+            let newWord = "";
 
             do {
-                newWord = words[Math.floor(Math.random() * words.length)];
-    
-                if (!threeWordList.includes(newWord)) 
+                newWord = this.words[difficulty][
+                    Math.floor(Math.random() * this.words[difficulty].length)
+                ];
+
+                if (!threeWordList.includes(newWord))
                     threeWordList.push(newWord);
             } while (threeWordList.length != 3);
-    
+
             this.previousChosenWordsList.push(...threeWordList);
             return threeWordList;
-        }
-        catch(err) {
-            console.log("Error retrieving words from DB");
+        } catch (err) {
+            console.log(err);
         }
     }
 }
