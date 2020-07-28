@@ -5,11 +5,8 @@ function createRoom(){
 
 function joinRoom(){
 
-    var session_id = $("#joinServer").val();
-    var username = $("#username").val();
-
+    var session_id = $("#joinRoom").val();
     localStorage.setItem("session_id", session_id);
-    localStorage.setItem("username", username);
 
     window.location.href = './html/lobby.html'
 }
@@ -17,21 +14,22 @@ function joinRoom(){
 function connectDevice(){
     
     var session_id = $("#connectDevice").val();
-    var username = $("#username").val();
 
     localStorage.setItem("session_id", session_id);
-    localStorage.setItem("username", username);
 
     window.location.href = './html/controller.html'
 }
 
-function hideOthers(self) {
+function onJoinRoomText() {
+    var text = $("#joinRoom").val();
 
-    if (self == "join") {
-        $("#connect").collapse('hide');
-    } else if (self == "connect") {
-        $("#join").collapse('hide');
-    }
+    $("#joinRoomBtn").attr("disabled", (text === ""));
+}
+
+function onConnectDeviceText() {
+    var text = $("#connectDevice").val();
+
+    $("#connectDeviceBtn").attr("disabled", (text === ""));
 }
 
 function navBar() {
