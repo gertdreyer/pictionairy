@@ -18,6 +18,20 @@ mongoose.connect(db_link, (err) => {
     else
         console.log("Db Success");
 });
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("DB connected")
+});
+
+const UserSchema = new mongoose.Schema({
+    username: String,
+    passwordHash: String,
+    previousGames: Object
+})
+
+const User = mongoose.model('User',UserSchema)
+
 
 app.use(express.static('public'))
 app.use(express.json());
@@ -96,19 +110,18 @@ io.on('connection', (socket) => {
         roomid = uuidv4()
         console.log("createroom", roomid);
         socket.leaveAll(); //leave all rooms
-        socket.emit(roomid); //reply with roomid
+        socket.emit("roomid",{roomid: roomid}); //reply with roomid
         socket.join(roomid);
     });
     socket.on('joinroom', (roomid) => {
         console.log("joinroom", roomid);
         socket.leaveAll(); //ensure only one room
         socket.join(roomid)
-    });
-    socket.on('initgame', () => {
-        console.log("startgame in room", roomid);
+        socket.emit("joinroom", {roomid: roomid, joined: true})
     });
     socket.on('startgame', () => {
-        //select word choice
+        console.log("startgame in room", roomid);
+        socket.to(roomid).emit("startgame", {started: true})
     });
     socket.on('drawdata', (data) => {
         socket.to(roomid).emit(data);
@@ -116,8 +129,25 @@ io.on('connection', (socket) => {
     });
     socket.on('guess', (guess) => {
         console.log("guess");
-        socket.to(roomid).emit({guess: "someguess", correct: false});
+        socket.to(roomid).emit({username: "user",guess: "someguess", correct: false});
     });
+
+    socket.on('newround', ()=> {
+        socket.to(roomid).emit({newround: true})
+        
+    });
+
+    socket.on('startround', (chosenword)=> {
+        console.log(chosenword)
+    });
+
+    socket.on('testing', (event)=> {
+        socket.emit("testing", {success:true})
+    });    
+    socket.on('broadcast', (event)=> {
+        socket.to(roomid).emit({success:true})
+    }
+    )
 });
 
 
