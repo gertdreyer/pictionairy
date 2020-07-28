@@ -40,3 +40,29 @@ function navBar() {
       x.className = "topnav";
     }
   }
+
+function openLogin(){
+    $('#signupSection').collapse('hide');
+    document.getElementById('emailLogin').value = '';
+    document.getElementById('passwordLogin').value = '';
+}
+
+function openSignup(){
+    $('#loginSection').collapse('hide');
+    document.getElementById('emailSignup').value = '';
+    document.getElementById('usernameSignup').value = '';
+    document.getElementById('passwordSignup').value = '';
+    document.getElementById('confirmPasswordSignup').value = '';
+}
+
+function login(){
+    var email = document.getElementById('emailLogin').value.trim();
+    var password = document.getElementById('passwordLogin').value.trim();
+}
+
+function signup(){
+    var email = document.getElementById('emailSignup').value.trim();
+    var username = document.getElementById('usernameSignup').value.trim();
+    var password = document.getElementById('passwordSignup').value.trim();
+    var confirm = document.getElementById('confirmPasswordSignup').value.trim();
+}
