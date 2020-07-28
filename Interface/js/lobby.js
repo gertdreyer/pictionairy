@@ -29,7 +29,6 @@ function clearPlayers(){
 function updateTimer(time){
     document.getElementById('timer').innerHTML = time;
 }
-
 function navBar() {
     var x = document.getElementById("myTopnav");
     if (x.className === "topnav") {
@@ -38,3 +37,13 @@ function navBar() {
       x.className = "topnav";
     }
   }
+function submitGuess(){
+    var guess = document.getElementById("guessSubmit");
+            guess.value = guess.value.trim();
+            if(guess.value !== ''){
+                document.getElementById('guesses').innerHTML += '&#13;&#10;'+guess.value;
+            }
+            guess.value = '';
+        
+}
+
