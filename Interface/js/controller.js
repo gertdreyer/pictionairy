@@ -128,3 +128,7 @@ function choseOption(id){
   }
   closeChoose();
 }
+
+function leaveGame(){
+  window.location.href = './../index.html';
+}

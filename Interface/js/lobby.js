@@ -50,3 +50,6 @@ function submitGuess(){
     alert(canvas.width+' '+canvas.height)
 }
 
+function leaveGame(){
+    window.location.href = './../index.html';
+}
