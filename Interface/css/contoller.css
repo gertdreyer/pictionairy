@@ -31,8 +31,8 @@
 .base-timer {
   position: relative;
   left: 40%;
-  width: 200px;
-  height: 200px;
+  width: 20%;
+  height: 20%;
 }
 
 .base-timer__svg {
@@ -73,11 +73,12 @@
 
 .base-timer__label {
   position: absolute;
-  width: 200px;
-  height: 200px;
-  top: 0;
+  width: fit-content;
+  height: fit-content;
+  top: 30%;
+  left: 30%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: 5vw;
 }
