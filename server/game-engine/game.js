@@ -1,5 +1,5 @@
 import Player from './player.js';
- import Word from './word.js';
+import Word from './word.js';
 
 export default class Game {
     MIN_PLAYERS = 2;                            // Const variable for minimum number of players allowed 
@@ -127,8 +127,8 @@ export default class Game {
         return this.roundEnded;
     }
 
-     generateWords(){
-        return this.wordGenerator.getWords(this.roundNumber);
+    async generateWords(){
+        return await this.wordGenerator.getWords(this.roundNumber);
     }
 
     /**
