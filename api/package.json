@@ -13,6 +13,7 @@
     "express": "^4.17.1",
     "socket.io": "^2.3.0",
     "socketio-jwt": "^4.6.2",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "mongoose" : "^3.5.2"
   }
 }
