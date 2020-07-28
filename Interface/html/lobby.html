@@ -35,11 +35,12 @@
       <div class="row sideBar" style="height: 50%"><textarea id = 'players' disabled>Players:&#13;&#10;</textarea></div>
       <div class="row sideBar" style="height: 45%"><textarea id = 'guesses' disabled>Your Guesses Are Here:&#13;&#10;</textarea></div>
       <div class="row" style="height: 5%">
-        <div class="col-sm-9" style="height: 100%; padding-left: 0; padding-right: 0;">
-          <input id="guessSubmit" type="text" class="form-control" placeholder="Press Enter to submit answer" style="height: 100%; width: 100%;">
-        </div>
-        <div class="col-sm-3" style="height: 100%; padding-left: 0;">
-          <button id="btnSubmit" class="btn btn-primary" style="width: 100%;" onclick="submitGuess()">Submit</button>
+         <div class="input-group" style="height: 100%;">
+                <input id="guessSubmit" type="text" class="form-control" placeholder="Press Enter to submit answer" style="height: 100%;">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-primary" style="height: 100%;" onclick="submitGuess()">Submit</button>
+                </div>
+            </div>
         </div>
       </div>
     </div>
