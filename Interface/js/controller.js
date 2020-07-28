@@ -117,11 +117,14 @@ function navBar() {
   }
 }
 
-function navBar() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
+function choseOption(id){
+  document.getElementById('chosenWord').innerHTML = document.getElementById(id).innerHTML;
+  if(id === 'choice-1'){
+  
+  }else if(id === 'choice-2'){
+
+  }else{
+
   }
+  closeChoose();
 }
