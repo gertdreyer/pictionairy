@@ -1,6 +1,12 @@
 import admin from 'firebase-admin';
 
-let db = admin.firestore();
+
+admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+    databaseURL: 'https://wordstore-dae44.firebaseio.com'
+  });
+
+  let db = admin.firestore();
 
 export default class Word{
 
@@ -8,19 +14,23 @@ export default class Word{
         this.previousChosenWordsList = [];    
     }
 
+    
     /**
      * @description Returns the list of words to choose from
      * @returns new word list of 3 options
      * @memberof word
      */
-    getWords(difficultyLevel) {
+     async getWords(difficultyLevel) {
+        
         //make call to firebase and get the word
         let threeWordList = [];
         //check if word exists in the current wordlist
 
         let docName = '';
+        let newWord = '';
 
         do {
+            
             switch(difficultyLevel) {
                 case 1:
                     docName = 'easy';
@@ -34,19 +44,33 @@ export default class Word{
                 default:
                     docName = 'medium';
             }
+           
+            // db.collection('Words').doc(docName).get().then( doc => {
+            //     console.log("Firebase call");
+            //     if(doc.exists){
+            //         docWords = doc.data().words;
+                    
+            //         newWord = docWords[Math.floor(Math.random() * docWords.length)];      
+            //     }else{
+            //         console.log("doc not found");
+            //     }
+            // }).catch(function(err){
+            //     console.log(err);
+            // }); 
+            console.log(docName);
+            const cityRef = db.collection('Words').doc(docName);
+            const doc = await cityRef.get();
+            if (!doc.exists) {
+                 console.log('No such document!');
+            } 
+            else {
+                    // console.log('Document data:', doc.data().words);
+                     newWord = doc.data().words[Math.floor(Math.random() * doc.data().words.length)]; 
+                     console.log(newWord);
+            }
 
-            db.collection('Words').doc(docName).get().then(function(doc){
-                if(doc.exists){
-                    docWords = doc.data().words;
-                    newWord = docWords[Math.floor(Math.random() * docWords.length)];      
-                }else{
-                    console.log("doc not found");
-                }
-            }).catch(function(err){
-                console.log(err);
-            }); 
 
-            if (!threeWordList.includes(newWord) && !this.previousChosenWordsList.includes(newWord))
+            if (!threeWordList.includes(newWord) )
                 threeWordList.push(newWord);
         } while(threeWordList.length != 3);
         
