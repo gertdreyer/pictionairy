@@ -1,6 +1,6 @@
 import Player from './player.js'
 import Game from './game.js'
-// import Word from './word.js'
+ import Word from './word.js'
 
 // Helper functions
 export function performUnitTest(itemTested, expected, actual) {
@@ -73,6 +73,53 @@ export function gameTest() {
 
 
 // Word unit tests
-export function wordTest(){
-    console.log("===== Word unit tests =====\n");
+export function getWordsTest()
+{
+    let word = new Word();
+    ExpectedWordsEasy = word.getWords("easy")
+    if(ExpectedWordsEasy.length!=3)
+    {
+
+        console.log("\u2718  " + " Easy words get" + " expected to be: 3 but was " + ExpectedWordsEasy.length); 
+
+
+    }
+    else{
+
+        console.log("\u2713  " + "Easy words get passed test");
+
+    }
+
+    ExpectedWordsMedium = word.getWords("medium")
+    if(ExpectedWordsMedium.length!=3)
+    {
+
+        console.log("\u2718  " + " medium words get" + " expected to be: 3 but was " + ExpectedWordsMedium.length); 
+
+
+    }
+    else{
+
+        console.log("\u2713  " + "medium words get passed test");
+
+    }
+
+    ExpectedWordsHard = word.getWords("hard")
+    if(ExpectedWordsHard.length!=3)
+    {
+
+        console.log("\u2718  " + " medium words get" + " expected to be: 3 but was " + ExpectedWordsHard.length); 
+
+
+    }
+    else{
+
+        console.log("\u2713  " + "medium words get passed test");
+
+    }
+
+
+
+
+
 }
