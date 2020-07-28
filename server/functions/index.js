@@ -66,10 +66,16 @@ io.use(socketioJwt.authorize({
 
 io.on('connection', (socket) => {
     console.log('hello!', socket.decoded_token.name);
-});
-
-io.on('connection', (socket) => {
-    console.log('a user connected');
+    socket.on('createroom', () => {
+        console.log("createroom");
+        socket.emit(uuidv4())
+    });
+    socket.on('joinroom', (roomid) => {
+        console.log("joinroom", roomid);
+        socket.join(roomid)
+    });
+    socket.on('startgame', () => console.log("startgame in room", socket.rooms));
+    socket.on('drawdata', (event) => console.log("drawdata"));
 });
 
 
@@ -77,11 +83,3 @@ io.on('disconnect', (socket) => {
     console.log('user disconnected');
 });
 
-//   io.on('connection', (socket) => {
-//     socket.on('chat message', (msg) => {
-//       console.log('message: ' + msg);
-//     });
-//   });
-
-
-// exports.app = functions.https.onRequest(app);

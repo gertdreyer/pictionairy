@@ -9,7 +9,9 @@
 <script>
     const socket = io.connect('http://localhost:3000', {
   query: `token=${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.jqI5O26_zaCdw-Cx-FhWt1iAn1r4_GrIiIMWWlhXJT8'}`
-});;
+});
+socket.emit('joinroom', 'some-room-id')
+socket.emit('startgame')
 </script>
   <body>
     <!-- page content -->
