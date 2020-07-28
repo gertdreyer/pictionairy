@@ -1,4 +1,3 @@
-// const functions = require('firebase-functions');
 const express = require('express')
 const app = express()
 var server = app.listen(3000)
@@ -82,6 +81,3 @@ io.on('disconnect', (socket) => {
 //       console.log('message: ' + msg);
 //     });
 //   });
-
-
-// exports.app = functions.https.onRequest(app);
