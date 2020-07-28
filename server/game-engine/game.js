@@ -1,5 +1,5 @@
 import Player from './player.js';
-import Word from './word.js';
+ import Word from './word.js';
 
 export default class Game {
     MIN_PLAYERS = 2;                            // Const variable for minimum number of players allowed 
@@ -64,9 +64,11 @@ export default class Game {
      * @memberof Game
      */
     getWord() {
-        //TODO get currentWord from Word
+        
         return this.currentWord;
     }
+
+    
 
     /**
      * @description Sets the correct word for the current turn
@@ -125,7 +127,7 @@ export default class Game {
         return this.roundEnded;
     }
 
-    generateWords(){
+     generateWords(){
         return this.wordGenerator.getWords(this.roundNumber);
     }
 
