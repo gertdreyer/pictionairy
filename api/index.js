@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 var server = app.listen(3000)
 var io = require('socket.io')(server);
+const jwt = require("jsonwebtoken")
 const socketioJwt = require('socketio-jwt');
 const { v4: uuidv4 } = require('uuid');
 const port = 3000;
@@ -24,15 +25,15 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/register',(res, req) => {
+app.post('/register',(req, res) => {
     if (!!req.body.username && !!req.body.password) {
         return res.json({registered: true})
     }
 });
 
-app.post('/auth', (res, req) => {
+app.post('/auth', (req, res) => {
     if (!!req.body.username && !!req.body.password) {
-        return res.json({jwt: jwt.sign(payload, JWTSECRET, { expiresIn: "2 days" })});
+        return res.json({jwt: jwt.sign({username: "test"}, JWTSECRET, { expiresIn: "2 days" })});
     }
 });
 // #region oldrestapi
