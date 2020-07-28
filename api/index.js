@@ -6,6 +6,8 @@ const socketioJwt = require('socketio-jwt');
 const { v4: uuidv4 } = require('uuid');
 const port = 3000;
 
+const db = require('./db');
+
 app.use(express.static('public'))
 app.use(express.json());
 app.get('/', (req, res) => {
