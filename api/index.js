@@ -6,7 +6,15 @@ const socketioJwt = require('socketio-jwt');
 const { v4: uuidv4 } = require('uuid');
 const port = 3000;
 
-const db = require('./db');
+const mongoose = require('mongoose');
+const db_link = "mongodb://mongo:27017/db_test";
+
+mongoose.connect(db_link, (err) => {
+    if (err)
+        console.log("Error");
+    else
+        console.log("Db Success");
+});
 
 app.use(express.static('public'))
 app.use(express.json());
