@@ -1,4 +1,9 @@
+import admin from 'firebase-admin';
+
+let db = admin.firestore();
+
 export default class Word{
+
     constructor() {
         this.previousChosenWordsList = [];    
     }
@@ -10,23 +15,36 @@ export default class Word{
      */
     getWords(difficultyLevel) {
         //make call to firebase and get the word
-        threeWordList = [];
+        let threeWordList = [];
         //check if word exists in the current wordlist
+
+        let docName = '';
 
         do {
             switch(difficultyLevel) {
                 case 1:
-                    newWord = ''; // word recieved from the database new call for a new word FROM EASY
+                    docName = 'easy';
                   break;
                 case 2:
-                    newWord = ''; // word recieved from the database new call for a new word FROM MEDIUM
+                    docName = 'medium';
                   break;
                 case 3:
-                    newWord = ''; // word recieved from the database new call for a new word FROM HARD
+                    docName = 'hard';
                   break;
                 default:
-                    newWord = ''; // word recieved from the database new call for a new word FROM MEDIUM
+                    docName = 'medium';
             }
+
+            db.collection('Words').doc(docName).get().then(function(doc){
+                if(doc.exists){
+                    docWords = doc.data().words;
+                    newWord = docWords[Math.floor(Math.random() * docWords.length)];      
+                }else{
+                    console.log("doc not found");
+                }
+            }).catch(function(err){
+                console.log(err);
+            }); 
 
             if (!threeWordList.includes(newWord) && !this.previousChosenWordsList.includes(newWord))
                 threeWordList.push(newWord);
@@ -35,6 +53,6 @@ export default class Word{
         this.previousChosenWordsList.push(...threeWordList);
         return threeWordList;
     }
-    // TODO WHEN MAKING DATABASE CALLS REMEMBER THE CREDINTIALS SHOULD BE ENCRYPTED OR IN ENVIRONEMNT VARIABLES
+    
 }
 

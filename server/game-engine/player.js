@@ -14,7 +14,7 @@ export default class Player{
      * @readonly
      * @memberof Player
      */
-    get getPlayerUID(){
+    getPlayerUID(){
         return this.playerUID;
     }
 
@@ -24,7 +24,7 @@ export default class Player{
      * @readonly
      * @memberof Player
      */
-    get getPlayerName(){
+    getPlayerName(){
         return this.playerName;
     }
 
@@ -34,7 +34,7 @@ export default class Player{
      * @readonly
      * @memberof Player
      */
-    get getPlayerPoints(){
+    getPlayerPoints(){
         return this.points;
     }
 
@@ -42,7 +42,7 @@ export default class Player{
      * @description Setter for player points
      * @memberof Player
      */
-    set setPlayerPoints(points){
+    setPlayerPoints(points){
         this.points = points;
     }
 
@@ -52,7 +52,7 @@ export default class Player{
      * @readonly
      * @memberof Player
      */
-    get getDrawTurnCount(){
+    getDrawTurnCount(){
         return this.drawTurnCount;
     }
 
@@ -62,7 +62,7 @@ export default class Player{
      * @readonly
      * @memberof Player
      */
-    get getPlayerConnectionStatus(){
+    getPlayerConnectionStatus(){
         return this.playerConnectionStatus;
     }
 
@@ -71,7 +71,7 @@ export default class Player{
      * @memberof Player
      */
     incrementDrawTurnCount(){
-        this.points++;
+        this.drawTurnCount++;
     }
 
     /**
@@ -87,25 +87,18 @@ export default class Player{
      * @correct determines whether or not the guess was correct
      */
     addGuess(word, correct){
-        this.guesses.push(
-            guess = {
-                guessedWord : word,
-                guessCorrectness : correct,
-                roundNumber : this.drawTurnCount
-            }
-        );
+        let guess = {
+            guessedWord : word,
+            guessCorrectness : correct,
+        };
+        this.guesses.push(guess);
     }
     
-    get getGuesses(){
+    getGuesses(){
         return this.guesses;
     }
 
-    get getGuesses(round){
-        return this.guesses.filter(guess => guess.roundNumber == round);
+    getIncorrectGuessesAmount(){
+        return this.guesses.filter(guess => !guess.guessCorrectness).length;
     }
-
-    get getIncorrectGuessesAmount(){
-        return this.guesses.length;
-    }
-
 }
