@@ -6,22 +6,6 @@ const socketioJwt = require('socketio-jwt');
 const { v4: uuidv4 } = require('uuid');
 const port = 3000;
 
-// Db Connection stuff. =====
-const mongoose = require('mongoose');
-
-// TODO Change to localhost if not in Docker..
-const db_link = "mongodb://mongo:27017/pictionairy_db";
-
-mongoose.connect(db_link, (err) => {
-    if (err)
-        console.error("Error while connecting to db");
-    else
-        console.error("Database connection success..");
-});
-
-// ==========================
-
-
 app.use(express.static('public'))
 app.use(express.json());
 app.get('/', (req, res) => {
