@@ -10,9 +10,9 @@ const port = 3000;
 const saltRounds = 10;
 
 const mongoose = require('mongoose');
-const db_link = "mongodb://vacweekapi.gdza.xyz:27017/db_test";
+const db_link = process.env.DB_HOST || "mongodb://vacweekapi.gdza.xyz:27017/db_test";
 
-const JWTSECRET = "this-should-be-some-super-secret-key";
+const JWTSECRET = process.env.JWTSECRET || "this-should-be-some-super-secret-key";
 
 mongoose.connect(db_link, (err) => {
     if (err)
@@ -161,9 +161,3 @@ io.on('connection', (socket) => {
 io.on('disconnect', (socket) => {
     console.log('user disconnected');
 });
-
-//   io.on('connection', (socket) => {
-//     socket.on('chat message', (msg) => {
-//       console.log('message: ' + msg);
-//     });
-//   });
