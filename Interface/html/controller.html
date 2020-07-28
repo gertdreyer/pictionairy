@@ -16,7 +16,7 @@
 
     <div class='page-header'>
         <div class="row" style="height:5%; text-align: center;">
-            <h3 id='chosenWord'>Place Word Here</h3>
+            <h1 id='chosenWord'>Place word here</h1>
         </div>
     </div>
     <div class="row">
@@ -43,18 +43,14 @@
         </div>
     </div>
     <br>
-    <div class="row">
-        <button type="button" class="btn btn-primary btn-xl" onclick="canvasDraw()">Draw</button>
-        <div id="create" class="collapse">
-            <!-- BLANK -->
-        </div>
+    <button type="button" class="btn btn-primary drawControlButton" onclick="canvasDraw()">Draw</button>
+    <div id="create" class="collapse">
+        <!-- BLANK -->
     </div>
-    <br /><br />
-    <div class="row">
-        <button type="button" class="btn btn-primary btn-xl" onclick="canvasClear()">Clear</button>
-        <div id="create" class="collapse">
-            <!-- BLANK -->
-        </div>
+    <br />
+    <button type="button" class="btn btn-primary drawControlButton" onclick="canvasClear()">Clear</button>
+    <div id="create" class="collapse">
+        <!-- BLANK -->
     </div>
 
     <!-- Overlay for chosing words and disabling -->
