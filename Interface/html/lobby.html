@@ -14,7 +14,7 @@
 <body style="height: 100%;" onload="init()">
   <div class="topnav" id="myTopnav">
     <a href="#home" class="active">Pictionary</a>
-    <a style="float: right;" href="" id="logoutTab" onclick="leaveGame();">Leave Game</a>
+    <a style="float: right;" href="" id="leave" onclick="leaveGame();">Leave Game</a>
     <a href="javascript:void(0);" class="icon" onclick="navBar()">
       <i class="fa fa-bars"></i>
     </a>
@@ -27,7 +27,7 @@
       <div class="col-sm-3"><h3>Time Remaining <b id="timer">00</b></h3></div>
     </div>
     <div class="row" style="height: 90%; border: thin solid black; border-radius: 5px;">
-      <canvas id="Drawing" style="height: 100%; width: 100%;">
+      <canvas id="Drawing" style="height: 600px; width: 800px;">
       </canvas>
     </div>
   </div>

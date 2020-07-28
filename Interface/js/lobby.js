@@ -39,11 +39,13 @@ function navBar() {
   }
 function submitGuess(){
     var guess = document.getElementById("guessSubmit");
-            guess.value = guess.value.trim();
-            if(guess.value !== ''){
-                document.getElementById('guesses').innerHTML += '&#13;&#10;'+guess.value;
-            }
-            guess.value = '';
-        
+    guess.value = guess.value.trim();
+    if(guess.value !== ''){
+        document.getElementById('guesses').innerHTML += '&#13;&#10;'+guess.value;
+    }
+    guess.value = '';
+
+    var canvas = document.getElementById("Drawing");
+    alert(canvas.width+' '+canvas.height)
 }
 
