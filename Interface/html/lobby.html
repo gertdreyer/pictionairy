@@ -19,23 +19,23 @@
       <i class="fa fa-bars"></i>
     </a>
   </div>
-  <div class='col-sm-9' style="height: 100% ;background-color: grey;">
-    <div class="row" style="height: 10%;">
+  <div id="mobilePage" class='col-sm-9'>
+    <div id="infoBar" class="row" style="height: 10%;">
       <div id="serverID" class="col-sm-3"><h3>Server Token</h3></div>
       <div id="divStartButton" class="col-sm-3" style="height: 100%;"><button type="button" style="height: 100%; width: 100%;">Start Game</button></div>
       <div id="lobbyRound" class="col-sm-3"><h3>Round</h3></div>
       <div id="lobbyTimer" class="col-sm-3"><h3>Time Remaining <b id="timer">00</b></h3></div>
     </div>
-    <div class="row" style="height: 90%; border: thin solid black; border-radius: 5px; background-color: white;">
-      <canvas id="Drawing" style="height: 600px; width: 800px; margin-left: 10%;">
+    <div id="canvasDiv" class="row" style="height: 90%; border: thin solid black; border-radius: 5px; background-color: white;">
+      <canvas id="Drawing">
       </canvas>
     </div>
   </div>
-    <div class='col-sm-3' style="height: 100%; background-color: white;">
-      <div class="row sideBar" style="height: 50%"><textarea id = 'players' disabled>Players:&#13;&#10;</textarea></div>
-      <div class="row sideBar" style="height: 45%"><textarea id = 'guesses' disabled>Your Guesses Are Here:&#13;&#10;</textarea></div>
+    <div id="sidePanel" class='col-sm-3'>
+      <div id="playerList" class="row sideBar" style="height: 50%"><textarea id = 'players' disabled>Players:&#13;&#10;</textarea></div>
+      <div id="guessList" class="row sideBar" style="height: 45%"><textarea id = 'guesses' disabled>Your Guesses Are Here:&#13;&#10;</textarea></div>
       <div class="row" style="height: 5%">
-         <div class="input-group" style="height: 100%;">
+         <div id="inputBar" class="input-group">
                 <input id="guessSubmit" type="text" class="form-control" placeholder="Press Enter to submit answer" style="height: 100%;">
                 <div class="input-group-btn">
                     <button type="button" class="btn btn-primary" style="height: 100%;" onclick="submitGuess()">Submit</button>
