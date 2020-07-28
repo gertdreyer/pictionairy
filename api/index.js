@@ -9,6 +9,8 @@ const port = 3000;
 const mongoose = require('mongoose');
 const db_link = "mongodb://mongo:27017/db_test";
 
+const JWTSECRET = "this-should-be-some-super-secret-key";
+
 mongoose.connect(db_link, (err) => {
     if (err)
         console.log("Error");
@@ -22,54 +24,61 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/newSession', (req, res) => {
-    if (!!req.body.userId) {
-        let session = uuidv4();
-        res.json({ "sessionId": session })
-        //TODO: Firebase
-    } else {
-        res.json({ error: "Missing userId" })
+app.post('/auth', (res, req) => {
+    if (!!req.body.username && !!req.body.password) {
+        return res.send(jwt.sign(payload, JWTSECRET, { expiresIn: "2 days" }))
     }
-})
+});
+// #region oldrestapi
+// app.post('/newSession', (req, res) => {
+//     if (!!req.body.userId) {
+//         let session = uuidv4();
+//         res.json({ "sessionId": session })
+//         //TODO: Firebase
+//     } else {
+//         res.json({ error: "Missing userId" })
+//     }
+// })
 
-app.post('/join', (req, res) => {
-    if (!!req.body.userId && !!req.body.sessionId) {
-        // Mock method
-        res.json({ joined: true })
-    } else {
-        res.json({ joined: false, error: "Missing sessionId or userId" })
-    }
+// app.post('/join', (req, res) => {
+//     if (!!req.body.userId && !!req.body.sessionId) {
+//         // Mock method
+//         res.json({ joined: true })
+//     } else {
+//         res.json({ joined: false, error: "Missing sessionId or userId" })
+//     }
 
-    //joinAsUser (session_id, user_id) return bool
-    //join as viewer
-    //Ensure that once the game is started this function always returns false for this session id
-    // joinAsDevice (session_id, user_id) return bool
-    //join as device
-    //Ensure that once the game is started this function always returns false for this session id
-})
+//     //joinAsUser (session_id, user_id) return bool
+//     //join as viewer
+//     //Ensure that once the game is started this function always returns false for this session id
+//     // joinAsDevice (session_id, user_id) return bool
+//     //join as device
+//     //Ensure that once the game is started this function always returns false for this session id
+// })
 
-app.post('/startGame', (req, res) => {
-    if (!!req.body.userId && !!req.body.sessionId) {
-        res.json({ started: true });
-    } else {
-        res.json({ started: false, error: "Missing sessionId or userId" })
-    }
-    //startGame (session_id) return bool
-    //Set round to 0
-    //Make sure that all users have both viewing and drawing devices
-})
+// app.post('/startGame', (req, res) => {
+//     if (!!req.body.userId && !!req.body.sessionId) {
+//         res.json({ started: true });
+//     } else {
+//         res.json({ started: false, error: "Missing sessionId or userId" })
+//     }
+//     //startGame (session_id) return bool
+//     //Set round to 0
+//     //Make sure that all users have both viewing and drawing devices
+// })
 
-app.post('/guess', (req, res) => {
-    if (!!req.body.userId && !!req.body.sessionId && !!req.body.guess) {
-        //GE integration
-        res.json({ correct: true })
-    } else {
-        res.json({ correct: false, error: "Missing sessionId or userId of guess" })
-    }
-})
+// app.post('/guess', (req, res) => {
+//     if (!!req.body.userId && !!req.body.sessionId && !!req.body.guess) {
+//         //GE integration
+//         res.json({ correct: true })
+//     } else {
+//         res.json({ correct: false, error: "Missing sessionId or userId of guess" })
+//     }
+// })
 
+//#endregion
 io.use(socketioJwt.authorize({
-    secret: 'verysecretkey',
+    secret: JWTSECRET,
     handshake: true
 }));
 
