@@ -1,7 +1,7 @@
 function init(){
     var canvas = document.getElementById("Drawing");
     var ctx = canvas.getContext("2d");
-    ctx.fillStyle = "green";
+    ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     document.getElementById("serverID").innerHTML = '<h3>'+localStorage.getItem("Token").sessionID+'</h3>';
 
