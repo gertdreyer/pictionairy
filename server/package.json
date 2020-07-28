@@ -4,7 +4,7 @@
   "description": "Game Engine and API",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js",
+    "test": "node --experimental-modules game-engine/test.js",
     "start": "node --experimental-modules index.js"
   },
   "author": "",

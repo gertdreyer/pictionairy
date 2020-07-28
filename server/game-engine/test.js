@@ -1,6 +1,18 @@
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+require("dotenv").config();
+
 import Player from "./player.js";
 import Game from "./game.js";
 import Word from "./word.js";
+
+test();
+
+async function test() {
+    playerTest();
+    await gameTest();
+    await getWordsTest();
+}
 
 // Helper functions
 function performUnitTest(itemTested, expected, actual) {
@@ -163,17 +175,11 @@ async function getWordsTest() {
     if (ExpectedWordsHard.length != 3) {
         console.log(
             "\u2718  " +
-                " Medium words get" +
+                " Hard words get" +
                 " expected to be: 3 but was " +
                 ExpectedWordsHard.length
         );
     } else {
-        console.log("\u2713  " + "Medium words get passed test");
+        console.log("\u2713  " + "Hard words get passed test");
     }
-}
-
-export async function test() {
-    playerTest();
-    await gameTest();
-    await getWordsTest();
 }

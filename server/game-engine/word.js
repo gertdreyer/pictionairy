@@ -25,34 +25,37 @@ export default class Word {
         let docName = "";
         let newWord = "";
 
-        do {
-            switch (difficultyLevel) {
-                case 1:
-                    docName = "easy";
-                    break;
-                case 2:
-                    docName = "medium";
-                    break;
-                case 3:
-                    docName = "hard";
-                    break;
-                default:
-                    docName = "medium";
-            }
+        switch (difficultyLevel) {
+            case 1:
+                docName = "easy";
+                break;
+            case 2:
+                docName = "medium";
+                break;
+            case 3:
+                docName = "hard";
+                break;
+            default:
+                docName = "medium";
+        }
+
+        try {
             const cityRef = db.collection("Words").doc(docName);
-            const doc = await cityRef.get();
-            if (!doc.exists) {
-                console.log("No such document!");
-            } else {
-                newWord = doc.data().words[
-                    Math.floor(Math.random() * doc.data().words.length)
-                ];
-            }
+            const doc =  await cityRef.get();
+            let words = doc.data().words;
 
-            if (!threeWordList.includes(newWord)) threeWordList.push(newWord);
-        } while (threeWordList.length != 3);
-
-        this.previousChosenWordsList.push(...threeWordList);
-        return threeWordList;
+            do {
+                newWord = words[Math.floor(Math.random() * words.length)];
+    
+                if (!threeWordList.includes(newWord)) 
+                    threeWordList.push(newWord);
+            } while (threeWordList.length != 3);
+    
+            this.previousChosenWordsList.push(...threeWordList);
+            return threeWordList;
+        }
+        catch(err) {
+            console.log("Error retrieving words from DB");
+        }
     }
 }
