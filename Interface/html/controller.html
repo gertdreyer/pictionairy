@@ -12,7 +12,7 @@
     <script src="../js/controller.js"></script>
 </head>
 
-<body onload="init()">
+<body onload="">
     
   <div class="topnav" id="myTopnav">
     <a href="#home" class="active rainbow">PictionAIRy</a>
@@ -51,7 +51,7 @@
         </div>
     </div>
     <br>
-    <button type="button" class="btn btn-primary drawControlButton" onclick="canvasDraw()">Draw</button>
+    <button type="button" class="btn btn-primary drawControlButton" onclick="startFullRound()">Draw</button>
     <div id="create" class="collapse">
         <!-- BLANK -->
     </div>
@@ -63,13 +63,14 @@
 
     <!-- Overlay for chosing words and disabling -->
     <div id="disableOverlay">
-      <div id="disabled">Drawing Disabled! Another player busy drawing</div>
+      <div id="disabled">Drawing Disabled!</div>
     </div>
 
     <div id="chooseOverlay" >
-        <div class="col-sm-4" style="margin-left: 35%; top: 40%;"> <button id='choice-1' type="button" class="btn btn-primary" onclick="choseOption(id)">Choice 1</button></div>
-        <div class="col-sm-4" style="margin-left: 35%;top: 50%;"> <button id='choice-2' type="button" class="btn btn-primary" onclick="choseOption(id)">Choice 2</button></div>
-        <div class="col-sm-4" style="margin-left: 35%; top: 60%;"> <button id='choice-3' type="button" class="btn btn-primary" onclick="choseOption(id)">Choice 3</button></div>
+        <div style="position:absolute; color:white; left: 50%; top: 20%;"><h2 id="chooseTimer">10</h2></div>
+        <div class="col-sm-4" style="position:absolute; left: 42%; top: 40%;"> <button id='choice-1' type="button" class="btn btn-primary" onclick="choseOption(id)">Choice 1</button></div>
+        <div class="col-sm-4" style="position:absolute; left: 42%; top: 50%;"> <button id='choice-2' type="button" class="btn btn-primary" onclick="choseOption(id)">Choice 2</button></div>
+        <div class="col-sm-4" style="position:absolute; left: 42%; top: 60%;"> <button id='choice-3' type="button" class="btn btn-primary" onclick="choseOption(id)">Choice 3</button></div>
     </div>
 </body>
 

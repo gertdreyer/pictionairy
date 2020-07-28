@@ -1,3 +1,5 @@
+// const { start } = require("repl");
+
 const FULL_DASH_ARRAY = 283;
 const WARNING_THRESHOLD = 30;
 const ALERT_THRESHOLD = 10;
@@ -22,10 +24,13 @@ let timeLeft = TIME_LIMIT;
 let timerInterval = null;
 let remainingPathColor = COLOR_CODES.info.color;
 
-startTimer();
+// startTimer();
+let chooseTimer;
+
 
 function onTimesUp() {
   clearInterval(timerInterval);
+  disable();
 }
 
 function startTimer() {
@@ -118,6 +123,7 @@ function navBar() {
 }
 
 function choseOption(id){
+  clearInterval(chooseTimer);
   document.getElementById('chosenWord').innerHTML = document.getElementById(id).innerHTML;
   if(id === 'choice-1'){
   
@@ -127,6 +133,7 @@ function choseOption(id){
 
   }
   closeChoose();
+  startDrawing();
 }
 
 function leaveGame(){
@@ -139,15 +146,38 @@ function logout(){
 }
 
 function startFullRound(){
-
+  enable();
+  startChosing();
+  // startDrawing();
 }
 
 function startDrawing(){
   //start timer, on timer end, disable buttons and whatever
+  startTimer();
 }
 
 function startChosing(){
   //create overlay, fill buttons, start timer, randomly chose after time, then close overlay
+  openChoose();
+  document.getElementById('choice-1').innerHTML = 'choice-1';
+  document.getElementById('choice-2').innerHTML = 'choice-2';
+  document.getElementById('choice-3').innerHTML = 'choice-3';
+  var choosingTime = 10;
+  chooseTimer = setInterval(function(){
+    choosingTime--;
+    document.getElementById('chooseTimer').innerHTML =choosingTime;
+    if(choosingTime==0){
+      var random = Math.floor(Math.random() * 3)+1;
+      if(random == '1'){
+        choseOption("choice-1")
+      }else if(random == '2'){
+        choseOption("choice-2")
+      }else{
+        choseOption("choice-3")
+      }
+    }
+    
+  },1000);
 }
 function sendOption(){
   //use this function to send data to server
