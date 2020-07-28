@@ -93,33 +93,40 @@ export async function getWordsTest()
 
     }
 
-    // ExpectedWordsMedium = word.getWords("medium")
-    // if(ExpectedWordsMedium.length!=3)
-    // {
+    let ExpectedWordsMedium = await word.getWords(2).then().catch(err=>{
 
-    //     console.log("\u2718  " + " medium words get" + " expected to be: 3 but was " + ExpectedWordsMedium.length); 
+        console.log(err);
+    });
 
+    if(ExpectedWordsMedium.length!=3)
+    {
 
-    // }
-    // else{
-
-    //     console.log("\u2713  " + "medium words get passed test");
-
-    // }
-
-    // ExpectedWordsHard = word.getWords("hard")
-    // if(ExpectedWordsHard.length!=3)
-    // {
-
-    //     console.log("\u2718  " + " medium words get" + " expected to be: 3 but was " + ExpectedWordsHard.length); 
+        console.log("\u2718  " + " medium words get" + " expected to be: 3 but was " + ExpectedWordsMedium.length); 
 
 
-    // }
-    // else{
+    }
+    else{
 
-    //     console.log("\u2713  " + "medium words get passed test");
+        console.log("\u2713  " + "medium words get passed test");
 
-    // }
+    }
+
+    let ExpectedWordsHard = await word.getWords(3).then().catch(err=>{
+
+        console.log(err);
+    });
+    if(ExpectedWordsHard.length!=3)
+    {
+
+        console.log("\u2718  " + " medium words get" + " expected to be: 3 but was " + ExpectedWordsHard.length); 
+
+
+    }
+    else{
+
+        console.log("\u2713  " + "medium words get passed test");
+
+    }
 
 
 

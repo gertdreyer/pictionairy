@@ -44,19 +44,6 @@ export default class Word{
                 default:
                     docName = 'medium';
             }
-           
-            // db.collection('Words').doc(docName).get().then( doc => {
-            //     console.log("Firebase call");
-            //     if(doc.exists){
-            //         docWords = doc.data().words;
-                    
-            //         newWord = docWords[Math.floor(Math.random() * docWords.length)];      
-            //     }else{
-            //         console.log("doc not found");
-            //     }
-            // }).catch(function(err){
-            //     console.log(err);
-            // }); 
             console.log(docName);
             const cityRef = db.collection('Words').doc(docName);
             const doc = await cityRef.get();
