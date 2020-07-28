@@ -44,16 +44,13 @@ export default class Word{
                 default:
                     docName = 'medium';
             }
-            console.log(docName);
             const cityRef = db.collection('Words').doc(docName);
             const doc = await cityRef.get();
             if (!doc.exists) {
                  console.log('No such document!');
             } 
             else {
-                    // console.log('Document data:', doc.data().words);
                      newWord = doc.data().words[Math.floor(Math.random() * doc.data().words.length)]; 
-                     console.log(newWord);
             }
 
 
