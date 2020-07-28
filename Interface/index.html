@@ -27,15 +27,15 @@
                 <button type="button" class="btn btn-primary" style="width: 80%; margin: 7% 7% 0% 7%;" onclick="createRoom()">Create Room</button>
             </div>
             <div class="input-group" style="width: 80%; margin: 7% 7% 0% 7%;">
-                <input type="text" class="form-control" placeholder="Server ID" name="joinRoom">
+                <input type="text" class="form-control" id="joinRoom" placeholder="Server ID" name="joinRoom" oninput="onJoinRoomText()">
                 <div class="input-group-btn">
-                    <button type="button" class="btn btn-primary" disabled onclick="joinRoom()">Join Room</button>
+                    <button type="button" class="btn btn-primary" id="joinRoomBtn" disabled onclick="joinRoom()">Join Room</button>
                 </div>
             </div>
             <div class="input-group" style="width: 80%; margin: 7% 7% 0% 7%;">
-                <input type="text" class="form-control" placeholder="Server ID" name="connectDevice">
+                <input type="text" class="form-control" id="connectDevice" placeholder="Server ID" name="connectDevice" oninput="onConnectDeviceText()">
                 <div class="input-group-btn">
-                    <button type="button" class="btn btn-primary" disabled>Connect Device</button>
+                    <button type="button" class="btn btn-primary" id="connectDeviceBtn" disabled onclick="connectDevice()">Connect Device</button>
                 </div>
             </div>
         </div>
