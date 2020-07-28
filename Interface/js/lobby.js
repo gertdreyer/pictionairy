@@ -29,3 +29,13 @@ function clearPlayers(){
 function updateTimer(time){
     document.getElementById('timer').innerHTML = time;
 }
+
+function submitGuess(){
+    var guess = document.getElementById("guessSubmit");
+            guess.value = guess.value.trim();
+            if(guess.value !== ''){
+                document.getElementById('guesses').innerHTML += '&#13;&#10;'+guess.value;
+            }
+            guess.value = '';
+        
+}
