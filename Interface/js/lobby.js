@@ -29,3 +29,12 @@ function clearPlayers(){
 function updateTimer(time){
     document.getElementById('timer').innerHTML = time;
 }
+
+function navBar() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+    } else {
+      x.className = "topnav";
+    }
+  }
