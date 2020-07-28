@@ -75,7 +75,7 @@ export default class Player{
     }
 
     /**
-     * @description 
+     * @description Toggles a Player object's connection status when the player disconnects/reconnects
      *
      * @memberof Player
      */
@@ -94,11 +94,18 @@ export default class Player{
         this.guesses.push(guess);
     }
     
+    /**
+     * @description Returns the guesses made by a player in a given turn
+     */
     getGuesses(){
         return this.guesses;
     }
 
     getIncorrectGuessesAmount(){
         return this.guesses.filter(guess => !guess.guessCorrectness).length;
+    }
+
+    clearGuesses(){
+        this.guesses = [];
     }
 }
