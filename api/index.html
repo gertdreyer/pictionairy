@@ -7,11 +7,16 @@
   </head>
   <script src="/socket.io.js"></script>
 <script>
-    const socket = io.connect('http://vacweekapi.gdza.xyz', {
+    const socket = io.connect(
+      'http://vacweekapi.gdza.xyz'
+      // 'localhost:3000'
+      , {
   query: `token=${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1OTU5MzU0MTIsImV4cCI6MTU5NjEwODIxMn0.FcJGjtjA0B_YC_jm2MF6EPQ7s0InlVGSC8X_M8ttxN4'}`
 });
-socket.emit('joinroom', 'some-room-id')
-socket.emit('startgame')
+socket.emit('testing' ,{message: "echo"})
+socket.on('testing', (event)=> {
+  console.log(event)
+})
 </script>
   <body>
     <!-- page content -->

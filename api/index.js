@@ -32,7 +32,6 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User',UserSchema)
 
-
 app.use(express.static('public'))
 app.use(express.json());
 app.get('/', (req, res) => {
@@ -142,7 +141,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('testing', (event)=> {
-        socket.emit("testing", {success:true})
+        socket.emit("testing", event)
+        console.log(event);
     });    
     socket.on('broadcast', (event)=> {
         socket.to(roomid).emit({success:true})
