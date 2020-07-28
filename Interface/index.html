@@ -14,8 +14,8 @@
 <body  style="height: 100%;" onload="init()">
 
 <div class="topnav" id="myTopnav">
-    <a href="#home" class="active rainbow">Pictionary</a>
-    <a style="float: right;" href="" id="leave" data-toggle="modal" data-target="#myModal" onclick="leaveGame();">Login/Signup</a>
+    <a href="#home" class="active rainbow">PictionAIRy</a>
+    <a style="float: right;" href="" id="leave" data-toggle="modal" data-target="#myModal">Login/Signup</a>
     <a href="javascript:void(0);" class="icon" onclick="navBar()">
         <i class="fa fa-bars"></i>
     </a>
@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-sm-8">
             <div class="row" style="align-items: center;">
-                <button type="button" class="btn btn-primary" style="width: 80%; margin: 7% 7% 0% 7%;" onclick="createRoom()">Create Room</button>
+                <button id='createRoom'type="button" class="btn btn-primary" style="width: 80%; margin: 7% 7% 0% 7%;" disabled onclick="createRoom()">Create Room</button>
             </div>
             <div class="input-group" style="width: 80%; margin: 7% 7% 0% 7%;">
                 <input type="text" class="form-control" id="joinRoom" placeholder="Server ID" name="joinRoom" oninput="onJoinRoomText()">
