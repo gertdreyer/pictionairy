@@ -1,3 +1,11 @@
+function init(){
+    if(!localStorage.getItem('token')){
+        $('#myModal').modal('show');
+    }else{
+        //TODO
+    }
+}
+
 function createRoom(){
     //TODO create room and all that
     window.location.href = './html/lobby.html'
@@ -6,7 +14,7 @@ function createRoom(){
 function joinRoom(){
 
     var session_id = $("#joinRoom").val();
-    localStorage.setItem("session_id", session_id);
+    localStorage.setItem("token", session_id);
 
     window.location.href = './html/lobby.html'
 }
@@ -15,7 +23,7 @@ function connectDevice(){
     
     var session_id = $("#connectDevice").val();
 
-    localStorage.setItem("session_id", session_id);
+    localStorage.setItem("token", session_id);
 
     window.location.href = './html/controller.html'
 }

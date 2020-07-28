@@ -49,4 +49,3 @@ function submitGuess(){
     var canvas = document.getElementById("Drawing");
     alert(canvas.width+' '+canvas.height)
 }
-
