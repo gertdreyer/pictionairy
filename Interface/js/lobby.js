@@ -34,10 +34,13 @@ function initServerConnection() {
         query: `token=${localStorage.getItem('token')}`
     });
 
+    alert("here");
+
     var isHost = localStorage.getItem('isHost');
 
     if (isHost === "true") { //Is the host
         ng();
+        alert("sending jg3");
 
     } else { //Is not the host
         var room_id = localStorage.getItem('roomId');
@@ -90,7 +93,8 @@ function ng() {
   }
   
 function jg(gameid) {
-  socket.emit('joingame', {gameid});
+  socket.emit('joingame', {gameid:gameid, devicetype:"client"});  
+  alert("sending jg");
 }
 
 function clearGuesses(){
