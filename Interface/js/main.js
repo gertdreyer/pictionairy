@@ -84,6 +84,8 @@ function login2(email, password) {
         dataType: 'json',
         success: function(data) { loginCallback(data); }
     } );
+
+    localStorage.setItem('userId', email);
 }
 
 function loginCallback(data) {

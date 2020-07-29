@@ -88,6 +88,7 @@ function initServerConnection() {
 
 function startGame() {
     socket.emit("startnewround");
+    alert("starting round");
 }
 
 function ng() {

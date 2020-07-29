@@ -52,11 +52,25 @@ function initServerConnection() {
 
 
     //Callback functions for socket communication
+    socket.on("wordoptions", function(data) {
+        console.log(data);
+        startFullRound(data.options);
+    });
+
+    socket.on("gamestate", function(data) {
+        console.log(data);
+
+        if ((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID === localStorage.getItem("userId")) {
+            console.log("IT IS MY TURN");
+
+            socket.emit("getwordoptions");
+        }
+    });
 }
 
 
 function jg(gameid) {
-    socket.emit('joingame', {gameid:gameid, devicetype:"contr"});
+    socket.emit('joingame', {gameid:gameid, devicetype:"controller"});
   }
 
 
@@ -181,9 +195,9 @@ function logout(){
   leaveGame();
 }
 
-function startFullRound(){
+function startFullRound(choice){
   enable();
-  startChosing();
+  startChosing(choice);
 }
 
 function startDrawing(){
@@ -236,12 +250,12 @@ function calcDist(angle, initAngle) {
 }
 
 
-function startChosing(){
+function startChosing(choice){
   //create overlay, fill buttons, start timer, randomly chose after time, then close overlay
   openChoose();
-  document.getElementById('choice-1').innerHTML = 'choice-1';
-  document.getElementById('choice-2').innerHTML = 'choice-2';
-  document.getElementById('choice-3').innerHTML = 'choice-3';
+  document.getElementById('choice-1').innerHTML = choice[0];
+  document.getElementById('choice-2').innerHTML = choice[1];
+  document.getElementById('choice-3').innerHTML = choice[2];
   var choosingTime = 10;
   var chooseTimer = setInterval(function(){
     choosingTime--;
