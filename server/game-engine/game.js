@@ -256,7 +256,7 @@ export default class Game {
     checkControllers()
     {
         return this.players.filter((player) => {
-            player.controller == ""
+            return player.controller == "";
         }).length == 0;
     }
 }

@@ -115,6 +115,8 @@ async function gameTest() {
     performUnitTest("Game Copy Last guess object player id",copyGame.lastGuess.playerUID, game.lastGuess.playerUID);
     performUnitTest("Game Copy Last guess object player guess", copyGame.lastGuess.guessMade, game.lastGuess.guessMade);
 
+    
+
     // Test add player functionality
     let addPlayerOne = game.addPlayer("nicpym", "Nicholas");
     performUnitTest("Add player one", true, addPlayerOne);
@@ -158,12 +160,18 @@ async function gameTest() {
     game.addPlayer("nicpym2", "Nicholas2");
     game.addPlayer("nicpym3", "Nicholas3");
     game.addPlayer("nicpym4", "Nicholas4");
+    game.players[0].controller ="0";
+    game.players[1].controller ="1";
+    game.players[2].controller ="2";
+    game.players[3].controller ="3";
+    // game.setWord('test');
+    performUnitTest("Game check controllers", true, game.checkControllers());
     game.startNewRound();
-
+    
     let currentPlayerUID = game.getDrawer();
 
     try {
-        game.submitGuess(currentPlayerUID, "test", 60);
+        game.submitGuess(currentPlayerUID, "test",60);
         performUnitTest("Don't let drawer guess", "", "Current drawer can't guess");
     }
     catch(err) {
