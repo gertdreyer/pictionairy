@@ -22,7 +22,7 @@ export default class Game {
             this.wordGenerator = state === undefined ? new Word() :                         // Instance of Word class used to generate words for the game
                 new Word(state.wordGenerator);                      
             this.hostId = state === undefined ? "" : state.hostId;                          // UID of user hosting game session
-            this.lastGuess = state === undefined ? {} : state.lastGuess;                     // last guess made by a player
+            this.lastGuess = state === undefined ? {} : state.lastGuess;                     // Last guess made by a player
             
     }
 
@@ -169,6 +169,12 @@ export default class Game {
      */
     submitGuess(uid, guess, time) {
         let player = getPlayerByUID(uid);
+        
+        this.lastGuess ={
+            playerUID = uid,
+            guessMade =guess
+
+        };
 
         if (player == null) return false;
 
