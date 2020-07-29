@@ -32,6 +32,9 @@ async function updateGameState(updated_gamestate) {
  
  */
 
+/**Broadcast GameState
+ * Broadcasts GameState to clients without the current word or word generator
+ */
 async function broadcastGameState(socket, gamestate) {
     let retobj = { ...gamestate };
     delete retobj.currentWord;
@@ -142,7 +145,6 @@ exports = module.exports = function (io) {
                     } else {
                         broadcastGameState(socket, gamestate)
                     }
-                    // Check that each player has an assigned controller.game
 
                 }
             }
@@ -194,6 +196,15 @@ exports = module.exports = function (io) {
             }
         });
 
+        socket.on('drawdata', async (data) => {
+            let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
+            // Check that the person SHOULD be drawing.            
+            // Emit draw data to everyone             
+            console.log(gameid);
+            socket.to(gameid).emit("drawdata", data);
+            console.log("drawdata", data);
+        });
+
         /// DUMMY ENDPOINTS DONT DELETE
         socket.on('testing', async (event) => {
             socket.emit("testing", event)
@@ -204,15 +215,6 @@ exports = module.exports = function (io) {
             console.log("joined test")
             socket.leaveAll();
             socket.join('test');
-        });
-
-        socket.on('drawdata', async (data) => {
-            let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
-            // Check that the person SHOULD be drawing.            
-            // Emit draw data to everyone             
-            console.log(gameid);
-            socket.to(gameid).emit("drawdata", data);
-            console.log("drawdata", data);
         });
 
         socket.on('broadcast', async (event) => {
