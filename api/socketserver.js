@@ -208,7 +208,15 @@ exports = module.exports = function (io) {
                 socket.emit('error', { error })
             }
         });
-
+        socket.on('getgamestate', async () => {
+            let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
+            try {
+                let gamestate = await getGameState(gameid);
+                socket.emit('gamestate', gamestate);
+            }catch (err) {
+                socket.emit('error', {error: "Could not retrieve gamestate"})
+            }
+        });
         socket.on('drawdata', async (data) => {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             // Check that the person SHOULD be drawing.            
