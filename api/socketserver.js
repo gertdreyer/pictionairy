@@ -115,6 +115,7 @@ exports = module.exports = function (io) {
                     // add controller to username
                     let tmp = gamestate.getPlayerByUID(username);
                     console.log(tmp);                    
+                    console.log(username);
                     if (tmp == null){
                         throw "Cant find this user to add his controller.";
                     }else{
