@@ -29,7 +29,8 @@ async function broadcastGameState(socket, gamestate) {
 
 
 function broadcast(socket, listener, gameid, payload) {
-    socket.in(gameid).emit(listener, { ...payload });
+    socket.emit(listener, { ...payload });
+    socket.on(gameid).emit(listener, { ...payload });
 }
 
 exports = module.exports = function (io) {
