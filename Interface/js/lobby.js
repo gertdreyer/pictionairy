@@ -143,35 +143,35 @@ function draw(dist_data){
     ctx.moveTo(x, y);
   
     for(var i =1  ; i < fullPath.length; i++){
-    //Test for Pen Lifted
-    if(fullPath[i][0] != -9999 && fullPath[i][1] != -9999) 
-    {
-        //Setup pen Color for the specific line
-        ctx.strokeStyle = fullPath[i][2];
-
-        if(breakPath)
+        //Test for Pen Lifted
+        if(fullPath[i][0] != -9999 && fullPath[i][1] != -9999) 
         {
-            //Pen was Lifted -> Start of new Path
-            ctx.beginPath();
-            let x = fullPath[i][0] + window.innerWidth/2;
-            let y = fullPath[i][1] + window.innerHeight/2;
-            ctx.moveTo(x, y);
-        }else{
-            //Pen not Lifted -> Continue current path
-            x = fullPath[i][0] + window.innerWidth/2;
-            y = fullPath[i][1] + window.innerHeight/2;
-            ctx.lineTo(x, y);
-        }
+            //Setup pen Color for the specific line
+            ctx.strokeStyle = fullPath[i][2];
 
-        //reset breakPath
-        breakPath= false;
-  
-      }else{
-        //Pen Lifted -> Set Flag & Close current Path
-        breakPath = true;
-        ctx.stroke();
-        ctx.closePath();
-      }
+            if(breakPath)
+            {
+                //Pen was Lifted -> Start of new Path
+                ctx.beginPath();
+                let x = fullPath[i][0] + window.innerWidth/2;
+                let y = fullPath[i][1] + window.innerHeight/2;
+                ctx.moveTo(x, y);
+            }else{
+                //Pen not Lifted -> Continue current path
+                x = fullPath[i][0] + window.innerWidth/2;
+                y = fullPath[i][1] + window.innerHeight/2;
+                ctx.lineTo(x, y);
+            }
+
+            //reset breakPath
+            breakPath= false;
+    
+        }else{
+            //Pen Lifted -> Set Flag & Close current Path
+            breakPath = true;
+            ctx.stroke();
+            ctx.closePath();
+        }
        
     }
     
