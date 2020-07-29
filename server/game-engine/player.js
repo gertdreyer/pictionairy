@@ -1,11 +1,12 @@
 export default class Player {
     constructor(uid, name) {
-        this.playerUID = uid; //uid corresponding to account on firebase
-        this.playerName = name; //name corresponding to account on firebase
-        this.points = 0; //points associated with this instantiated Player object
-        this.drawTurnCount = 0; //counter used to determine whether or not the player has drawn in a given round
-        this.playerConnectionStatus = "connected"; //a string determining whether or not the player has disconnected from the session
-        this.guesses = []; //an array of objects where each object stores data about a particular guess
+        this.playerUID = uid; // uid corresponding to account on firebase
+        this.playerName = name; // name corresponding to account on firebase
+        this.points = 0; // points associated with this instantiated Player object
+        this.drawTurnCount = 0; // counter used to determine whether or not the player has drawn in a given round
+        this.playerConnectionStatus = "connected"; // a string determining whether or not the player has disconnected from the session
+        this.guesses = []; // an array of objects where each object stores data about a particular guess
+        this.controller = ""; // controller id for player
     }
 
     /**
@@ -16,6 +17,22 @@ export default class Player {
      */
     getPlayerUID() {
         return this.playerUID;
+    }
+    /**
+     * @description Getter for player controller id
+     * @returns controller: string
+     * @memberof Player
+     */
+    getPlayerController() {
+        return this.controller;
+    }
+    /**
+     * @description Setter for player controller
+     * @param {string} controller
+     * @memberof Player
+     */
+    setPlayerController(controller) {
+        this.controller = controller;
     }
 
     /**
@@ -81,9 +98,9 @@ export default class Player {
      */
     toggleConnection() {
         this.playerConnectionStatus =
-            this.playerConnectionStatus == "connected"
-                ? "disconnected"
-                : "connected";
+            this.playerConnectionStatus == "connected" ?
+            "disconnected" :
+            "connected";
     }
 
     /**
