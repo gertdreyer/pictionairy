@@ -151,7 +151,19 @@ async function gameTest() {
 // Word unit tests
 async function getWordsTest() {
     console.log("\n===== Words unit tests =====\n");
+     let previousChosenWordsList1 = [];
+    let state={
+        previousChosenWordsList: previousChosenWordsList1,
+        words : null
+
+    }
+
+    let wordsCopy = new Word(state);
     let word = new Word();
+
+    performUnitTest("Word Copy Constructor previousChosenWordsList", word.previousChosenWordsList.length, wordsCopy.previousChosenWordsList.length);
+    performUnitTest("Word Copy Constructor words", word.words, wordsCopy.words);
+
     let ExpectedWordsEasy = await word
         .getWords(1)
         .then()
