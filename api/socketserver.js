@@ -17,7 +17,7 @@ async function getGameState(gameid) {
 async function updateGameState(updated_gamestate) {
     try {
         GameState.updateOne(
-            { gameid: updated_gamestate.gameid },
+            { gameid: updated_gamestate.gameId },
             // New Fields..
             {
                 gamestate: updateGameState
