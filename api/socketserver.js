@@ -149,7 +149,6 @@ exports = module.exports = function (io) {
 
                 // Host check            
                 if (username == gamestate.hostId) {
-
                     //only starts game if everyone has a controller connected
                     if (gamestate.checkControllers()) { // changed from true
                         gamestate.startNewRound()
@@ -157,9 +156,12 @@ exports = module.exports = function (io) {
                         await updateGameState(gamestate);
                         broadcastGameState(socket, gamestate)
                     } else {
-                        broadcastGameState(socket, gamestate)
+                        socket.emit("error",{error: "Check controllers failed"});
+                        broadcastGameState(socket, gamestate);
                     }
 
+                }else{
+                    socket.emit("error",{error: "You are not the host"});
                 }
             }
         });
