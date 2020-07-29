@@ -99,6 +99,16 @@ async function gameTest() {
     performUnitTest("Current Player", null, game.getDrawer());
     performUnitTest("Max Time", 60, game.maxTime);
     performUnitTest("Game round ended status", false, game.getRoundEnded());
+    let copyGame = new Game(game.getGameId(), game);
+    performUnitTest("Game Copy Constructor ID", game.getGameId(), copyGame.getGameId());
+    performUnitTest("Game Copy Constructor DiffcultLevel", game.difficultyLevel, copyGame.difficultyLevel);
+    performUnitTest("Game Copy Constructor Game Ended", game.gameEnded, copyGame.gameEnded);
+    performUnitTest("Game Copy Constructor Round Ended", game.roundEnded, copyGame.roundEnded);
+    performUnitTest("Game Copy Constructor Round Number", game.roundNumber, copyGame.roundNumber);
+    performUnitTest("Game Copy Constructor Current Word", game.currentWord, copyGame.currentWord);
+    performUnitTest("Game Copy Constructor Current Player", game.currentPlayer, copyGame.currentPlayer);
+    performUnitTest("Game Copy Constructor Max Time", game.maxTime, copyGame.maxTime);
+    performUnitTest("Game Copy Constructor Host ID", game.hostId, copyGame.hostId);
 
     // Test add player functionality
     let addPlayerOne = game.addPlayer("nicpym", "Nicholas");
