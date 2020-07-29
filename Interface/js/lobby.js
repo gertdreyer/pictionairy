@@ -3,13 +3,11 @@ var socket;
 
 let fullPath = [];
 let penColor = "#cf060a"; 
-let canvas;
-let ctx;
+let canvas = document.getElementById("Drawing");
+let ctx = canvas.getContext("2d");
 
 function init(){
-
-    canvas = document.getElementById("Drawing");
-    ctx = canvas.getContext("2d");
+    
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
@@ -35,8 +33,6 @@ function initServerConnection() {
     socket = io.connect(apiAddress, {
         query: `token=${localStorage.getItem('token')}`
     });
-
-    alert("Connection established");
 
     var isHost = localStorage.getItem('isHost');
 
@@ -70,13 +66,12 @@ function initServerConnection() {
 
     //Callback for when there is drawdata
     socket.on("drawdata", function(data) {
-        console.log(data);
+        receiveData(data);
     });
 }
 
 function ng() {
-    socket.emit('newgame');    
-    alert("Emitted new game");
+    socket.emit('newgame');
   }
   
 function jg(gameid) {
@@ -114,11 +109,6 @@ function submitGuess(){
     alert(canvas.width+' '+canvas.height)
 }
 
-function startButtonTemp() {
-    socket.emit("drawdata", "Hello world");
-    alert("Sent hello world to drawdata");
-}
-
 
 function receiveData(data_in){
     
@@ -132,39 +122,13 @@ function receiveData(data_in){
     }else{
         laser(dist);
     }
-
-
-    // var drawData; //2d array of x,y positions
-    // var currentPixel; // display pos
-    // var currentLine; // What is the current line
-    // var historyPosition; // Last pixel before stopped drawing
-    // var draw_function; //3clear, 2undo, 1draw, 0display
-    // var lineEnd; //true/false
-
-    // if (draw_function == 3) {
-    //     //clear drawData
-    // } else if (draw_function == 2) {
-
-    // } else if (draw_function == 1) {
-    //     if (!lineEnd) {
-    //         lineEnd = true;
-    //         currentLine += 1;
-    //     }
-    //     drawData[currentPixel] = //append data
-    //     currentPixel += 1;
-    // }
-    // else{
-    //     if (lineEnd) {
-    //         lineEnd = false;
-    //         historyPosition[currentLine] = currentPixel;
-    //     }
-    //     drawData[currentPixel] = //data
-    // }
 }
 
 
 function laser(dist_data){
   
+    console.log(dist_data);
+
     if(fullPath.length != 0)
     {
        draw(dist_data);
@@ -172,11 +136,11 @@ function laser(dist_data){
      ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
   
-    let x = dist_data[0] + window.innerWidth/2;
-    let y = dist_data[1] + window.innerHeight/2;
+    let x = dist_data[0] + canvas.width/2;
+    let y = dist_data[1] + canvas.height/2;
   
     ctx.beginPath();
-    ctx.arc(x, y, 20, 0, 2 * Math.PI);
+    ctx.arc(x, y, 1, 0, 2 * Math.PI);
     ctx.fillStyle = penColor;
     ctx.fill();
     ctx.closePath(); 
@@ -203,8 +167,8 @@ function draw(dist_data){
   
     //Start Drawing Path
     ctx.beginPath();
-    let x = fullPath[0][0] + window.innerWidth/2;
-    let y = fullPath[0][1] + window.innerHeight/2;
+    let x = fullPath[0][0] + canvas.width/2;
+    let y = fullPath[0][1] + canvas.height/2;
     ctx.moveTo(x, y);
   
     for(var i =1  ; i < fullPath.length; i++){
@@ -218,13 +182,13 @@ function draw(dist_data){
             {
                 //Pen was Lifted -> Start of new Path
                 ctx.beginPath();
-                let x = fullPath[i][0] + window.innerWidth/2;
-                let y = fullPath[i][1] + window.innerHeight/2;
+                let x = fullPath[i][0] + canvas.width/2;
+                let y = fullPath[i][1] + canvas.height/2;
                 ctx.moveTo(x, y);
             }else{
                 //Pen not Lifted -> Continue current path
-                x = fullPath[i][0] + window.innerWidth/2;
-                y = fullPath[i][1] + window.innerHeight/2;
+                x = fullPath[i][0] + canvas.width/2;
+                y = fullPath[i][1] + canvas.height/2;
                 ctx.lineTo(x, y);
             }
 

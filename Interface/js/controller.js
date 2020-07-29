@@ -47,8 +47,6 @@ function initServerConnection() {
         query: `token=${localStorage.getItem('token')}`
     });
 
-    alert("Connection established");
-
     var room_id = localStorage.getItem('roomId');
     jg(room_id);
 
@@ -56,6 +54,10 @@ function initServerConnection() {
     //Callback functions for socket communication
 }
 
+
+function jg(gameid) {
+    socket.emit('joingame', {gameid});
+  }
 
 // let fullPath = [];
 
@@ -207,7 +209,7 @@ function handleSensor(e){
   let penColour = "#cf060a"; 
   let data_out = [dist[0], dist[1], pen, penColour];
   //send to_send
-
+  socket.emit("drawdata", data_out);
 }
 
 function toEuler(q) {
