@@ -29,6 +29,26 @@ export default class Game {
             return this.currentPlayer.getPlayerUID();
         else return null;
     }
+    /**
+     * @description Returns the roundStatus
+     * @returns roundEnded
+     * @memberof Game
+     */
+    getRoundEnded()
+    {
+        return this.roundEnded;
+
+    }
+    
+    /**
+     * @description Set the round status
+     * @memberof Game
+     */
+    setRoundEnded(status)
+    {
+        this.roundEnded = status;
+
+    }
 
     /**
      * @description Returns the game ID of the curretn game
@@ -141,7 +161,7 @@ export default class Game {
      * @returns bool determining whether or not the guess was correct
      */
     submitGuess(uid, guess, time) {
-        let player = getPlayerUID(uid);
+        let player = getPlayerByUID(uid);
 
         if (player == null) return false;
 
