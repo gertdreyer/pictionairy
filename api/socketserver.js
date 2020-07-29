@@ -101,7 +101,7 @@ exports = module.exports = function (io) {
                 //devicetype = {controller , client}
                 let { gameid, devicetype } = obj;
                 if (!(devicetype == 'controller' || devicetype == 'client')) {
-                    // throw "Incorrect device type"
+                    throw "Incorrect device type"
                 }
                 // Find the current game state
                 let gamestate = await getGameState(gameid);
@@ -113,7 +113,13 @@ exports = module.exports = function (io) {
 
                 if (devicetype == "controller") {
                     // add controller to username
-                    gamestate.getPlayerByUID(username).controller = socket.id;
+                    let tmp = gamestate.getPlayerByUID(username);
+                    console.log(tmp);                    
+                    if (tmp == null){
+                        throw "Cant find this user to add his controller.";
+                    }else{
+                        tmp.controller = socket.id;
+                    }
                     console.log("Players at this point: -" + gamestate.players);
                 }
                 else {
