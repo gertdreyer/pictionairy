@@ -17,7 +17,7 @@ var io = require('socket.io')(server, { 'pingInterval': 1000, 'maxHttpBufferSize
 const socketserver = require('./socketserver.js')(io);
 
 app.use(cors())
-app.use(express.static('public'))
+app.use(express.static('../Interface'))
 app.use(express.json());
 
 // Database Initiation
@@ -36,7 +36,7 @@ db.once('open', function () {
 
 // TODO: Move endpoints to routes...
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + "../Interface" + '/index.html');
 });
 
 /// Registration Endpoint
