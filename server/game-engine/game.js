@@ -160,7 +160,7 @@ export default class Game {
             this.roundNumber == 0
                 ? false
                 : this.players.filter(
-                      (player) => player.getDrawTurnCount == this.roundNumber
+                      (player) => player.getDrawTurnCount() == this.roundNumber
                   ).length == this.players.length;
         return this.roundEnded;
     }
