@@ -2,21 +2,35 @@ import Player from "./player.js";
 import Word from "./word.js";
 
 export default class Game {
-    MIN_PLAYERS = 2; // Const variable for minimum number of players allowed
-    MAX_PLAYERS = 4; // Const variable for maximum number of players allowed
-    MAX_ROUND_NUMBER = 3;
+    MIN_PLAYERS = 2;        // Const variable for minimum number of players allowed
+    MAX_PLAYERS = 4;        // Const variable for maximum number of players allowed
+    MAX_ROUND_NUMBER = 3;   // Const variable for maximum number of rounds allowed
 
-    constructor(gameId) {
-        this.gameId = gameId; // Used to identify the specific game
-        this.difficultyLevel = 0; // unused variable for now will use the round number for difficulty indication
-        this.gameEnded = false; // Bool if the game has ended
-        this.roundEnded = false; // Bool if the round has ended
-        this.roundNumber = 0; // Tracker for current round
-        this.currentWord = ""; // Current turns word
-        this.currentPlayer = null; // Current drawer of the turn
-        this.players = []; // List of current active players
-        this.maxTime = 60; // Maximum time allowed to calculating points
-        this.wordGenerator = new Word(); // Instance of Word class used to generate words for the game
+    constructor(gameId, state) {
+            this.gameId = gameId;                                                            // Used to identify the specific game
+            this.difficultyLevel = state === undefined ? 0 : state.difficultyLevel;         // unused variable for now will use the round number for difficulty indication
+            this.gameEnded = state === undefined ? false : state.gameEnded;                 // Bool if the game has ended
+            this.roundEnded = state === undefined ? false : state.roundEnded;               // Bool if the round has ended
+            this.roundNumber = state === undefined ? 0 : state.roundNumber;                 // Tracker for current round
+            this.currentWord = state === undefined ? "" : state.currentWord;                // Current turns word
+            this.currentPlayer = state === undefined ?                                      // Current player drawing
+                null : state.currentPlayer !== null ? 
+                new Player(
+                    state.currentPlayer.playerUID, 
+                    state.currentPlayer.playerName, 
+                    state.currentPlayer) : null;      
+            this.players = [];                                                              // List of current active players
+            if(state !== undefined)
+                state.players.forEach(player => this.players.push(new Player(player.playerUID, player.playerName, player)));
+            this.maxTime = state === undefined ? 60 : state.maxTime;                        // Maximum time allowed to calculating points
+            this.wordGenerator = state === undefined ? new Word() :                         // Instance of Word class used to generate words for the game
+                new Word(state.wordGenerator);                      
+            this.hostId = state === undefined ? "" : state.hostId;                          // UID of user hosting game session
+            this.lastGuess = state === undefined ? {
+                playerUID: "",
+                guessMade: ""
+            } : state.lastGuess;                     // Last guess made by a player
+            
     }
 
     /**
@@ -28,6 +42,26 @@ export default class Game {
         if (this.currentPlayer != null)
             return this.currentPlayer.getPlayerUID();
         else return null;
+    }
+    /**
+     * @description Returns the roundStatus
+     * @returns roundEnded
+     * @memberof Game
+     */
+    getRoundEnded()
+    {
+        return this.roundEnded;
+
+    }
+    
+    /**
+     * @description Set the round status
+     * @memberof Game
+     */
+    setRoundEnded(status)
+    {
+        this.roundEnded = status;
+
     }
 
     /**
@@ -141,7 +175,13 @@ export default class Game {
      * @returns bool determining whether or not the guess was correct
      */
     submitGuess(uid, guess, time) {
-        let player = getPlayerUID(uid);
+        let player = getPlayerByUID(uid);
+        
+        this.lastGuess ={
+            playerUID: uid,
+            guessMade: guess
+
+        };
 
         if (player == null) return false;
 
@@ -175,9 +215,10 @@ export default class Game {
     }
 
     startNewRound() {
-        if (this.players.length == 0) return false;
+        if (this.players.length < this.MIN_PLAYERS) return false;
         if (this.roundNumber < this.MAX_ROUND_NUMBER) {
             this.roundNumber++;
+            this.roundEnded = false;
             return this.startNewTurn();
         }
         return false;

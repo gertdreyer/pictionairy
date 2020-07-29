@@ -1,6 +1,18 @@
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+require("dotenv").config();
+
 import Player from "./player.js";
 import Game from "./game.js";
 import Word from "./word.js";
+
+ test();
+
+// async function test() {
+//     playerTest();
+//     await gameTest();
+//     await getWordsTest();
+// }
 
 // Helper functions
 function performUnitTest(itemTested, expected, actual) {
@@ -38,6 +50,8 @@ function playerTest() {
 
     player.incrementDrawTurnCount();
     performUnitTest("Draw Turn Count", 1, player.getDrawTurnCount());
+    player.setPlayerController("abcd");
+    performUnitTest("Player Controller", "abcd", player.getPlayerController());
 
     player.toggleConnection();
     performUnitTest(
@@ -59,6 +73,14 @@ function playerTest() {
         );
     }
 
+    let playerCopy = new Player(player.playerUID, player.playerName, player);
+    performUnitTest("Player Copy Constructor ID", player.playerUID, playerCopy.playerUID);
+    performUnitTest("Player Copy Constructor Name", player.playerName, playerCopy.playerName);
+    performUnitTest("Player Copy Constructor Points", player.points, playerCopy.points);
+    performUnitTest("Player Copy Constructor drawTurnCount", player.drawTurnCount, playerCopy.drawTurnCount);
+    performUnitTest("Player Copy Constructor Connection Status", player.playerConnectionStatus, playerCopy.playerConnectionStatus);
+    performUnitTest("Player Copy Constructor Controller", player.controller, playerCopy.controller);
+
     console.log("");
 }
 
@@ -76,6 +98,17 @@ async function gameTest() {
     performUnitTest("Current Word", "", game.getWord());
     performUnitTest("Current Player", null, game.getDrawer());
     performUnitTest("Max Time", 60, game.maxTime);
+    performUnitTest("Game round ended status", false, game.getRoundEnded());
+    let copyGame = new Game(game.getGameId(), game);
+    performUnitTest("Game Copy Constructor ID", game.getGameId(), copyGame.getGameId());
+    performUnitTest("Game Copy Constructor DiffcultLevel", game.difficultyLevel, copyGame.difficultyLevel);
+    performUnitTest("Game Copy Constructor Game Ended", game.gameEnded, copyGame.gameEnded);
+    performUnitTest("Game Copy Constructor Round Ended", game.roundEnded, copyGame.roundEnded);
+    performUnitTest("Game Copy Constructor Round Number", game.roundNumber, copyGame.roundNumber);
+    performUnitTest("Game Copy Constructor Current Word", game.currentWord, copyGame.currentWord);
+    performUnitTest("Game Copy Constructor Current Player", game.currentPlayer, copyGame.currentPlayer);
+    performUnitTest("Game Copy Constructor Max Time", game.maxTime, copyGame.maxTime);
+    performUnitTest("Game Copy Constructor Host ID", game.hostId, copyGame.hostId);
 
     // Test add player functionality
     let addPlayerOne = game.addPlayer("nicpym", "Nicholas");
@@ -118,7 +151,19 @@ async function gameTest() {
 // Word unit tests
 async function getWordsTest() {
     console.log("\n===== Words unit tests =====\n");
+     let previousChosenWordsList1 = [];
+    let state={
+        previousChosenWordsList: previousChosenWordsList1,
+        words : null
+
+    }
+
+    let wordsCopy = new Word(state);
     let word = new Word();
+
+    performUnitTest("Word Copy Constructor previousChosenWordsList", word.previousChosenWordsList.length, wordsCopy.previousChosenWordsList.length);
+    performUnitTest("Word Copy Constructor words", word.words, wordsCopy.words);
+
     let ExpectedWordsEasy = await word
         .getWords(1)
         .then()
@@ -163,12 +208,12 @@ async function getWordsTest() {
     if (ExpectedWordsHard.length != 3) {
         console.log(
             "\u2718  " +
-                " Medium words get" +
+                " Hard words get" +
                 " expected to be: 3 but was " +
                 ExpectedWordsHard.length
         );
     } else {
-        console.log("\u2713  " + "Medium words get passed test");
+        console.log("\u2713  " + "Hard words get passed test");
     }
 }
 
