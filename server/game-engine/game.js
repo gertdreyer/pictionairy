@@ -31,7 +31,7 @@ export default class Game {
                 guessMade: ""
             } : state.lastGuess;                     // Last guess made by a player
 
-            this.turnStartTime = null;
+            this.turnStartTime = state === undefined ? null : state.turnStartTime;
     }
 
     /**
