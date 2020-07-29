@@ -2,6 +2,7 @@ const apiAddress = "https://vacweekapi.gdza.xyz/";
 var socket;
 
 let fullPath = [];
+let pen;
 let penColor = "#cf060a"; 
 let canvas = document.getElementById("Drawing");
 let ctx = canvas.getContext("2d");
@@ -231,8 +232,6 @@ function draw(dist_data){
        ctx.stroke();
        ctx.closePath(); 
     }
-   
-   
 }
 
 function undoLastStroke(){
