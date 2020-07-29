@@ -175,9 +175,9 @@ export default class Game {
      * @returns bool determining whether or not the guess was correct
      */
     submitGuess(uid, guess, time) {
-        let player = getPlayerByUID(uid);
+        let player = this.getPlayerByUID(uid);
 
-        if (player === this.currentPlayer)
+        if (uid === this.currentPlayer.getPlayerUID())
             throw("Current drawer can't guess");
         
         this.lastGuess = {
