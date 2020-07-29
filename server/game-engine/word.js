@@ -21,7 +21,7 @@ export default class Word {
         }
         
     }
-
+        
     /**
      * @description Returns the list of words to choose from
      * @returns new word list of 3 options
