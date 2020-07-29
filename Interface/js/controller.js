@@ -23,7 +23,7 @@ const COLOR_CODES = {
 const TIME_LIMIT = 60;
 let timePassed = 0;
 let timeLeft = TIME_LIMIT;
-let timerInterval = null;
+//let timerInterval = null;
 let remainingPathColor = COLOR_CODES.info.color;
 
 const sensor = new AbsoluteOrientationSensor({frequency: 60});
@@ -56,22 +56,17 @@ function initServerConnection() {
 
 
 function jg(gameid) {
-    socket.emit('joingame', {gameid:gameid, devicetype:"controller"});
+    socket.emit('joingame', {gameid:gameid, devicetype:"contr"});
   }
-
-// let fullPath = [];
-
-// startTimer();
-// let chooseTimer;
 
 
 function onTimesUp() {
-  clearInterval(timerInterval);
   disable();
+  sensor.stop();
 }
 
 function startTimer() {
-  timerInterval = setInterval(() => {
+    var timerInterval = setInterval(() => {
     timePassed = timePassed += 1;
     timeLeft = TIME_LIMIT - timePassed;
     document.getElementById("base-timer-label").innerHTML = formatTime(
@@ -80,8 +75,12 @@ function startTimer() {
     setCircleDasharray();
     setRemainingPathColor(timeLeft);
 
-    if (timeLeft === 0) {
-      onTimesUp();
+    if (timeLeft <= 1) {
+      clearInterval(timerInterval);
+    }
+
+    if (timeLeft <= 0) {
+        onTimesUp();
     }
   }, 1000);
 }
@@ -263,32 +262,6 @@ function startChosing(){
 function sendOption(){
   //use this function to send data to server
 }
-
-// function canvasDraw(){
-//   wh
-// }
-
-
-// document.getElementById("drawButton").ontouchstart = function() {mouseDown()};
-// document.getElementById("drawButton").ontouchend = function() {mouseUp()};
-// console.log('set');
-
-// function mouseDown() {
-//   console.log('down');
-//   //document.getElementById("drawButton").innerHTML = "Drawing..";
-//   pen = true;
-//   viewLaser = false;
-// }
-
-// function mouseUp() {
-//   //show that pen was lifted
-//   fullPath.push([-9999,-9999]);
-//   console.log("Lifted");
-  
-//   //document.getElementById("drawButton").innerHTML = "Draw";
-//   pen = false;
-//   viewLaser = true;  
-// }
 
 
 function canvasClear(){
