@@ -193,7 +193,7 @@ exports = module.exports = function (io) {
             console.log("drawdata", data);
         });
 
-        socket.on('broadcast', (event) => {
+        socket.on('broadcast', async (event) => {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             socket.emit('broadcast', event);
             socket.to(gameid).emit('broadcast', event)
