@@ -219,8 +219,8 @@ io.on('connection', (socket) => {
         socket.join('test');
     })
     socket.on('drawdata', (data) => {
-        socket.to(gameid).emit(data);
-        console.log("drawdata", drawdata);
+        socket.to(gameid).emit("drawdata", data);
+        console.log("drawdata", data);
     });
     socket.on('broadcast', (event) => {
         socket.to(gameid).emit({ success: true })
