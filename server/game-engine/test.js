@@ -165,7 +165,7 @@ async function gameTest() {
     game.players[2].controller ="2";
     game.players[3].controller ="3";
     // game.setWord('test');
-    performUnitTest("Game check controllers", true, game.checkControllers());
+    // performUnitTest("Game check controllers", true, game.checkControllers());
     game.startNewRound();
     
     let currentPlayerUID = game.getDrawer();
