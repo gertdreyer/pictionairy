@@ -30,7 +30,6 @@ export default class Game {
                 playerUID: "",
                 guessMade: ""
             } : state.lastGuess;                     // Last guess made by a player
-            
     }
 
     /**
@@ -238,6 +237,7 @@ export default class Game {
             return false;
         }
     }
+
     /**
      * @description Checks whether all players have connected controllers
      * @returns bool for turn started
