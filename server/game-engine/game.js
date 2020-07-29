@@ -14,10 +14,14 @@ export default class Game {
             this.roundNumber = state === undefined ? 0 : state.roundNumber;                 // Tracker for current round
             this.currentWord = state === undefined ? "" : state.currentWord;                // Current turns word
             this.currentPlayer = state === undefined ?                                      // Current player drawing
-                null : new Player(state.currentPlayer.uid, state.currentPlayer.name, state.currentPlayer)          
+                null : state.currentPlayer !== null ? 
+                new Player(
+                    state.currentPlayer.playerUID, 
+                    state.currentPlayer.playerName, 
+                    state.currentPlayer) : null;      
             this.players = [];                                                              // List of current active players
             if(state !== undefined)
-                state.players.forEach(player => this.players.push(new Player(player.uid, player.name, player)));
+                state.players.forEach(player => this.players.push(new Player(player.playerUID, player.playerName, player)));
             this.maxTime = state === undefined ? 60 : state.maxTime;                        // Maximum time allowed to calculating points
             this.wordGenerator = state === undefined ? new Word() :                         // Instance of Word class used to generate words for the game
                 new Word(state.wordGenerator);                      
