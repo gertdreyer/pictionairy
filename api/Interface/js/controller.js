@@ -1,6 +1,6 @@
 // const { start } = require("repl");
 
-const apiAddress = "http://vacweekapi.gdza.xyz/";
+const apiAddress = "https://vacweekapi.gdza.xyz/";
 
 const FULL_DASH_ARRAY = 283;
 const WARNING_THRESHOLD = 30;
@@ -62,7 +62,7 @@ function jg(gameid) {
 // let fullPath = [];
 
 // startTimer();
-let chooseTimer;
+// let chooseTimer;
 
 
 function onTimesUp() {
@@ -159,8 +159,8 @@ function navBar() {
   }
 }
 
-function choseOption(id){
-  clearInterval(chooseTimer);
+function choseOption(id, timer){
+  clearInterval(timer);
   document.getElementById('chosenWord').innerHTML = document.getElementById(id).innerHTML;
   if(id === 'choice-1'){
   
@@ -244,17 +244,17 @@ function startChosing(){
   document.getElementById('choice-2').innerHTML = 'choice-2';
   document.getElementById('choice-3').innerHTML = 'choice-3';
   var choosingTime = 10;
-  chooseTimer = setInterval(function(){
+  var chooseTimer = setInterval(function(){
     choosingTime--;
     document.getElementById('chooseTimer').innerHTML =choosingTime;
     if(choosingTime==0){
       var random = Math.floor(Math.random() * 3)+1;
       if(random == '1'){
-        choseOption("choice-1")
+        choseOption("choice-1", chooseTimer);
       }else if(random == '2'){
-        choseOption("choice-2")
+        choseOption("choice-2", chooseTimer);
       }else{
-        choseOption("choice-3")
+        choseOption("choice-3", chooseTimer);
       }
     }
     
