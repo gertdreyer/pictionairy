@@ -47,12 +47,61 @@ body{
     display: none;
 }
 
-@media screen and (min-width: 750px){
+@media screen and (min-width: 533px){
   #inputBar{
     height: 100%;
   }
   #Drawing{
-    margin-left: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: 300px;
+    width: 400px;
+  }
+  #mobilePage{
+    height: 100%;
+  }
+  #sidePanel{
+    height: 100%;
+  }
+  #inputBar{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 10%;
+  }
+}
+
+@media screen and (min-width: 800px){
+  #inputBar{
+    height: 100%;
+    position: static;
+  }
+  #Drawing{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: 450px;
+    width: 600px;
+  }
+  #mobilePage{
+    height: 100%;
+  }
+  #sidePanel{
+    height: 100%;
+  }
+}
+
+@media screen and (min-width: 1067px)
+{
+  #inputBar{
+    height: 100%;
+  }
+  #Drawing{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
     height: 600px;
     width: 800px;
   }
@@ -63,17 +112,21 @@ body{
     height: 100%;
   }
 }
-@media screen and (max-width: 750px){
+
+@media screen and (max-width: 500px){
   #playerList{
     display: none;
     overflow: hidden;
   }
   #mobilePage{
-    height: 60%;
+    height: 480px;
   }
   #Drawing{
-    margin-left: 0%;
-    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: 240px;
+    width: 320px;
   }
   #inputBar{
     position: fixed;
@@ -93,7 +146,14 @@ body{
     margin-bottom: 175px;
   }
   #sidePanel{
-    height: 40%;
+    height: 180px;
+  }
+  #guessList{
+    height: 180px;
+    border-style: none;
+  }
+  #guesses{
+    height: 180px;
   }
   
 }
