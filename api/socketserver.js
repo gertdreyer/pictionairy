@@ -15,13 +15,18 @@ async function getGameState(gameid) {
 
 // Abstraction Layer 
 async function updateGameState(updated_gamestate) {
-    GameState.updateOne(
-        { gameid: updated_gamestate.gameid },
-        // New Fields..
-        {
-            gamestate: updateGameState
-        },
-    );
+    try {
+        GameState.updateOne(
+            { gameid: updated_gamestate.gameid },
+            // New Fields..
+            {
+                gamestate: updateGameState
+            },
+        );
+    } catch (error) {
+        console.log("Error SHT420");
+        console.log(error);
+    }
 }
 
 /**
@@ -109,6 +114,7 @@ exports = module.exports = function (io) {
                 if (devicetype == "controller") {
                     // add controller to username
                     gamestate.getPlayerByUID(username).controller = socket.id;
+                    console.log("Players at this point: -" + gamestate.players);
                 }
                 else {
                     // Add Player
@@ -117,7 +123,7 @@ exports = module.exports = function (io) {
 
 
                 //Save gamestate again
-                updateGameState(gamestate);
+                await updateGameState(gamestate);
 
                 //Reply and send to entire room.
                 broadcastGameState(socket, gamestate);
@@ -140,7 +146,7 @@ exports = module.exports = function (io) {
                     if (gamestate.checkControllers()) { // changed from true
                         gamestate.startNewRound()
                         console.log("startgame in room", gameid);
-                        updateGameState(gamestate);
+                        await updateGameState(gamestate);
                         broadcastGameState(socket, gamestate)
                     } else {
                         broadcastGameState(socket, gamestate)
@@ -156,7 +162,7 @@ exports = module.exports = function (io) {
             let gamestate = await getGameState(gameid);
             if (username == gamestate.currentPlayer) {
                 gamestate.startNewTurn();
-                updateGameState(gamestate);
+                await updateGameState(gamestate);
                 broadcastGameState(gamestate);
             }
         });
@@ -175,7 +181,7 @@ exports = module.exports = function (io) {
             let gamestate = await getGameState(gameid);
             if (username = gamestate.currentPlayer) {
                 gamestate.setWord(choice);
-                updateGameState(gamestate);
+                await updateGameState(gamestate);
             } else {
                 socket.emit('error', { error: "You are not the drawing user" })
             }
@@ -188,7 +194,7 @@ exports = module.exports = function (io) {
                 console.log("guess");
                 let gamestate = await getGameState(gameid);
                 let correct = gamestate.submitGuess(username, guess);
-                updateGameState(gamestate);
+                await updateGameState(gamestate);
                 broadcastGameState(socket, gamestate);
             } catch (error) {
                 console.log(error);
