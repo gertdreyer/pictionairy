@@ -56,7 +56,7 @@ function initServerConnection() {
 
 
 function jg(gameid) {
-    socket.emit('joingame', {gameid});
+    socket.emit('joingame', {gameid:gameid, devicetype:"controller"});
   }
 
 // let fullPath = [];
