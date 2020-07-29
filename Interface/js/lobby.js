@@ -184,12 +184,21 @@ function draw(dist_data){
     }
    
    
-  }
-function leaveGame(){
-    window.location.href = './../index.html';
-  }
-  
-  function logout(){
-    localStorage.removeItem('token');
-    leaveGame();
-  }
+}
+
+function undoLastStroke(){
+    // start at the end of the fullPath array
+    // move back and delete until either the next -9999 or the first element
+    if (fullPath.length > 0){
+        // Last element in the fullPath array will always be -9999
+        fullPath.pop();
+        // Carry on popping until the next -9999
+        while (fullPath.length > 0 && fullPath[fullPath.length-1][0] != -9999){
+            fullPath.pop();
+        }
+    }
+}
+    
+function eraseCanvas(){
+    fullPath = [];
+}
