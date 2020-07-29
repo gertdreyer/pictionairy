@@ -17,7 +17,7 @@ var io = require('socket.io')(server, { 'pingInterval': 1000, 'maxHttpBufferSize
 const socketserver = require('./socketserver.js')(io);
 
 app.use(cors())
-app.use(express.static('./../Interface'))
+app.use(express.static('Interface'))
 app.use(express.json());
 
 // Database Initiation
