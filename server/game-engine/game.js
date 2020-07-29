@@ -30,6 +30,8 @@ export default class Game {
                 playerUID: "",
                 guessMade: ""
             } : state.lastGuess;                     // Last guess made by a player
+
+            this.turnStartTime = null;
     }
 
     /**
@@ -105,6 +107,7 @@ export default class Game {
      */
     setWord(newWord) {
         this.word = newWord;
+        this.turnStartTime = new Date();
     }
 
     /**
@@ -173,11 +176,18 @@ export default class Game {
      * @param {number} time
      * @returns bool determining whether or not the guess was correct
      */
-    submitGuess(uid, guess, time) {
+    submitGuess(uid, guess) {
+        if (this.currentWord == "")
+            throw("Word not chosen yet.");
+
         let player = this.getPlayerByUID(uid);
+        let time = parseInt(((new Date()) - this.turnStartTime) / 1000);
+
+        if (time > this.maxTime)
+            throw("Time expired.");
 
         if (uid === this.currentPlayer.getPlayerUID())
-            throw("Current drawer can't guess");
+            throw("Current drawer can't guess.");
         
         this.lastGuess = {
             playerUID: uid,
@@ -211,6 +221,7 @@ export default class Game {
      * @returns bool for turn started
      */
     startNewTurn() {
+        this.currentWord = "";
         let playersToDraw = this.players.filter(
             (player) => player.getDrawTurnCount() != this.roundNumber
         );
