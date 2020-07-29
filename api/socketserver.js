@@ -123,7 +123,7 @@ exports = module.exports = function (io) {
             }
         });
 
-        socket.on('startnewround', () => {
+        socket.on('startnewround', async () => {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             // Get game state
             if (!!gameid) {
@@ -146,7 +146,7 @@ exports = module.exports = function (io) {
             }
         });
 
-        socket.on('startnewturn', () => {
+        socket.on('startnewturn', async () => {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             // Get game state
             let gamestate = await getGameState(gameid);
@@ -174,18 +174,18 @@ exports = module.exports = function (io) {
         });
 
         /// DUMMY ENDPOINTS DONT DELETE
-        socket.on('testing', (event) => {
+        socket.on('testing', async (event) => {
             socket.emit("testing", event)
             console.log(event);
         });
 
-        socket.on('jointestroom', (event) => {
+        socket.on('jointestroom', async (event) => {
             console.log("joined test")
             socket.leaveAll();
             socket.join('test');
         });
 
-        socket.on('drawdata', (data) => {
+        socket.on('drawdata', async (data) => {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             //only to others in room
             console.log(gameid);
