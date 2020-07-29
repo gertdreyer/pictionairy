@@ -30,7 +30,7 @@ async function broadcastGameState(socket, gamestate) {
 
 function broadcast(socket, listener, gameid, payload) {
     socket.emit(listener, { ...payload });
-    socket.on(gameid).emit(listener, { ...payload });
+    socket.to(gameid).emit(listener, { ...payload });
 }
 
 exports = module.exports = function (io) {
@@ -81,6 +81,7 @@ exports = module.exports = function (io) {
                 // Find the current game state
                 let gamestate = await getGameState(gameid);
                 console.log(gamestate)
+                // let game = Game()
                 //ensure only one socket room and join
                 socket.leaveAll();
                 socket.join(gameid);
