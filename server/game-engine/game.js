@@ -4,7 +4,7 @@ import Word from "./word.js";
 export default class Game {
     MIN_PLAYERS = 2; // Const variable for minimum number of players allowed
     MAX_PLAYERS = 4; // Const variable for maximum number of players allowed
-    MAX_ROUND_NUMBER = 3;
+    MAX_ROUND_NUMBER = 3; // Maximum rounds for the game
 
     constructor(gameId) {
         this.gameId = gameId; // Used to identify the specific game
