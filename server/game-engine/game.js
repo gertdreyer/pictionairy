@@ -145,7 +145,7 @@ export default class Game {
      */
     getPlayerByUID(uid) {
         let players = this.players.filter(
-            (player) => player.getPlayerUID == uid
+            (player) => player.getPlayerUID() == uid
         );
         return players.length == 0 ? null : players[0];
     }
