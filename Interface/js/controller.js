@@ -1,5 +1,7 @@
 // const { start } = require("repl");
 
+const apiAddress = "http://vacweekapi.gdza.xyz/";
+
 const FULL_DASH_ARRAY = 283;
 const WARNING_THRESHOLD = 30;
 const ALERT_THRESHOLD = 10;
@@ -31,6 +33,28 @@ let pen = false;
 let viewLaser = false;
 let initPos;
 let dist;
+
+var socket;
+
+function init(){
+    
+    initServerConnection();
+}
+
+function initServerConnection() {
+    socket = io.connect(apiAddress, {
+        query: `token=${localStorage.getItem('token')}`
+    });
+
+    alert("Connection established");
+
+    var room_id = localStorage.getItem('roomId');
+    jg(room_id);
+
+
+    //Callback functions for socket communication
+}
+
 
 // let fullPath = [];
 

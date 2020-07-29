@@ -3,11 +3,13 @@ var socket;
 
 let fullPath = [];
 let penColor = "#cf060a"; 
-let canvas = document.getElementById("Drawing");
-let ctx = canvas.getContext("2d");
+let canvas;
+let ctx;
 
 function init(){
 
+    canvas = document.getElementById("Drawing");
+    ctx = canvas.getContext("2d");
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
@@ -55,13 +57,13 @@ function initServerConnection() {
         console.log(data);
 
         //setting the room id
-        document.getElementById("serverID").innerHTML = '<h3>'+ data.gamestate.gameId +'</h3>';
+        document.getElementById("serverID").innerHTML = '<h3>'+ data.gameId +'</h3>';
 
         //setting the list of players
         clearPlayers();
 
-        for(i = 0; i < data.gamestate.players.length; i++) {
-            document.getElementById("players").innerHTML += data.gamestate.players[i].playerUID + '&#13;&#10;';
+        for(i = 0; i < data.players.length; i++) {
+            document.getElementById("players").innerHTML += data.players[i].playerUID + '&#13;&#10;';
         }
 
     });
@@ -73,7 +75,8 @@ function initServerConnection() {
 }
 
 function ng() {
-    socket.emit('newgame');
+    socket.emit('newgame');    
+    alert("Emitted new game");
   }
   
 function jg(gameid) {
