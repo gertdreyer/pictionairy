@@ -92,9 +92,9 @@ exports = module.exports = function (io) {
             try {
                 //devicetype = {controller , client}
                 let { gameid, devicetype } = obj;
-                if (!['controller', 'client'].contains(devicetype)) {
-                    throw "Incorrect device type"
-                }
+                // if (!['controller', 'client'].contains(devicetype)) {
+                //     throw "Incorrect device type"
+                // }
                 // Find the current game state
                 let gamestate = await getGameState(gameid);
                 console.log(gamestate)
@@ -154,6 +154,26 @@ exports = module.exports = function (io) {
                 gamestate.startNewTurn();
                 updateGameState(gamestate);
                 broadcastGameState(gamestate);
+            }
+        });
+        socket.on('getwordoptions', async (dataobj) => {
+            let gamestate = await getGameState(gameid);
+            if (username = gamestate.currentPlayer){
+                wordopts = gamestate.generateWords(gamestate.roundNumber);
+                socket.emit('wordoptions', {options: wordopts})
+            }else{
+                socket.emit('error', {error: "You are not the drawing user"})
+            }
+        });
+
+        socket.on('makechoice', async (dataobj) => {
+            let { choice } = dataobj;
+            let gamestate = await getGameState(gameid);
+            if (username = gamestate.currentPlayer){
+                gamestate.setWord(choice);
+                updateGameState(gamestate);
+            }else{
+                socket.emit('error', {error: "You are not the drawing user"})
             }
         });
 
