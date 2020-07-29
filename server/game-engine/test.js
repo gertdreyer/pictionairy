@@ -120,6 +120,8 @@ async function gameTest() {
     // Test add player functionality
     let addPlayerOne = game.addPlayer("nicpym", "Nicholas");
     performUnitTest("Add player one", true, addPlayerOne);
+    let playerByUID = game.getPlayerByUID('nicpym');
+    performUnitTest("Get Player by UID", "nicpym", playerByUID.playerUID);
     let addDuplicatePlayerOne = game.addPlayer("nicpym", "Nicholas");
     performUnitTest(
         "Don't add duplicate player one",
