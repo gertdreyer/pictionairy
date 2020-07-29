@@ -158,12 +158,17 @@ async function gameTest() {
     game.addPlayer("nicpym2", "Nicholas2");
     game.addPlayer("nicpym3", "Nicholas3");
     game.addPlayer("nicpym4", "Nicholas4");
+    for(let i = 0; i < 4; i++){
+        game.players[i].controller = String(i);
+    }
+    performUnitTest("Check Game Readiness", true, game.checkGameReadiness());
     game.startNewRound();
+    game.setWord('test');
 
     let currentPlayerUID = game.getDrawer();
 
     try {
-        game.submitGuess(currentPlayerUID, "test", 60);
+        game.submitGuess(currentPlayerUID, "test");
         performUnitTest("Don't let drawer guess", "", "Current drawer can't guess");
     }
     catch(err) {

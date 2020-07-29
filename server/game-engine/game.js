@@ -106,7 +106,7 @@ export default class Game {
      * @param {string} word
      */
     setWord(newWord) {
-        this.word = newWord;
+        this.currentWord = newWord;
         this.turnStartTime = new Date();
     }
 
@@ -178,7 +178,7 @@ export default class Game {
      */
     submitGuess(uid, guess) {
         if (this.currentWord == "")
-            throw("Word not chosen yet.");
+            throw("Word not chosen yet");
 
         let player = this.getPlayerByUID(uid);
         let time = parseInt(((new Date()) - this.turnStartTime) / 1000);
@@ -187,7 +187,7 @@ export default class Game {
             throw("Time expired.");
 
         if (uid === this.currentPlayer.getPlayerUID())
-            throw("Current drawer can't guess.");
+            throw("Current drawer can't guess");
         
         this.lastGuess = {
             playerUID: uid,
@@ -253,10 +253,13 @@ export default class Game {
      * @description Checks whether all players have connected controllers
      * @returns bool for turn started
      */
-    checkControllers()
+    checkGameReadiness()
     {
+        if(this.players.length < this.MIN_PLAYERS){
+            return false;
+        }
         return this.players.filter((player) => {
-            player.controller == ""
+            return player.controller == "";
         }).length == 0;
     }
 }
