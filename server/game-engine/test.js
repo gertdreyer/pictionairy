@@ -73,6 +73,14 @@ function playerTest() {
         );
     }
 
+    let playerCopy = new Player(player.playerUID, player.playerName, player);
+    performUnitTest("Player Copy Constructor ID", player.playerUID, playerCopy.playerUID);
+    performUnitTest("Player Copy Constructor Name", player.playerName, playerCopy.playerName);
+    performUnitTest("Player Copy Constructor Points", player.points, playerCopy.points);
+    performUnitTest("Player Copy Constructor drawTurnCount", player.drawTurnCount, playerCopy.drawTurnCount);
+    performUnitTest("Player Copy Constructor Connection Status", player.playerConnectionStatus, playerCopy.playerConnectionStatus);
+    performUnitTest("Player Copy Constructor Controller", player.controller, playerCopy.controller);
+
     console.log("");
 }
 
