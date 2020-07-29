@@ -1,12 +1,12 @@
 export default class Player {
-    constructor(uid, name) {
+    constructor(uid, name, state) {
         this.playerUID = uid; // uid corresponding to account on firebase
         this.playerName = name; // name corresponding to account on firebase
-        this.points = 0; // points associated with this instantiated Player object
-        this.drawTurnCount = 0; // counter used to determine whether or not the player has drawn in a given round
-        this.playerConnectionStatus = "connected"; // a string determining whether or not the player has disconnected from the session
-        this.guesses = []; // an array of objects where each object stores data about a particular guess
-        this.controller = ""; // controller id for player
+        this.points = state === undefined ? 0 : state.points; // points associated with this instantiated Player object
+        this.drawTurnCount = state === undefined ? 0 : state.drawTurnCount; // counter used to determine whether or not the player has drawn in a given round
+        this.playerConnectionStatus = state === undefined ? "connected" : state.playerConnectionStatus; // a string determining whether or not the player has disconnected from the session
+        this.guesses = state === undefined ? [] : state.guesses; // an array of objects where each object stores data about a particular guess
+        this.controller = state === undefined ? "" : state.controller; // controller id for player
     }
 
     /**
