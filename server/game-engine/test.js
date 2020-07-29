@@ -50,6 +50,8 @@ function playerTest() {
 
     player.incrementDrawTurnCount();
     performUnitTest("Draw Turn Count", 1, player.getDrawTurnCount());
+    player.setPlayerController("abcd");
+    performUnitTest("Player Controller", "abcd", player.getPlayerController());
 
     player.toggleConnection();
     performUnitTest(
