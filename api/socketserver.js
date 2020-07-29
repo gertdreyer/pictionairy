@@ -16,13 +16,14 @@ async function getGameState(gameid) {
 // Abstraction Layer 
 async function updateGameState(updated_gamestate) {
     try {
-        GameState.updateOne(
+        var result = await GameState.updateOne(
             { gameid: updated_gamestate.gameId },
-            // New Fields..
             {
-                gamestate: updateGameState
+                gamestate: updated_gamestate
             },
         );
+        console.log("Result for update:");
+        console.log(result);
     } catch (error) {
         console.log("Error SHT420");
         console.log(error);
@@ -114,14 +115,13 @@ exports = module.exports = function (io) {
                 if (devicetype == "controller") {
                     // add controller to username
                     let tmp = gamestate.getPlayerByUID(username);
-                    console.log(tmp);                    
-                    console.log(username);
-                    if (tmp == null){
+                    if (tmp == null) {
                         throw "Cant find this user to add his controller.";
-                    }else{
+                    } else {
                         tmp.controller = socket.id;
                     }
-                    console.log("Players at this point: -" + gamestate.players);
+                    console.log("Players at this point: -");
+                    console.log(gamestate.players);
                 }
                 else {
                     // Add Player
@@ -213,8 +213,8 @@ exports = module.exports = function (io) {
             try {
                 let gamestate = await getGameState(gameid);
                 socket.emit('gamestate', gamestate);
-            }catch (err) {
-                socket.emit('error', {error: "Could not retrieve gamestate"})
+            } catch (err) {
+                socket.emit('error', { error: "Could not retrieve gamestate" })
             }
         });
         socket.on('drawdata', async (data) => {

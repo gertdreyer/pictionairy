@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
 })
 
 const User = mongoose.model('User', UserSchema);
-const GameState = mongoose.model('GameeState', GameSchema);
+const GameState = mongoose.model('GameState', GameSchema);
 
 export {GameSchema, UserSchema, User, GameState}
 
