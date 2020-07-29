@@ -232,4 +232,11 @@ export default class Game {
             return false;
         }
     }
+
+    checkControllers()
+    {
+        return this.players.filter((player) => {
+            player.controller == ""
+        }).length == 0;
+    }
 }
