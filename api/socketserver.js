@@ -44,8 +44,7 @@ exports = module.exports = function (io) {
         console.log(username, " connected");
 
         socket.on('newgame', async () => {
-            console.log(gameid);
-            gameid = uuidv4(); //use shorter
+            let gameid = uuidv4(); //use shorter
             socket.leaveAll(); //leave all rooms
 
             // Create Game Object
