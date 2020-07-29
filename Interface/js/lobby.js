@@ -1,4 +1,4 @@
-const apiAddress = "http://vacweekapi.gdza.xyz/";
+const apiAddress = "http://vacweekapi.gdza.xyz:8080/";
 var socket;
 
 let fullPath = [];
@@ -41,13 +41,17 @@ function initServerConnection() {
 
     } else { //Is not the host
         var room_id = localStorage.getItem('roomId');
-
+        document.getElementById('startgame').disabled = true;
         jg(room_id);
     }
 
 
-    //Callback functions for socket communication
+    clearGuesses();
 
+    //Callback functions for socket communication
+    
+    list = [];
+    
     //Callback for when the gamestate changes
     socket.on("gamestate", function(data) {
         console.log(data);
@@ -59,15 +63,26 @@ function initServerConnection() {
         clearPlayers();
 
         for(i = 0; i < data.players.length; i++) {
-            document.getElementById("players").innerHTML += data.players[i].playerUID + '&#13;&#10;';
+            if(data.players[i].active){
+                document.getElementById("players").innerHTML += data.players[i].playerUID+ ' - ' + data.players[i].score + ' (active)' + '&#13;&#10;';
+            }else{
+                document.getElementById("players").innerHTML += data.players[i].playerUID+ ' - ' + data.players[i].score + '&#13;&#10;';
+            }
         }
-
+        if(list[list.length-1] !==  data.lastGuess.playerUID + ": " + data.lastGuess.guessMade){
+            document.getElementById("guesses").innerHTML += data.lastGuess.playerUID + ": " + data.lastGuess.guessMade + '&#13;&#10;';
+            list.push(data.lastGuess.playerUID + ": " + data.lastGuess.guessMade);
+        }
     });
 
     //Callback for when there is drawdata
     socket.on("drawdata", function(data) {
         receiveData(data);
     });
+}
+
+function startGame() {
+    socket.emit("startnewround");
 }
 
 function ng() {
@@ -79,7 +94,7 @@ function jg(gameid) {
 }
 
 function clearGuesses(){
-    document.getElementById("guesses").innerHTML = 'Your Guesses Are Here:&#13;&#10;';
+    document.getElementById("guesses").innerHTML = 'Guesses Are Here:&#13;&#10;';
 }
 
 function clearPlayers(){
@@ -105,8 +120,9 @@ function submitGuess(){
     }
     guess.value = '';
 
-    var canvas = document.getElementById("Drawing");
-    alert(canvas.width+' '+canvas.height)
+    var guess_answer = guess.value.trim();
+
+    socket.emit("guess", {guess_answer});
 }
 
 

@@ -1,6 +1,6 @@
 // const { start } = require("repl");
 
-const apiAddress = "http://vacweekapi.gdza.xyz/";
+const apiAddress = "http://vacweekapi.gdza.xyz:8080/";
 
 const FULL_DASH_ARRAY = 283;
 const WARNING_THRESHOLD = 30;
