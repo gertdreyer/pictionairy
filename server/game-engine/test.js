@@ -131,6 +131,7 @@ async function gameTest() {
     performUnitTest("Start Turn Without Players", false, game.startNewTurn());
     for (let i = 0; i < 4; i++) {
         game.addPlayer(new Player(String(i), String(i)));
+        game.players[i].controller = String(i);
     }
     performUnitTest("Start Round With Players", true, game.startNewRound());
     performUnitTest("Start Turn With Players", true, game.startNewTurn());

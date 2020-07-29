@@ -238,7 +238,7 @@ export default class Game {
      * @returns bool for turn started
      */
     startNewRound() {
-        if (this.players.length < this.MIN_PLAYERS || this.gameEnded) return false;
+        if (!this.checkGameReadiness()) return false;
         if (this.roundNumber < this.MAX_ROUND_NUMBER) {
             this.roundNumber++;
             this.roundEnded = false;
@@ -255,6 +255,7 @@ export default class Game {
      */
     checkGameReadiness()
     {
+        if(this.gameEnded) return false;
         if(this.players.length < this.MIN_PLAYERS){
             return false;
         }
