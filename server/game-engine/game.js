@@ -207,7 +207,10 @@ export default class Game {
             return false;
         }
     }
-
+    /**
+     * @description Starts new turn in a given round
+     * @returns bool for turn started
+     */
     startNewTurn() {
         let playersToDraw = this.players.filter(
             (player) => player.getDrawTurnCount() != this.roundNumber
@@ -220,7 +223,10 @@ export default class Game {
         }
         return false;
     }
-
+    /**
+     * @description Starts new Round in a given round
+     * @returns bool for turn started
+     */
     startNewRound() {
         if (this.players.length < this.MIN_PLAYERS || this.gameEnded) return false;
         if (this.roundNumber < this.MAX_ROUND_NUMBER) {
@@ -232,7 +238,10 @@ export default class Game {
             return false;
         }
     }
-
+    /**
+     * @description Checks whether all players have connected controllers
+     * @returns bool for turn started
+     */
     checkControllers()
     {
         return this.players.filter((player) => {
