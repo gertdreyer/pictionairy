@@ -8,9 +8,18 @@ admin.initializeApp({
 let db = admin.firestore();
 
 export default class Word {
-    constructor() {
-        this.previousChosenWordsList = [];
-        this.words = null;
+    constructor(state) {
+        if(state !== undefined)
+        {
+            this.previousChosenWordsList = state.previousChosenWordsList;
+            this.words = state.words;
+        }
+        else
+        {
+            this.previousChosenWordsList = [];// Previous words that were drawn 
+            this.words = null;  // Words of various difficulties
+        }
+        
     }
 
     /**
