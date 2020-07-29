@@ -94,7 +94,7 @@ exports = module.exports = function (io) {
                 let { gameid, devicetype } = obj;
                 if (!(devicetype == 'controller' || devicetype == 'client')) {
                     throw "Incorrect device type"
-                 }
+                }
                 // Find the current game state
                 let gamestate = await getGameState(gameid);
                 console.log(gamestate)
@@ -160,22 +160,22 @@ exports = module.exports = function (io) {
         });
         socket.on('getwordoptions', async (dataobj) => {
             let gamestate = await getGameState(gameid);
-            if (username = gamestate.currentPlayer){
+            if (username = gamestate.currentPlayer) {
                 wordopts = await gamestate.generateWords(gamestate.roundNumber);
-                socket.emit('wordoptions', {options: wordopts})
-            }else{
-                socket.emit('error', {error: "You are not the drawing user"})
+                socket.emit('wordoptions', { options: wordopts })
+            } else {
+                socket.emit('error', { error: "You are not the drawing user" })
             }
         });
 
         socket.on('makechoice', async (dataobj) => {
             let { choice } = dataobj;
             let gamestate = await getGameState(gameid);
-            if (username = gamestate.currentPlayer){
+            if (username = gamestate.currentPlayer) {
                 gamestate.setWord(choice);
                 updateGameState(gamestate);
-            }else{
-                socket.emit('error', {error: "You are not the drawing user"})
+            } else {
+                socket.emit('error', { error: "You are not the drawing user" })
             }
         });
 
@@ -190,7 +190,7 @@ exports = module.exports = function (io) {
                 broadcastGameState(socket, gamestate);
             } catch (error) {
                 console.log(error);
-                socket.emit('error', {error})
+                socket.emit('error', { error })
             }
         });
 
