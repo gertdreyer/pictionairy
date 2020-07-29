@@ -99,9 +99,12 @@ async function gameTest() {
     performUnitTest("Current Player", null, game.getDrawer());
     performUnitTest("Max Time", 60, game.maxTime);
     performUnitTest("Game round ended status", false, game.getRoundEnded());
+    performUnitTest("Game Last guess object player id", "", game.lastGuess.playerUID);
+    performUnitTest("Game Last guess object player guess", "", game.lastGuess.guessMade);
+
     let copyGame = new Game(game.getGameId(), game);
     performUnitTest("Game Copy Constructor ID", game.getGameId(), copyGame.getGameId());
-    performUnitTest("Game Copy Constructor DiffcultLevel", game.difficultyLevel, copyGame.difficultyLevel);
+    performUnitTest("Game Copy Constructor DiffcultyLevel", game.difficultyLevel, copyGame.difficultyLevel);
     performUnitTest("Game Copy Constructor Game Ended", game.gameEnded, copyGame.gameEnded);
     performUnitTest("Game Copy Constructor Round Ended", game.roundEnded, copyGame.roundEnded);
     performUnitTest("Game Copy Constructor Round Number", game.roundNumber, copyGame.roundNumber);
@@ -109,6 +112,8 @@ async function gameTest() {
     performUnitTest("Game Copy Constructor Current Player", game.currentPlayer, copyGame.currentPlayer);
     performUnitTest("Game Copy Constructor Max Time", game.maxTime, copyGame.maxTime);
     performUnitTest("Game Copy Constructor Host ID", game.hostId, copyGame.hostId);
+    performUnitTest("Game Copy Last guess object player id",copyGame.lastGuess.playerUID, game.lastGuess.playerUID);
+    performUnitTest("Game Copy Last guess object player guess", copyGame.lastGuess.guessMade, game.lastGuess.guessMade);
 
     // Test add player functionality
     let addPlayerOne = game.addPlayer("nicpym", "Nicholas");
