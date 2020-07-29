@@ -1,3 +1,5 @@
+const apiAddress = "http://vacweekapi.gdza.xyz/";
+
 function init(){
     if(!localStorage.getItem('token')){
         $('#myModal').modal('show');
@@ -6,24 +8,23 @@ function init(){
     }
 }
 
-function createRoom(){
-    //TODO create room and all that
-    window.location.href = './html/lobby.html'
+function createRoom(){    
+    localStorage.setItem('isHost', true);
+    window.location.href = './html/lobby.html'    
 }
 
 function joinRoom(){
 
-    // var session_id = $("#joinRoom").val();
-    // localStorage.setItem("token", session_id);
-
+    var room_id = $("#joinRoom").val();
+    localStorage.setItem("roomId", room_id);
+    localStorage.setItem('isHost', false);
     window.location.href = './html/lobby.html'
 }
 
 function connectDevice(){
     
-    // var session_id = $("#connectDevice").val();
-
-    // localStorage.setItem("token", session_id);
+    var room_id = $("#connectDevice").val();
+    localStorage.setItem("roomId", room_id);
 
     window.location.href = './html/controller.html'
 }
@@ -66,20 +67,45 @@ function login(){
     var email = document.getElementById('emailLogin').value.trim();
     var password = document.getElementById('passwordLogin').value.trim();
 
+    login2(email, password);
+}
+
+function login2(email, password) {
+    var data = JSON.stringify( {username: email, password: password} );
+
     //Send data to socket
+    $.post({
+        traditional: true,
+        url: apiAddress + 'auth',
+        contentType: 'application/json',
+        data: data,
+        dataType: 'json',
+        success: function(data) { loginCallback(data); }
+    } );
+}
 
+function loginCallback(data) {
+    console.log(data);
 
-    //Receive data from server (sucess/fail)
-    var object;
-    var success = true;
-    if(success){
-        localStorage.setItem('token',object);
-        document.getElementById('createRoom').disabled = false;
-        $('#myModal').modal('hide');
-        replaceLogin();
-    }else{
-        alert('Something went wrong in login, please try again');
+    var token = data.jwt;
+
+    if (token === undefined || token === null) {
+
+        var server_err_msg = data.error;
+        
+        if (server_err_msg !== undefined && server_err_msg !== null) {
+            alert(server_err_msg);
+        } else {
+            alert("The server did not respond.");
+        }
+
+        return;
     }
+
+    localStorage.setItem('token', token);
+    document.getElementById('createRoom').disabled = false;
+    $('#myModal').modal('hide');
+    replaceLogin();
 }
 
 function signup(){
@@ -95,19 +121,43 @@ function signup(){
         return;
     }
 
+    var data = JSON.stringify( {
+        username: email,
+        password: password,
+        name: username
+    });
+
     //Send data to socket
+    $.post({
+        traditional: true,
+        url: apiAddress + 'register',
+        contentType: 'application/json',
+        data: data,
+        dataType: 'json',
+        success: function(data) { registerCallback(data); }
+    } );
+}
 
+function registerCallback(data) {
+    
+    var success = data.success;
 
-    //Receive data from server (sucess/fail)
-    var object;
-    var success;
     if(success){
-        localStorage.setItem('token',object);
-        document.getElementById('createRoom').disabled = false;
-        $('#myModal').modal('hide');
-        replaceLogin();
+
+        var email = document.getElementById('emailSignup').value.trim();
+        var password = document.getElementById('passwordSignup').value.trim();
+
+        login2(email, password);
+
     }else{
-        alert('Something went wrong in signup, please try again');
+
+        var error = data.error;
+
+        if (error !== undefined && error !== null) {
+            alert(error);
+        } else {
+            alert('Something went wrong in signup, please try again');
+        }
     }
 }
 
@@ -115,7 +165,9 @@ function replaceLogin(){
     var p = document.getElementById('right');
     p.innerHTML='<a style="float: right;" href="" id=""onclick="logout()">Logout</a>';
     var elem = document.getElementById('loginSignup');
-    elem.parentNode.removeChild(elem);
+
+    //Fix error here
+    //elem.parentNode.removeChild(elem);
 }
 
 function replaceLogout(){

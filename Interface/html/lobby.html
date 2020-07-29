@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../css/lobby.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
   <script src="./../js/lobby.js"></script>
 </head>
 <body style="height: 100%;" onload="init()">
@@ -23,11 +24,11 @@
   <div id="mobilePage" class='col-sm-9'>
     <div id="infoBar" class="row" style="height: 10%;">
       <div id="serverID" class="col-sm-3"><h3>Server Token</h3></div>
-      <div id="divStartButton" class="col-sm-3" style="height: 100%;"><button type="button" style="height: 100%; width: 100%;">Start Game</button></div>
+      <div id="divStartButton" class="col-sm-3" style="height: 100%;"><button type="button" onclick="startButtonTemp()" style="height: 100%; width: 100%;">Start Game</button></div>
       <div id="lobbyRound" class="col-sm-3"><h3>Round</h3></div>
       <div id="lobbyTimer" class="col-sm-3"><h3>Time Remaining <b id="timer">00</b></h3></div>
     </div>
-    <div id="canvasDiv" class="row" style="height: 90%; border: thin solid black; border-radius: 5px; background-color: white;">
+    <div id="canvasDiv" class="row" style="height: 90%; background-color: white;">
       <canvas id="Drawing">
       </canvas>
     </div>
