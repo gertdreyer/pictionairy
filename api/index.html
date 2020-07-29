@@ -8,8 +8,8 @@
   <script src="/socket.io.js"></script>
 <script>
     const socket = io.connect(
-      'http://vacweekapi.gdza.xyz'
-      // 'localhost:3000'
+      // 'http://vacweekapi.gdza.xyz'
+      'localhost:3000'
       , {
   query: `token=${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1OTU5MzU0MTIsImV4cCI6MTU5NjEwODIxMn0.FcJGjtjA0B_YC_jm2MF6EPQ7s0InlVGSC8X_M8ttxN4'}`
 });
@@ -29,7 +29,12 @@ function drawdata(data){
   socket.emit('drawdata',{data});
 }
 
+
 socket.on('drawdata', (event)=> {
+  console.log(event)
+})
+
+socket.on('gamestate', (event)=> {
   console.log(event)
 })
 

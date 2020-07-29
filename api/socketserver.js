@@ -10,15 +10,27 @@ const JWTSECRET = process.env.JWT_SECRET || "this-should-be-some-super-secret-ke
 async function getGameState(gameid) {
     console.log(gameid);
     let { gamestate } = await GameState.findOne({ gameid });
-    return gamestate;
+    return new Game(gameid, gamestate);
 }
 
 // Abstraction Layer 
 async function updateGameState(updated_gamestate) {
-    let state = await GameState.findOne({ gameid: updated_gamestate.gameId });
-    // Update 
-
+    GameState.updateOne(
+        {gameid: updated_gamestate.gameid }, 
+        // New Fields..
+        {
+            gamestate: updateGameState
+        },
+    );
 }
+
+/**
+ OrganizationModel.update(
+     {name: 'Koka'}, 
+    {'address.street': 'new street name'}, 
+    callback);
+ 
+ */
 
 async function broadcastGameState(socket, gamestate) {
     let retobj = { ...gamestate };
@@ -81,14 +93,16 @@ exports = module.exports = function (io) {
                 // Find the current game state
                 let gamestate = await getGameState(gameid);
                 console.log(gamestate)
-                // let game = Game()
+
                 //ensure only one socket room and join
                 socket.leaveAll();
                 socket.join(gameid);
 
                 // Add Player
-                //TODO: GameEngine needs constructor overload.
-                // gamestate.addPlayer(username,name)
+                gamestate.addPlayer(username, name)
+                
+                //Save gamestate again
+                updateGameState(gamestate);
 
                 //Reply and send to entire room.
                 broadcastGameState(socket, gamestate);
