@@ -1,10 +1,17 @@
+const apiAddress = "http://vacweekapi.gdza.xyz/";
+
+var socket;
+
 function init(){
+
+    initServerConnection();
+
     var canvas = document.getElementById("Drawing");
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    document.getElementById("serverID").innerHTML = '<h3>'+localStorage.getItem("Token").sessionID+'</h3>';
-
+    
+    //attach listener to guess enter event
     var guess = document.getElementById("guessSubmit");
     guess.addEventListener("keyup", function(event) {
         // Number 13 is the "Enter" key on the keyboard
@@ -19,12 +26,64 @@ function init(){
         }
     });
 }
+
+function initServerConnection() {
+    socket = io.connect(apiAddress, {
+        query: `token=${localStorage.getItem('token')}`
+    });
+
+    alert("Connection established");
+
+    var isHost = localStorage.getItem('isHost');
+
+    if (isHost === "true") { //Is the host
+        ng();
+
+    } else { //Is not the host
+        var room_id = localStorage.getItem('roomId');
+
+        jg(room_id);
+    }
+
+
+    //Callback functions for socket communication
+
+    //Callback for when the gamestate changes
+    socket.on("gamestate", function(data) {
+        console.log(data);
+
+        //setting the room id
+        document.getElementById("serverID").innerHTML = '<h3>'+ data.gamestate.gameId +'</h3>';
+
+        //setting the list of players
+        clearPlayers();
+
+        for(i = 0; i < data.gamestate.players.length; i++) {
+            document.getElementById("players").innerHTML += data.gamestate.players[i].playerUID + '&#13;&#10;';
+        }
+
+    });
+
+    //Callback for when there is drawdata
+    socket.on("drawdata", function(data) {
+        console.log(data);
+    });
+}
+
+function ng() {
+    socket.emit('newgame');
+  }
+  
+function jg(gameid) {
+  socket.emit('joingame', {gameid});
+}
+
 function clearGuesses(){
     document.getElementById("guesses").innerHTML = 'Your Guesses Are Here:&#13;&#10;';
 }
 
 function clearPlayers(){
-    document.getElementById('players').innerHTML += 'Players:&#13;&#10;';
+    document.getElementById('players').innerHTML = 'Players:&#13;&#10;';
 }
 
 function updateTimer(time){
@@ -48,6 +107,11 @@ function submitGuess(){
 
     var canvas = document.getElementById("Drawing");
     alert(canvas.width+' '+canvas.height)
+}
+
+function startButtonTemp() {
+    socket.emit("drawdata", "Hello world");
+    alert("Sent hello world to drawdata");
 }
 
 
