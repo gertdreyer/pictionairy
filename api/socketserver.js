@@ -150,7 +150,8 @@ exports = module.exports = function (io) {
                 // Host check            
                 if (username == gamestate.hostId) {
                     //only starts game if everyone has a controller connected
-                    if (gamestate.checkControllers()) { // changed from true
+                    //TODO: GE fix!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    if (/*gamestate.checkControllers()*/ true) { // changed from true
                         gamestate.startNewRound()
                         console.log("startgame in room", gameid);
                         await updateGameState(gamestate);
