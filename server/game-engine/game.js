@@ -7,7 +7,7 @@ export default class Game {
     MAX_ROUND_NUMBER = 3;   // Const variable for maximum number of rounds allowed
 
     constructor(gameId, state) {
-            this.gameId = gameId;                                                           // Used to identify the specific game
+            this.gameId = gameId;                                                            // Used to identify the specific game
             this.difficultyLevel = state === undefined ? 0 : state.difficultyLevel;         // unused variable for now will use the round number for difficulty indication
             this.gameEnded = state === undefined ? false : state.gameEnded;                 // Bool if the game has ended
             this.roundEnded = state === undefined ? false : state.roundEnded;               // Bool if the round has ended
@@ -22,6 +22,8 @@ export default class Game {
             this.wordGenerator = state === undefined ? new Word() :                         // Instance of Word class used to generate words for the game
                 new Word(state.wordGenerator);                      
             this.hostId = state === undefined ? "" : state.hostId;                          // UID of user hosting game session
+            this.lastGuess = state === undefined ? {} : state.lastGuess;                     // last guess made by a player
+            
     }
 
     /**
