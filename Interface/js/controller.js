@@ -33,6 +33,7 @@ let pen = false;
 let viewLaser = false;
 let initPos;
 let dist;
+let colourPen;
 
 var socket;
 
@@ -203,7 +204,7 @@ function handleSensor(e){
   dist = angles.map((angle, i) => calcDist(angle, initPos[i]));
   console.log(dist)
   // array will be made of [x, y, isPen, colour]
-  let penColor = "#cf060a"; 
+  let penColour = "#cf060a"; 
   let data_out = [dist[0], dist[1], pen, penColour];
   //send to_send
 
@@ -295,3 +296,30 @@ function canvasClear(){
 function flipCalibrate(){
   calibrate = true;
 }
+
+const pickr3 = new Pickr({
+  el: '#color-picker-3',
+  useAsButton: true,
+  default: "303030",
+  components: {
+    preview: true,
+    opacity: true,
+    hue: true,
+
+    interaction: {
+      hex: true,
+      rgba: true,
+      hsla: true,
+      hsva: true,
+      cmyk: true,
+      input: true,
+      clear: true,
+      save: true
+    }
+  },
+
+  onChange(hsva, instance) {
+    colourPen = hsva.toRGBA().toString();
+    // $('.bg-color').css('background-color', hsva.toRGBA().toString());
+  }
+});
