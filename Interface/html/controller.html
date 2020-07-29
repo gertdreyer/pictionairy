@@ -10,6 +10,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script>
+      let fullPath = [];
+      function mouseDown() {
+        console.log('down');
+        //document.getElementById("drawButton").innerHTML = "Drawing..";
+        pen = true;
+        viewLaser = false;
+      }
+
+      function mouseUp() {
+        //show that pen was lifted
+        fullPath.push([-9999,-9999]);
+        console.log("Lifted");
+        
+        //document.getElementById("drawButton").innerHTML = "Draw";
+        pen = false;
+        viewLaser = true;  
+      }
+
+    </script>
     <script src="../js/controller.js"></script>
 </head>
 
@@ -52,12 +72,16 @@
         </div>
     </div>
     <br>
-    <button type="button" class="btn btn-primary drawControlButton" onclick="canvasDraw()">Draw</button>
+    <button type="button" class="btn btn-primary drawControlButton" ontouchstart="mouseDown()" ontouchend="mouseUp()" id='drawButton'>Draw</button>
     <div id="create" class="collapse">
         <!-- BLANK -->
     </div>
     <br />
-    <button type="button" class="btn btn-primary drawControlButton" onclick="canvasClear()">Clear</button>
+    <button type="button" class="btn btn-primary drawControlButton" onclick="startFullRound()">Clear</button>
+    <div id="create" class="collapse">
+        <!-- BLANK -->
+    </div>
+    <button type="button" class="btn btn-primary drawControlButton" onclick="flipCalibrate()">Calibrate</button>
     <div id="create" class="collapse">
         <!-- BLANK -->
     </div>
@@ -73,6 +97,8 @@
         <div class="col-sm-4" style="position:absolute; left: 42%; top: 50%;"> <button id='choice-2' type="button" class="btn btn-primary" onclick="choseOption(id)">Choice 2</button></div>
         <div class="col-sm-4" style="position:absolute; left: 42%; top: 60%;"> <button id='choice-3' type="button" class="btn btn-primary" onclick="choseOption(id)">Choice 3</button></div>
     </div>
+
+   
 </body>
 
 </html>
