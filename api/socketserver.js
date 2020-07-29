@@ -96,7 +96,7 @@ exports = module.exports = function (io) {
                 //devicetype = {controller , client}
                 let { gameid, devicetype } = obj;
                 if (!(devicetype == 'controller' || devicetype == 'client')) {
-                    throw "Incorrect device type"
+                    // throw "Incorrect device type"
                 }
                 // Find the current game state
                 let gamestate = await getGameState(gameid);
