@@ -180,12 +180,10 @@ exports = module.exports = function (io) {
         socket.on('guess', async (dataobj) => {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             let { guess } = dataobj;
-            //TODO change time!!!
-            let time = 60;
             try {
                 console.log("guess");
                 let gamestate = await getGameState(gameid);
-                let correct = gamestate.submitGuess(username, guess, time);
+                let correct = gamestate.submitGuess(username, guess);
                 updateGameState(gamestate);
                 broadcastGameState(socket, gamestate);
             } catch (error) {
