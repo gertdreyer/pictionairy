@@ -52,7 +52,32 @@ function submitGuess(){
 
 
 function recieveData(){
-    
+        // var drawData; //2d array of x,y positions
+    // var currentPixel; // display pos
+    // var currentLine; // What is the current line
+    // var historyPosition; // Last pixel before stopped drawing
+    // var draw_function; //3clear, 2undo, 1draw, 0display
+    // var lineEnd; //true/false
+
+    // if (draw_function == 3) {
+    //     //clear drawData
+    // } else if (draw_function == 2) {
+
+    // } else if (draw_function == 1) {
+    //     if (!lineEnd) {
+    //         lineEnd = true;
+    //         currentLine += 1;
+    //     }
+    //     drawData[currentPixel] = //append data
+    //     currentPixel += 1;
+    // }
+    // else{
+    //     if (lineEnd) {
+    //         lineEnd = false;
+    //         historyPosition[currentLine] = currentPixel;
+    //     }
+    //     drawData[currentPixel] = //data
+    // }
 }
 
 function leaveGame(){
