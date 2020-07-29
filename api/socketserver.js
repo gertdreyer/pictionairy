@@ -9,7 +9,7 @@ const JWTSECRET = process.env.JWT_SECRET || "this-should-be-some-super-secret-ke
 // can change the get procedure.
 async function getGameState(gameid) {
     console.log(gameid);
-    let  {gamestate}  = await GameState.findOne({ gameid });
+    let { gamestate } = await GameState.findOne({ gameid });
     console.log(gamestate);
     return new Game(gameid, gamestate);
 }
@@ -150,19 +150,13 @@ exports = module.exports = function (io) {
                 // Host check            
                 if (username == gamestate.hostId) {
                     //only starts game if everyone has a controller connected
-                    //TODO: GE fix!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    if (/*gamestate.checkControllers()*/ true) { // changed from true
-                        gamestate.startNewRound()
-                        console.log("startgame in room", gameid);
-                        await updateGameState(gamestate);
-                        broadcastGameState(socket, gamestate)
-                    } else {
-                        socket.emit("error",{error: "Check controllers failed"});
-                        broadcastGameState(socket, gamestate);
-                    }
+                    gamestate.startNewRound()
+                    console.log("startgame in room", gameid);
+                    await updateGameState(gamestate);
+                    broadcastGameState(socket, gamestate)
 
-                }else{
-                    socket.emit("error",{error: "You are not the host"});
+                } else {
+                    socket.emit("error", { error: "You are not the host" });
                 }
             }
         });
