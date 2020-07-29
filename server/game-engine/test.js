@@ -6,7 +6,7 @@ import Player from "./player.js";
 import Game from "./game.js";
 import Word from "./word.js";
 
- test();
+test();
 
 // async function test() {
 //     playerTest();
@@ -99,9 +99,12 @@ async function gameTest() {
     performUnitTest("Current Player", null, game.getDrawer());
     performUnitTest("Max Time", 60, game.maxTime);
     performUnitTest("Game round ended status", false, game.getRoundEnded());
+    performUnitTest("Game Last guess object player id", "", game.lastGuess.playerUID);
+    performUnitTest("Game Last guess object player guess", "", game.lastGuess.guessMade);
+
     let copyGame = new Game(game.getGameId(), game);
     performUnitTest("Game Copy Constructor ID", game.getGameId(), copyGame.getGameId());
-    performUnitTest("Game Copy Constructor DiffcultLevel", game.difficultyLevel, copyGame.difficultyLevel);
+    performUnitTest("Game Copy Constructor DifficultyLevel", game.difficultyLevel, copyGame.difficultyLevel);
     performUnitTest("Game Copy Constructor Game Ended", game.gameEnded, copyGame.gameEnded);
     performUnitTest("Game Copy Constructor Round Ended", game.roundEnded, copyGame.roundEnded);
     performUnitTest("Game Copy Constructor Round Number", game.roundNumber, copyGame.roundNumber);
@@ -109,6 +112,8 @@ async function gameTest() {
     performUnitTest("Game Copy Constructor Current Player", game.currentPlayer, copyGame.currentPlayer);
     performUnitTest("Game Copy Constructor Max Time", game.maxTime, copyGame.maxTime);
     performUnitTest("Game Copy Constructor Host ID", game.hostId, copyGame.hostId);
+    performUnitTest("Game Copy Last guess object player id",copyGame.lastGuess.playerUID, game.lastGuess.playerUID);
+    performUnitTest("Game Copy Last guess object player guess", copyGame.lastGuess.guessMade, game.lastGuess.guessMade);
 
     // Test add player functionality
     let addPlayerOne = game.addPlayer("nicpym", "Nicholas");
@@ -145,6 +150,24 @@ async function gameTest() {
     let words = await game.generateWords();
     if (words.length == 3) {
         performUnitTest("Words generated", 0, 0);
+    }
+
+    //Test to see if current drawer can't make a guess.
+    game = new Game("game123");
+    game.addPlayer("nicpym1", "Nicholas1");
+    game.addPlayer("nicpym2", "Nicholas2");
+    game.addPlayer("nicpym3", "Nicholas3");
+    game.addPlayer("nicpym4", "Nicholas4");
+    game.startNewRound();
+
+    let currentPlayerUID = game.getDrawer();
+
+    try {
+        game.submitGuess(currentPlayerUID, "test", 60);
+        performUnitTest("Don't let drawer guess", "", "Current drawer can't guess");
+    }
+    catch(err) {
+        performUnitTest("Don't let drawer guess", err, "Current drawer can't guess");
     }
 }
 

@@ -175,12 +175,14 @@ export default class Game {
      * @returns bool determining whether or not the guess was correct
      */
     submitGuess(uid, guess, time) {
-        let player = getPlayerByUID(uid);
+        let player = this.getPlayerByUID(uid);
+
+        if (uid === this.currentPlayer.getPlayerUID())
+            throw("Current drawer can't guess");
         
-        this.lastGuess ={
+        this.lastGuess = {
             playerUID: uid,
             guessMade: guess
-
         };
 
         if (player == null) return false;
@@ -192,6 +194,11 @@ export default class Game {
             this.currentPlayer.setPlayerPoints(
                 this.currentPlayer.getPlayerPoints() + time
             );
+            if(this.checkRoundEndStatus()){
+                this.startNewRound();
+            }else{
+                this.startNewTurn();
+            }
             return true;
         } else {
             player.setPlayerPoints(
@@ -200,7 +207,10 @@ export default class Game {
             return false;
         }
     }
-
+    /**
+     * @description Starts new turn in a given round
+     * @returns bool for turn started
+     */
     startNewTurn() {
         let playersToDraw = this.players.filter(
             (player) => player.getDrawTurnCount() != this.roundNumber
@@ -213,14 +223,29 @@ export default class Game {
         }
         return false;
     }
-
+    /**
+     * @description Starts new Round in a given round
+     * @returns bool for turn started
+     */
     startNewRound() {
-        if (this.players.length < this.MIN_PLAYERS) return false;
+        if (this.players.length < this.MIN_PLAYERS || this.gameEnded) return false;
         if (this.roundNumber < this.MAX_ROUND_NUMBER) {
             this.roundNumber++;
             this.roundEnded = false;
             return this.startNewTurn();
+        }else{
+            this.gameEnded = true;
+            return false;
         }
-        return false;
+    }
+    /**
+     * @description Checks whether all players have connected controllers
+     * @returns bool for turn started
+     */
+    checkControllers()
+    {
+        return this.players.filter((player) => {
+            player.controller == ""
+        }).length == 0;
     }
 }
