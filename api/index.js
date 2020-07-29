@@ -34,7 +34,7 @@ db.once('open', function () {
     console.log("DB connected")
 });
 
-// TODO: Move endpoints to routes...
+//TODO Move endpoints to routes...
 app.get('/', (req, res) => {
     res.sendFile(__dirname + "../Interface" + '/index.html');
 });

@@ -92,9 +92,9 @@ exports = module.exports = function (io) {
             try {
                 //devicetype = {controller , client}
                 let { gameid, devicetype } = obj;
-                // if (!['controller', 'client'].contains(devicetype)) {
-                //     throw "Incorrect device type"
-                // }
+                if (!(devicetype == 'controller' || devicetype == 'client')) {
+                    throw "Incorrect device type"
+                 }
                 // Find the current game state
                 let gamestate = await getGameState(gameid);
                 console.log(gamestate)
@@ -105,6 +105,7 @@ exports = module.exports = function (io) {
 
                 if (devicetype == "controller") {
                     // add controller to username
+                    gamestate.getPlayerByUID(username).controller = socket.id;
                 }
                 else {
                     // Add Player
@@ -131,8 +132,9 @@ exports = module.exports = function (io) {
 
                 // Host check            
                 if (username == gamestate.hostId) {
-                    //TODO!!! check devices
-                    if (true) {
+
+                    //only starts game if everyone has a controller connected
+                    if (gamestate.checkControllers()) { // changed from true
                         gamestate.startNewRound()
                         console.log("startgame in room", gameid);
                         updateGameState(gamestate);
@@ -206,7 +208,8 @@ exports = module.exports = function (io) {
 
         socket.on('drawdata', async (data) => {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
-            //only to others in room
+            // Check that the person SHOULD be drawing.            
+            // Emit draw data to everyone             
             console.log(gameid);
             socket.to(gameid).emit("drawdata", data);
             console.log("drawdata", data);
