@@ -54,3 +54,12 @@ function submitGuess(){
 function recieveData(){
     
 }
+
+function leaveGame(){
+    window.location.href = './../index.html';
+  }
+  
+  function logout(){
+    localStorage.removeItem('token');
+    leaveGame();
+  }
