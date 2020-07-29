@@ -16,7 +16,7 @@ async function getGameState(gameid) {
 // Abstraction Layer 
 async function updateGameState(updated_gamestate) {
     GameState.updateOne(
-        {gameid: updated_gamestate.gameid }, 
+        { gameid: updated_gamestate.gameid },
         // New Fields..
         {
             gamestate: updateGameState
@@ -64,6 +64,7 @@ exports = module.exports = function (io) {
             let gamestate = new Game(gameid);
             // add player
             gamestate.addPlayer(username, name);
+            gamestate.hostId = username;
 
             //join socket room
             socket.join(gameid);
@@ -80,7 +81,7 @@ exports = module.exports = function (io) {
                 await newgamestate.save();
                 broadcastGameState(socket, gamestate);
             } catch (err) {
-                socket.emit("gamestate", { error: "Error while creating game", gamestate: null });
+                socket.emit("error", { error: "Error while creating game" });
             }
             //reply with public gamestate
         });
@@ -89,7 +90,11 @@ exports = module.exports = function (io) {
 
         socket.on('joingame', async (obj) => {
             try {
-                let { gameid } = obj;
+                //devicetype = {controller , client}
+                let { gameid, devicetype } = obj;
+                if (!['controller', 'client'].contains(devicetype)) {
+                    throw "Incorrect device type"
+                }
                 // Find the current game state
                 let gamestate = await getGameState(gameid);
                 console.log(gamestate)
@@ -98,46 +103,70 @@ exports = module.exports = function (io) {
                 socket.leaveAll();
                 socket.join(gameid);
 
-                // Add Player
-                gamestate.addPlayer(username, name)
-                
+                if (devicetype == "controller") {
+                    // add controller to username
+                }
+                else {
+                    // Add Player
+                    gamestate.addPlayer(username, name)
+                }
+
+
                 //Save gamestate again
                 updateGameState(gamestate);
 
                 //Reply and send to entire room.
                 broadcastGameState(socket, gamestate);
-            } catch (error) {
-                console.log(error);
-                socket.emit("gamestate", { error: 'Soz...', gamestate: null })
+            } catch (err) {
+                console.log(err);
+                socket.emit("error", { error: err })
             }
         });
-
 
         socket.on('startnewround', () => {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
-            //Host check
+            // Get game state
             if (!!gameid) {
-                //Todo: pull from db
-                let game = new Game();
-                game.startNewRound()
+                let gamestate = await getGameState(gameid);
 
-                // Check that each player has an assigned controller.game
-                console.log("startgame in room", gameid);
-                broadcastGameState(socket, gamestate)
+                // Host check            
+                if (username == gamestate.hostId) {
+                    //TODO!!! check devices
+                    if (true) {
+                        gamestate.startNewRound()
+                        console.log("startgame in room", gameid);
+                        updateGameState(gamestate);
+                        broadcastGameState(socket, gamestate)
+                    } else {
+                        broadcastGameState(socket, gamestate)
+                    }
+                    // Check that each player has an assigned controller.game
+
+                }
             }
         });
 
-
-        socket.on('guess', async (guess) => {
+        socket.on('startnewturn', () => {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
+            // Get game state
+            let gamestate = await getGameState(gameid);
+            if (username == gamestate.currentPlayer) {
+                gamestate.startNewTurn();
+                updateGameState(gamestate);
+                broadcastGameState(gamestate);
+            }
+        });
+
+        socket.on('guess', async (dataobj) => {
+            let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
+            let { guess } = dataobj;
+            //TODO change time!!!
+            let time = 60;
             try {
                 console.log("guess");
                 let gamestate = await getGameState(gameid);
-
-                //TODO change time!!!
-                //TODO: GameEngine needs constructor overload.
-                // let correct = gamestate.submitGuess(username, guess, 60);
-
+                let correct = gamestate.submitGuess(username, guess, time);
+                updateGameState(gamestate);
                 broadcastGameState(socket, gamestate);
             } catch (error) {
 
