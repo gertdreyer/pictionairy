@@ -8,10 +8,20 @@ admin.initializeApp({
 let db = admin.firestore();
 
 export default class Word {
-    constructor() {
-        this.previousChosenWordsList = [];
+    constructor(state) {
+        if(state !== undefined)
+        {
+            this.previousChosenWordsList = state.previousChosenWordsList;
+            this.words = state.words;
+        }
+        else
+        {
+            this.previousChosenWordsList = [];// Previous words that were drawn 
+            this.words = null;  // Words of various difficulties
+        }
+        
     }
-
+        
     /**
      * @description Returns the list of words to choose from
      * @returns new word list of 3 options
@@ -22,37 +32,44 @@ export default class Word {
         let threeWordList = [];
         //check if word exists in the current wordlist
 
-        let docName = "";
-        let newWord = "";
+        try {
+            let docNames = ["easy", "medium", "hard"];
 
-        do {
-            switch (difficultyLevel) {
-                case 1:
-                    docName = "easy";
-                    break;
-                case 2:
-                    docName = "medium";
-                    break;
-                case 3:
-                    docName = "hard";
-                    break;
-                default:
-                    docName = "medium";
+            if (this.words == null) {
+                this.words = {
+                    easy: [],
+                    medium: [],
+                    hard: [],
+                };
+
+                let docs = [];
+
+                docNames.forEach((docName) => {
+                    const cityRef = db.collection("Words").doc(docName);
+                    docs.push(cityRef.get());
+                });
+
+                (await Promise.all(docs)).forEach((doc, idx) => {
+                    this.words[docNames[idx]] = doc.data().words;
+                });
             }
-            const cityRef = db.collection("Words").doc(docName);
-            const doc = await cityRef.get();
-            if (!doc.exists) {
-                console.log("No such document!");
-            } else {
-                newWord = doc.data().words[
-                    Math.floor(Math.random() * doc.data().words.length)
+
+            let difficulty = docNames[difficultyLevel - 1];
+            let newWord = "";
+
+            do {
+                newWord = this.words[difficulty][
+                    Math.floor(Math.random() * this.words[difficulty].length)
                 ];
-            }
 
-            if (!threeWordList.includes(newWord)) threeWordList.push(newWord);
-        } while (threeWordList.length != 3);
+                if (!threeWordList.includes(newWord))
+                    threeWordList.push(newWord);
+            } while (threeWordList.length != 3);
 
-        this.previousChosenWordsList.push(...threeWordList);
-        return threeWordList;
+            this.previousChosenWordsList.push(...threeWordList);
+            return threeWordList;
+        } catch (err) {
+            console.log(err);
+        }
     }
 }
