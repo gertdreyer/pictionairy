@@ -23,7 +23,7 @@ const COLOR_CODES = {
 const TIME_LIMIT = 60;
 let timePassed = 0;
 let timeLeft = TIME_LIMIT;
-let timerInterval = null;
+//let timerInterval = null;
 let remainingPathColor = COLOR_CODES.info.color;
 
 const sensor = new AbsoluteOrientationSensor({frequency: 60});
@@ -52,6 +52,20 @@ function initServerConnection() {
 
 
     //Callback functions for socket communication
+    socket.on("wordoptions", function(data) {
+        console.log(data);
+        startFullRound(data.options);
+    });
+
+    socket.on("gamestate", function(data) {
+        console.log(data);
+
+        if ((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID === localStorage.getItem("userId")) {
+            console.log("IT IS MY TURN");
+
+            socket.emit("getwordoptions");
+        }
+    });
 }
 
 
@@ -59,19 +73,14 @@ function jg(gameid) {
     socket.emit('joingame', {gameid:gameid, devicetype:"controller"});
   }
 
-// let fullPath = [];
-
-// startTimer();
-// let chooseTimer;
-
 
 function onTimesUp() {
-  clearInterval(timerInterval);
   disable();
+  sensor.stop();
 }
 
 function startTimer() {
-  timerInterval = setInterval(() => {
+    var timerInterval = setInterval(() => {
     timePassed = timePassed += 1;
     timeLeft = TIME_LIMIT - timePassed;
     document.getElementById("base-timer-label").innerHTML = formatTime(
@@ -80,8 +89,12 @@ function startTimer() {
     setCircleDasharray();
     setRemainingPathColor(timeLeft);
 
-    if (timeLeft === 0) {
-      onTimesUp();
+    if (timeLeft <= 1) {
+      clearInterval(timerInterval);
+    }
+
+    if (timeLeft <= 0) {
+        onTimesUp();
     }
   }, 1000);
 }
@@ -182,9 +195,9 @@ function logout(){
   leaveGame();
 }
 
-function startFullRound(){
+function startFullRound(choice){
   enable();
-  startChosing();
+  startChosing(choice);
 }
 
 function startDrawing(){
@@ -237,12 +250,12 @@ function calcDist(angle, initAngle) {
 }
 
 
-function startChosing(){
+function startChosing(choice){
   //create overlay, fill buttons, start timer, randomly chose after time, then close overlay
   openChoose();
-  document.getElementById('choice-1').innerHTML = 'choice-1';
-  document.getElementById('choice-2').innerHTML = 'choice-2';
-  document.getElementById('choice-3').innerHTML = 'choice-3';
+  document.getElementById('choice-1').innerHTML = choice[0];
+  document.getElementById('choice-2').innerHTML = choice[1];
+  document.getElementById('choice-3').innerHTML = choice[2];
   var choosingTime = 10;
   var chooseTimer = setInterval(function(){
     choosingTime--;
@@ -263,32 +276,6 @@ function startChosing(){
 function sendOption(){
   //use this function to send data to server
 }
-
-// function canvasDraw(){
-//   wh
-// }
-
-
-// document.getElementById("drawButton").ontouchstart = function() {mouseDown()};
-// document.getElementById("drawButton").ontouchend = function() {mouseUp()};
-// console.log('set');
-
-// function mouseDown() {
-//   console.log('down');
-//   //document.getElementById("drawButton").innerHTML = "Drawing..";
-//   pen = true;
-//   viewLaser = false;
-// }
-
-// function mouseUp() {
-//   //show that pen was lifted
-//   fullPath.push([-9999,-9999]);
-//   console.log("Lifted");
-  
-//   //document.getElementById("drawButton").innerHTML = "Draw";
-//   pen = false;
-//   viewLaser = true;  
-// }
 
 
 function canvasClear(){
