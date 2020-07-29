@@ -9,7 +9,8 @@ const JWTSECRET = process.env.JWT_SECRET || "this-should-be-some-super-secret-ke
 // can change the get procedure.
 async function getGameState(gameid) {
     console.log(gameid);
-    let { gamestate } = await GameState.findOne({ gameid });
+    let  gamestate  = await GameState.findOne({ gameid });
+    console.log(gamestate);
     return new Game(gameid, gamestate);
 }
 
