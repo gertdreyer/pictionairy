@@ -151,7 +151,7 @@ async function getWordsTest() {
     let wordsCopy = new Word(state);
     let word = new Word();
 
-    performUnitTest("Word Copy Constructor previousChosenWordsList", word.previousChosenWordsList, wordsCopy.previousChosenWordsList);
+    performUnitTest("Word Copy Constructor previousChosenWordsList", word.previousChosenWordsList.length, wordsCopy.previousChosenWordsList.length);
     performUnitTest("Word Copy Constructor words", word.words, wordsCopy.words);
 
     let ExpectedWordsEasy = await word
