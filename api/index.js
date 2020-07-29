@@ -176,7 +176,7 @@ io.on('connection', (socket) => {
             // gamestate.addPlayer(username,name)
             console.log(gamestate);
 
-            socket.emit("gamestate", { gamestate: gamestate })
+            socket.to(gameid).emit("gamestate", { gamestate: gamestate })
         } catch (error) {
             console.log(error);
             socket.emit("gamestate", { error: 'Soz...', gamestate: null })
@@ -184,11 +184,11 @@ io.on('connection', (socket) => {
     });
 
 
-    socket.on('startround', () => {
+    socket.on('startnewround', () => {
         //Host check
         if (!!gameid) {
-            let game = new Game();
-            game.game
+            let game = new Game(); 
+            game.startNewRound()
             // Check that each player has an assigned controller.game
             console.log("startgame in room", gameid);
             socket.to(gameid).emit("startgame", { started: true })
