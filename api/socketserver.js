@@ -154,7 +154,6 @@ exports = module.exports = function (io) {
                     console.log("startgame in room", gameid);
                     await updateGameState(gamestate);
                     broadcastGameState(socket, gamestate)
-
                 } else {
                     socket.emit("error", { error: "You are not the host" });
                 }
@@ -172,6 +171,7 @@ exports = module.exports = function (io) {
             }
         });
         socket.on('getwordoptions', async (dataobj) => {
+            let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             let gamestate = await getGameState(gameid);
             if (username = gamestate.currentPlayer) {
                 wordopts = await gamestate.generateWords(gamestate.roundNumber);
