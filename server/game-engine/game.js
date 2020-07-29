@@ -176,11 +176,13 @@ export default class Game {
      */
     submitGuess(uid, guess, time) {
         let player = getPlayerByUID(uid);
+
+        if (player === this.currentPlayer)
+            throw("Current drawer can't guess");
         
-        this.lastGuess ={
+        this.lastGuess = {
             playerUID: uid,
             guessMade: guess
-
         };
 
         if (player == null) return false;
