@@ -104,7 +104,7 @@ async function gameTest() {
 
     let copyGame = new Game(game.getGameId(), game);
     performUnitTest("Game Copy Constructor ID", game.getGameId(), copyGame.getGameId());
-    performUnitTest("Game Copy Constructor DiffcultyLevel", game.difficultyLevel, copyGame.difficultyLevel);
+    performUnitTest("Game Copy Constructor DifficultyLevel", game.difficultyLevel, copyGame.difficultyLevel);
     performUnitTest("Game Copy Constructor Game Ended", game.gameEnded, copyGame.gameEnded);
     performUnitTest("Game Copy Constructor Round Ended", game.roundEnded, copyGame.roundEnded);
     performUnitTest("Game Copy Constructor Round Number", game.roundNumber, copyGame.roundNumber);
