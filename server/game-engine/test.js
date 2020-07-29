@@ -6,13 +6,13 @@ import Player from "./player.js";
 import Game from "./game.js";
 import Word from "./word.js";
 
-test();
+ test();
 
-async function test() {
-    playerTest();
-    await gameTest();
-    await getWordsTest();
-}
+// async function test() {
+//     playerTest();
+//     await gameTest();
+//     await getWordsTest();
+// }
 
 // Helper functions
 function performUnitTest(itemTested, expected, actual) {
@@ -88,6 +88,7 @@ async function gameTest() {
     performUnitTest("Current Word", "", game.getWord());
     performUnitTest("Current Player", null, game.getDrawer());
     performUnitTest("Max Time", 60, game.maxTime);
+    performUnitTest("Game round ended status", false, game.getRoundEnded());
 
     // Test add player functionality
     let addPlayerOne = game.addPlayer("nicpym", "Nicholas");
@@ -182,4 +183,10 @@ async function getWordsTest() {
     } else {
         console.log("\u2713  " + "Hard words get passed test");
     }
+}
+
+export async function test() {
+    playerTest();
+    await gameTest();
+    await getWordsTest();
 }
