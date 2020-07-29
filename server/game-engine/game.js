@@ -194,6 +194,11 @@ export default class Game {
             this.currentPlayer.setPlayerPoints(
                 this.currentPlayer.getPlayerPoints() + time
             );
+            if(this.checkRoundEndStatus()){
+                this.startNewRound();
+            }else{
+                this.startNewTurn();
+            }
             return true;
         } else {
             player.setPlayerPoints(
@@ -217,12 +222,14 @@ export default class Game {
     }
 
     startNewRound() {
-        if (this.players.length < this.MIN_PLAYERS) return false;
+        if (this.players.length < this.MIN_PLAYERS || this.gameEnded) return false;
         if (this.roundNumber < this.MAX_ROUND_NUMBER) {
             this.roundNumber++;
             this.roundEnded = false;
             return this.startNewTurn();
+        }else{
+            this.gameEnded = true;
+            return false;
         }
-        return false;
     }
 }
