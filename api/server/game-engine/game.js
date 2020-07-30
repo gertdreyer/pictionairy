@@ -197,6 +197,8 @@ export default class Game {
 
         if (time > this.maxTime)
             throw ("Time expired.");
+        
+        time = this.maxTime - time;
 
         if (uid === this.currentPlayer.getPlayerUID())
             throw ("Current drawer can't guess");
