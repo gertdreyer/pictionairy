@@ -192,6 +192,10 @@ async function gameTest() {
     performUnitTest("Ignore controller assignment when flag set FALSE", true, game.checkGameReadiness());
     game.setCheckControllers(true);
     performUnitTest("Check controller assignment when flag set TRUE", false, game.checkGameReadiness());
+    performUnitTest("isWordSet", false, game.isWordSet);
+    game.toggleIsWordSet();
+    performUnitTest("toggleIsWordSet", true, game.isWordSet);
+
 }
 
 // Word unit tests
