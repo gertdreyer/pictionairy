@@ -8,7 +8,7 @@ services:
       - .env
       - server/.env
     ports:
-      - "80:3000"
+      - "8080:3000"
     links:
       - mongo
   mongo:
