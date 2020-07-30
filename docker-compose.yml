@@ -6,6 +6,7 @@ services:
     image: devs/api
     env_file:
       - .env
+      - server/.env
     ports:
       - "80:3000"
     links:
