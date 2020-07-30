@@ -36,6 +36,7 @@ let initPos;
 let dist;
 let colourPen;
 let chooseTimer = null;
+let timerInterval = null;
 var socket;
 function init(){
     
@@ -58,14 +59,27 @@ function initServerConnection() {
         startFullRound(data.options);
     });
 
+    var prevActivePlayer;
+
     socket.on("gamestate", function(data) {
         console.log(data);
-
+        
         if (!data.isWordSet && (data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID === localStorage.getItem("userId")) {
             console.log("IT IS MY TURN");
             enable();
             socket.emit("getwordoptions");
-            //startFullRound(["myword1", "myword2", "myword3"]);
+        }
+
+        if ((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID !== prevActivePlayer) {
+            clearInterval(timerInterval);
+            disable();
+            document.getElementById("base-timer-label").innerHTML = formatTime(0);
+            prevActivePlayer = data.currentPlayer.playerUID;
+        }
+
+        if (data.gameEnded) {
+            clearInterval(timerInterval);
+            disable();
         }
     });
 }
@@ -79,10 +93,12 @@ function jg(gameid) {
 function onTimesUp() {
   disable();
   sensor.stop();
+  socket.emit("timerexpired");
 }
 
 function startTimer() {
-    var timerInterval = setInterval(() => {
+    timePassed = 0;
+    timerInterval = setInterval(() => {
     timePassed = timePassed += 1;
     timeLeft = TIME_LIMIT - timePassed;
     document.getElementById("base-timer-label").innerHTML = formatTime(
@@ -176,7 +192,6 @@ function choseOption(id){
   document.getElementById('chosenWord').innerHTML = document.getElementById(id).innerHTML;
 
   var chosenWord = document.getElementById('chosenWord').innerHTML;
-  alert("chosenword: " + chosenWord);
 
   socket.emit("makechoice", {"choice":chosenWord});
 
