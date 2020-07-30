@@ -258,7 +258,7 @@ export default class Game {
         if (!this.checkGameReadiness()) return false;
         if (this.roundNumber < this.MAX_ROUND_NUMBER) {
             if(!this.gameStarted)
-                gameStarted = true;
+                this.gameStarted = true;
             this.roundNumber++;
             this.roundEnded = false;
             return this.startNewTurn();
