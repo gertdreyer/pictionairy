@@ -194,6 +194,7 @@ exports = module.exports = function (io) {
             if (username == gamestate.currentPlayer.playerUID) {
                 gamestate.setWord(choice);
                 await updateGameState(gamestate);
+                broadcastGameState(socket, gamestate);
             } else {
                 socket.emit('error', { error: "You are not the drawing user" })
             }
