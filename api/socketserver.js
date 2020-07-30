@@ -222,9 +222,9 @@ exports = module.exports = function (io) {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             // Check that the person SHOULD be drawing.            
             // Emit draw data to everyone             
-            console.log(gameid);
+            // console.log(gameid);
             socket.to(gameid).emit("drawdata", data);
-            console.log("drawdata", data);
+            // console.log("drawdata", data);
         });
 
         /// DUMMY ENDPOINTS DONT DELETE
