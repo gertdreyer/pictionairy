@@ -36,7 +36,7 @@ export default class Game {
     }
 
     /**
-     * @description Used to toggle the check for game controllers
+     * @description Used to toggle the check for game controllers (relax or enforce game rules)
      * @param {bool} check 
      */
     setCheckControllers(check){
@@ -167,7 +167,7 @@ export default class Game {
             false :
             this.players.filter(
                 (player) => player.getDrawTurnCount() == this.roundNumber
-            ).length == this.players.length;
+            ).length == (this.checkControllers ? this.players.filter((player) => player.controller != "").length : this.players.length);
         return this.roundEnded;
     }
 
