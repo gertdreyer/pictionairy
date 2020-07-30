@@ -175,6 +175,7 @@ exports = module.exports = function (io) {
             let gamestate = await getGameState(gameid);
             if (username == gamestate.currentPlayer) {
                 wordopts = await gamestate.generateWords(gamestate.roundNumber);
+                console.log(wordopts);
                 socket.emit('wordoptions', { options: wordopts })
             } else {
                 socket.emit('error', { error: "You are not the drawing user" })
