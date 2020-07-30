@@ -1,6 +1,6 @@
 import socketioJwt from 'socketio-jwt';
 import { v4 as uuidv4 } from 'uuid';
-import Game from "../server/game-engine/game.js";
+import Game from "./server/game-engine/game.js";
 import { GameState, User } from "./db.js";
 const JWTSECRET = process.env.JWT_SECRET || "this-should-be-some-super-secret-key";
 

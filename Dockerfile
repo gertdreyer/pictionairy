@@ -1,10 +1,9 @@
 FROM node:12
 WORKDIR /usr/src/app
 
-COPY api ./api
-COPY server ./server
+COPY . .
 
-WORKDIR /usr/src/app/server
+WORKDIR /usr/src/app/api/server
 RUN npm install
 
 WORKDIR /usr/src/app/api
