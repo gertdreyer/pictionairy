@@ -33,6 +33,11 @@ export default class Game {
 
         this.turnStartTime = state === undefined ? null : state.turnStartTime;
         this.checkControllers = true;
+        this.isWordSet = state === undefined ? false : state.isWordSet;
+    }
+
+    toggleIsWordSet() {
+        this.isWordSet = !this.isWordSet;
     }
 
     /**
