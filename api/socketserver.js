@@ -232,9 +232,11 @@ exports = module.exports = function (io) {
 
         socket.on('timerexpired', async ()=> {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
+            console.log("timerexpired", gameid)
             try {
                 let gamestate = await getGameState(gameid);
                 gamestate.startNewRoundOrTurn();
+                console.log(gamestate);
                 await updateGameState(gamestate);
                 broadcastGameState(gamestate);
             }catch (err) {
