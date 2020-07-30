@@ -203,7 +203,7 @@ exports = module.exports = function (io) {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             let { guess } = dataobj;
             try {
-                console.log("guess");
+                console.log("guess: ");
                 console.log(guess);
                 let gamestate = await getGameState(gameid);
                 let correct = gamestate.submitGuess(username, guess);
