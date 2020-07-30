@@ -119,10 +119,11 @@ function initServerConnection() {
 
 //Used to clear the UI when a new turn is started
 function clearUI() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     clearInterval(roundTimer);
     updateTimer(0);
     clearGuesses();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function startTimer(){

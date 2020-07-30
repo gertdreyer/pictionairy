@@ -73,6 +73,7 @@ function initServerConnection() {
         if ((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID !== prevActivePlayer) {
             clearInterval(timerInterval);
             disable();
+            sensor.stop();
             document.getElementById("base-timer-label").innerHTML = formatTime(0);
             prevActivePlayer = data.currentPlayer.playerUID;
         }
@@ -297,7 +298,7 @@ function startChosing(choice){
 
 //The clear button
 function canvasClear(){
-    startFullRound(["w1", "w2", "w3"]);
+    //empty
 }
 
 function flipCalibrate(){
