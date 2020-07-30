@@ -173,9 +173,8 @@ exports = module.exports = function (io) {
         socket.on('getwordoptions', async (dataobj) => {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             let gamestate = await getGameState(gameid);
-            if (username = gamestate.currentPlayer) {
-                // TODO: When its fixed...
-                // wordopts = await gamestate.generateWords(gamestate.roundNumber);
+            if (username == gamestate.currentPlayer) {
+                wordopts = await gamestate.generateWords(gamestate.roundNumber);
                 wordopts = ["cat", "lighthouse", "something cools"];
                 socket.emit('wordoptions', { options: wordopts })
             } else {
@@ -186,7 +185,7 @@ exports = module.exports = function (io) {
         socket.on('makechoice', async (dataobj) => {
             let { choice } = dataobj;
             let gamestate = await getGameState(gameid);
-            if (username = gamestate.currentPlayer) {
+            if (username == gamestate.currentPlayer) {
                 gamestate.setWord(choice);
                 await updateGameState(gamestate);
             } else {
