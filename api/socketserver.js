@@ -178,10 +178,8 @@ exports = module.exports = function (io) {
         socket.on('getwordoptions', async (dataobj) => {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             let gamestate = await getGameState(gameid);
-            console.log(gamestate.currentPlayer);
             if (username == gamestate.currentPlayer.playerUID) {
                 let wordopts = await gamestate.generateWords(gamestate.roundNumber);
-                console.log(wordopts);
                 socket.emit('wordoptions', { options: wordopts })
             } else {
                 socket.emit('error', { error: "You are not the drawing user" })
@@ -191,8 +189,9 @@ exports = module.exports = function (io) {
         socket.on('makechoice', async (dataobj) => {
             let { choice } = dataobj;
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
+            console.log("makechoice", choice);
             let gamestate = await getGameState(gameid);
-            if (username == gamestate.currentPlayer.username) {
+            if (username == gamestate.currentPlayer.playerUID) {
                 gamestate.setWord(choice);
                 await updateGameState(gamestate);
             } else {
@@ -205,6 +204,7 @@ exports = module.exports = function (io) {
             let { guess } = dataobj;
             try {
                 console.log("guess");
+                console.log(guess);
                 let gamestate = await getGameState(gameid);
                 let correct = gamestate.submitGuess(username, guess);
                 await updateGameState(gamestate);
