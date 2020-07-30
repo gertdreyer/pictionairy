@@ -7,7 +7,7 @@ const JWTSECRET = process.env.JWT_SECRET || "this-should-be-some-super-secret-ke
 
 // Generate UID used for gameid... 
 function generateGameId(){
-    let ts = new Date().get;
+    return Math.round(new Date().getTime()/100).toString().slice(4)   
 } 
 
 // Added layer of abstraction... Future implementations
@@ -72,7 +72,7 @@ exports = module.exports = function (io) {
         console.log(username, " connected");    
 
         socket.on('newgame', async () => {
-            let gameid = uuidv4(); //use shorter
+            let gameid = generateGameId();
             socket.leaveAll(); //leave all rooms
 
             // Create Game Object
