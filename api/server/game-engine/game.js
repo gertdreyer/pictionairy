@@ -213,9 +213,9 @@ export default class Game {
 
         if (player == null) return false;
 
-        player.addGuess(guess, guess == this.currentWord);
+        player.addGuess(guess, guess.toLowerCase() == this.currentWord.toLowerCase());
 
-        if (guess == this.currentWord) {
+        if (guess.toLowerCase() == this.currentWord.toLowerCase()) {
             this.lastGuess.correct = true;
             player.setPlayerPoints(player.getPlayerPoints() + time / 2);
 
