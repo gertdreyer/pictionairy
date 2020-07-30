@@ -28,7 +28,8 @@ export default class Game {
         this.hostId = state === undefined ? "" : state.hostId; // UID of user hosting game session
         this.lastGuess = state === undefined ? {
             playerUID: "",
-            guessMade: ""
+            guessMade: "",
+            correct: false
         } : state.lastGuess; // Last guess made by a player
 
         this.turnStartTime = state === undefined ? null : state.turnStartTime;
@@ -206,7 +207,8 @@ export default class Game {
 
         this.lastGuess = {
             playerUID: uid,
-            guessMade: guess
+            guessMade: guess,
+            correct: false
         };
 
         if (player == null) return false;
@@ -214,6 +216,7 @@ export default class Game {
         player.addGuess(guess, guess == this.currentWord);
 
         if (guess == this.currentWord) {
+            this.lastGuess.correct = true;
             player.setPlayerPoints(player.getPlayerPoints() + time / 2);
             this.currentPlayer.setPlayerPoints(
                 this.currentPlayer.getPlayerPoints() + time
