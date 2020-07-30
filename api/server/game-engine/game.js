@@ -34,6 +34,7 @@ export default class Game {
         this.turnStartTime = state === undefined ? null : state.turnStartTime;
         this.checkControllers = true;
         this.isWordSet = state === undefined ? false : state.isWordSet;
+        this.gameStarted = state === undefined ? false : state.gameStarted;
     }
 
     toggleIsWordSet() {
@@ -256,11 +257,14 @@ export default class Game {
     startNewRound() {
         if (!this.checkGameReadiness()) return false;
         if (this.roundNumber < this.MAX_ROUND_NUMBER) {
+            if(!this.gameStarted)
+                gameStarted = true;
             this.roundNumber++;
             this.roundEnded = false;
             return this.startNewTurn();
         } else {
             this.gameEnded = true;
+            this.gameStarted = false;
             return false;
         }
     }
