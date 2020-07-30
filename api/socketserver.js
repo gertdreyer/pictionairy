@@ -64,7 +64,7 @@ exports = module.exports = function (io) {
     io.on('connection', (socket) => {
         //gameid is also sockets room id to uncomplicate lookups
         let { username, name } = socket.decoded_token;
-        console.log(username, " connected");
+        console.log(username, " connected");    
 
         socket.on('newgame', async () => {
             let gameid = uuidv4(); //use shorter
@@ -174,7 +174,9 @@ exports = module.exports = function (io) {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             let gamestate = await getGameState(gameid);
             if (username = gamestate.currentPlayer) {
-                wordopts = await gamestate.generateWords(gamestate.roundNumber);
+                // TODO: When its fixed...
+                // wordopts = await gamestate.generateWords(gamestate.roundNumber);
+                wordopts = ["cat", "lighthouse", "something cools"];
                 socket.emit('wordoptions', { options: wordopts })
             } else {
                 socket.emit('error', { error: "You are not the drawing user" })
