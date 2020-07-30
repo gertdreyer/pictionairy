@@ -88,7 +88,7 @@ function initServerConnection() {
         }
 
         if(list[list.length-1] !== (data.lastGuess.playerUID + ": " + data.lastGuess.guessMade) && data.lastGuess.playerUID != ''){
-            document.getElementById("guesses").innerHTML += data.lastGuess.playerUID + ": " + data.lastGuess.guessMade + '&#13;&#10;';
+            document.getElementById("guesses").innerHTML += data.lastGuess.playerUID + ": " + data.lastGuess.guessMade + (data.lastGuess.correct? " (correct)": "") + '&#13;&#10;';
             list.push(data.lastGuess.playerUID + ": " + data.lastGuess.guessMade);
         }
 
