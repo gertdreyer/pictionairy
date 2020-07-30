@@ -119,8 +119,7 @@ function initServerConnection() {
 
 //Used to clear the UI when a new turn is started
 function clearUI() {
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     clearInterval(roundTimer);
     updateTimer(0);
     clearGuesses();
@@ -247,7 +246,7 @@ function draw(dist_data){
     
     //Clear Canvas and Set Pen Size
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 1.5;
     
     //Flag for start new Path  ( Pen Lift Indicator -> [-9999, -9999] )
     let breakPath = false;
