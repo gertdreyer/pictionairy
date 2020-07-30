@@ -218,11 +218,12 @@ export default class Game {
         if (guess == this.currentWord) {
             this.lastGuess.correct = true;
             player.setPlayerPoints(player.getPlayerPoints() + time / 2);
-            this.currentPlayer.setPlayerPoints(
-                this.currentPlayer.getPlayerPoints() + time
+
+            let currentPlayer = this.getPlayerByUID(this.currentPlayer.getPlayerUID());
+            
+            currentPlayer.setPlayerPoints(
+                currentPlayer.getPlayerPoints() + time
             );
-            console.log('game.js 221:', this.currentPlayer.getPlayerPoints());
-            console.log('game.js 222:', this.getPlayerByUID(this.currentPlayer.getPlayerUID()).getPlayerPoints());
             if (this.checkRoundEndStatus()) {
                 this.startNewRound();
             } else {
