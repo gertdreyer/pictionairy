@@ -218,7 +218,8 @@ export default class Game {
             this.currentPlayer.setPlayerPoints(
                 this.currentPlayer.getPlayerPoints() + time
             );
-            console.log(this.currentPlayer.getPlayerPoints());
+            console.log('game.js 221:', this.currentPlayer.getPlayerPoints());
+            console.log('game.js 222:', this.getPlayerByUID(this.currentPlayer.getPlayerUID()).getPlayerPoints());
             if (this.checkRoundEndStatus()) {
                 this.startNewRound();
             } else {
