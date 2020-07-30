@@ -17,15 +17,17 @@
         //document.getElementById("drawButton").innerHTML = "Drawing..";
         pen = true;
         viewLaser = false;
+        stopDraw = false;
       }
 
       function mouseUp() {
         //show that pen was lifted
-        fullPath.push([-9999,-9999]);
+        fullPath.push([-9999,-9999,true]);
         console.log("Lifted");
         
         //document.getElementById("drawButton").innerHTML = "Draw";
         pen = false;
+        stopDraw = true;
         viewLaser = true;  
       }
 
