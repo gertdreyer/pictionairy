@@ -167,19 +167,31 @@ async function gameTest() {
     game.players[1].controller ="1";
     game.players[2].controller ="2";
     game.players[3].controller ="3";
-    // game.setWord('test');
-    // performUnitTest("Game check controllers", true, game.checkControllers());
+    performUnitTest("Game check controllers", true, game.checkGameReadiness());
     game.startNewRound();
     
     let currentPlayerUID = game.getDrawer();
 
     try {
-        game.submitGuess(currentPlayerUID, "test",60);
+        game.submitGuess(currentPlayerUID, "test");
         performUnitTest("Don't let drawer guess", "", "Current drawer can't guess");
     }
     catch(err) {
-        performUnitTest("Don't let drawer guess", err, "Current drawer can't guess");
+        performUnitTest("Don't let player guess when word not chosen", "Word not chosen yet", err);
+        game.setWord('test');
+        try{
+            game.submitGuess(currentPlayerUID, "test");
+            performUnitTest("Don't let drawer guess", "", "Current drawer can't guess");
+        }catch(err){
+            performUnitTest("Don't let drawer guess", "Current drawer can't guess", err);
+        }
     }
+
+    game.setCheckControllers(false);
+    game.players[0].controller = "";
+    performUnitTest("Ignore controller assignment when flag set FALSE", true, game.checkGameReadiness());
+    game.setCheckControllers(true);
+    performUnitTest("Check controller assignment when flag set TRUE", false, game.checkGameReadiness());
 }
 
 // Word unit tests
