@@ -60,13 +60,21 @@ function initServerConnection() {
 
         //setting the list of players
         clearPlayers();
-
+        
         for(i = 0; i < data.players.length; i++) {
+            var controller =' (*)';
+            if(data.players[i].controller!='') {
+                controller = ' (Ready)'
+            }
 
+            if (data.turnStartTime != null) {
+                controller = '';
+            }
+                
             if((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID === data.players[i].playerUID){
-                document.getElementById("players").innerHTML += data.players[i].playerUID+ ' - ' + data.players[i].points + ' (active)' + '&#13;&#10;';
+                document.getElementById("players").innerHTML += data.players[i].playerUID+' - ' + data.players[i].points + controller + ' (active)' + '&#13;&#10;';
             }else{
-                document.getElementById("players").innerHTML += data.players[i].playerUID+ ' - ' + data.players[i].points + '&#13;&#10;';
+                document.getElementById("players").innerHTML += data.players[i].playerUID+ ' - ' + data.players[i].points + controller + '&#13;&#10;';
             }
         }
         if(list[list.length-1] !== (data.lastGuess.playerUID + ": " + data.lastGuess.guessMade) && data.lastGuess.playerUID != ''){
@@ -120,6 +128,7 @@ function initServerConnection() {
 //Used to clear the UI when a new turn is started
 function clearUI() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    fullPath = [];
     clearInterval(roundTimer);
     updateTimer(0);
     clearGuesses();
