@@ -6,7 +6,7 @@ let pen;
 let penColor = "#cf060a"; 
 let canvas = document.getElementById("Drawing");
 let ctx = canvas.getContext("2d");
-
+let roundTimer = null;
 function init(){
     
     ctx.fillStyle = "white";
@@ -21,11 +21,7 @@ function init(){
         if (event.keyCode === 13) {
             // Cancel the default action, if needed
             event.preventDefault();
-            guess.value = guess.value.trim();
-            if(guess.value !== ''){
-                document.getElementById('guesses').innerHTML += '&#13;&#10;'+guess.value;
-            }
-            guess.value = '';
+            submitGuess();
         }
     });
 }
@@ -51,28 +47,63 @@ function initServerConnection() {
 
     //Callback functions for socket communication
     
-    list = [];
+    var list = [];
+    var prevTime = null;
+    var prevActivePlayer = null;
     
     //Callback for when the gamestate changes
     socket.on("gamestate", function(data) {
         console.log(data);
 
         //setting the room id
-        document.getElementById("serverID").innerHTML = '<h3>'+ data.gameId +'</h3>';
+        document.getElementById("serverID").innerHTML = '<h3>Server ID: '+ data.gameId +'</h3>';
 
         //setting the list of players
         clearPlayers();
 
         for(i = 0; i < data.players.length; i++) {
-            if(data.players[i].active){
+
+            if((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID === data.players[i].playerUID){
                 document.getElementById("players").innerHTML += data.players[i].playerUID+ ' - ' + data.players[i].points + ' (active)' + '&#13;&#10;';
             }else{
                 document.getElementById("players").innerHTML += data.players[i].playerUID+ ' - ' + data.players[i].points + '&#13;&#10;';
             }
         }
-        if(list[list.length-1] !==  data.lastGuess.playerUID + ": " + data.lastGuess.guessMade){
+        if(list[list.length-1] !== (data.lastGuess.playerUID + ": " + data.lastGuess.guessMade) && data.lastGuess.playerUID != ''){
             document.getElementById("guesses").innerHTML += data.lastGuess.playerUID + ": " + data.lastGuess.guessMade + '&#13;&#10;';
             list.push(data.lastGuess.playerUID + ": " + data.lastGuess.guessMade);
+        }
+
+        if (data.turnStartTime != prevTime) {
+            //Start new timer
+            prevTime = data.turnStartTime;
+            startTimer();
+        }
+
+        if ((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID === localStorage.getItem("userId")) {
+            document.getElementById('guessSubmit').disabled = true;
+            document.getElementById('guessSubmitBtn').disabled = true;
+        }else {
+            document.getElementById('guessSubmit').disabled = false;
+            document.getElementById('guessSubmitBtn').disabled = false;
+        }
+
+        if ((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID !== prevActivePlayer) {
+            clearUI();
+            prevActivePlayer = data.currentPlayer.playerUID;
+        }
+
+        if (data.gameEnded) {
+            document.getElementById('startgame').disabled = false;
+            clearInterval(roundTimer);
+            document.getElementById('guessSubmit').disabled = true;
+            document.getElementById('guessSubmitBtn').disabled = true;
+        }
+
+        if (data.roundNumber == 0) {
+            document.getElementById("lobbyRound").innerHTML = "<h3>Not started</h3>";
+        } else {
+            document.getElementById("lobbyRound").innerHTML = "<h3>Round: "+data.roundNumber+"</h3>";
         }
     });
 
@@ -86,9 +117,34 @@ function initServerConnection() {
     });
 }
 
+//Used to clear the UI when a new turn is started
+function clearUI() {
+    clearInterval(roundTimer);
+    updateTimer(0);
+    clearGuesses();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function startTimer(){
+    let timeLeft = 60
+    roundTimer = setInterval(() => {
+        timeLeft--;
+
+        if(timeLeft <= 0){
+            clearInterval(roundTimer);
+            document.getElementById('guessSubmit').disabled = true;
+            document.getElementById('guessSubmitBtn').disabled = true;
+        }
+        updateTimer(timeLeft);
+        
+    }, 1000);
+}
+
 function startGame() {
+    document.getElementById('startgame').disabled = true;
+    clearUI();
+    clearPlayers();
     socket.emit("startnewround");
-    alert("starting round");
 }
 
 function ng() {
@@ -121,23 +177,28 @@ function navBar() {
 function submitGuess(){
     var guess = document.getElementById("guessSubmit");
     guess.value = guess.value.trim();
-    if(guess.value !== ''){
-        document.getElementById('guesses').innerHTML += '&#13;&#10;'+guess.value;
+    var guess_answer = guess.value;
+
+    if(guess.value == ''){
+        return;
     }
     guess.value = '';
+    
 
-    var guess_answer = guess.value.trim();
-
-    socket.emit("guess", {guess_answer});
+    socket.emit("guess", {"guess":guess_answer});
 }
 
 
 function receiveData(data_in){
 
     // let data_out = [dist[0], dist[1], pen, penColour];
+    console.log(data_in)
     let dist = [data_in[0], data_in[1]];
     pen = data_in[2];
     penColor = data_in[3];
+    // if (dist[0] = -9999){
+    //     console.log("-9999 received")
+    // }
 
     if(pen == true){
         draw(dist);
@@ -172,11 +233,16 @@ function draw(dist_data){
     //Else it is laser() calling draw and therefore the new coordinates should not be added to the draw path
     if(pen)
     {
-      fullPath.push( [dist_data[0], dist_data[1], penColor] );
+        fullPath.push( [dist_data[0], dist_data[1], penColor] );
+        // if (fullPath[0] = -9999){
+        //     console.log("-9999 in pen");
+        // }else{
+        //     console.log("not breaky time");
+        // }
     }
     
-    console.log(pen);
-    console.log(fullPath);
+    // console.log(pen);
+    // console.log(fullPath);
     
     //Clear Canvas and Set Pen Size
     ctx.clearRect(0, 0, canvas.width, canvas.height);

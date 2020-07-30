@@ -29,17 +29,20 @@ let remainingPathColor = COLOR_CODES.info.color;
 const sensor = new AbsoluteOrientationSensor({frequency: 60});
 sensor.addEventListener("reading", (e) => handleSensor(e));
 let calibrate = true;
+let stopDraw = false;
 let pen = false;
 let viewLaser = false;
 let initPos;
 let dist;
 let colourPen;
-
+let chooseTimer = null;
+let timerInterval = null;
 var socket;
-
 function init(){
     
     initServerConnection();
+
+    disable();
 }
 
 function initServerConnection() {
@@ -50,20 +53,33 @@ function initServerConnection() {
     var room_id = localStorage.getItem('roomId');
     jg(room_id);
 
-
     //Callback functions for socket communication
     socket.on("wordoptions", function(data) {
         console.log(data);
         startFullRound(data.options);
     });
 
+    var prevActivePlayer;
+
     socket.on("gamestate", function(data) {
         console.log(data);
-
-        if ((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID === localStorage.getItem("userId")) {
+        
+        if (!data.isWordSet && (data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID === localStorage.getItem("userId")) {
             console.log("IT IS MY TURN");
-
+            enable();
             socket.emit("getwordoptions");
+        }
+
+        if ((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID !== prevActivePlayer) {
+            clearInterval(timerInterval);
+            disable();
+            document.getElementById("base-timer-label").innerHTML = formatTime(0);
+            prevActivePlayer = data.currentPlayer.playerUID;
+        }
+
+        if (data.gameEnded) {
+            clearInterval(timerInterval);
+            disable();
         }
     });
 }
@@ -77,10 +93,12 @@ function jg(gameid) {
 function onTimesUp() {
   disable();
   sensor.stop();
+  socket.emit("timerexpired");
 }
 
 function startTimer() {
-    var timerInterval = setInterval(() => {
+    timePassed = 0;
+    timerInterval = setInterval(() => {
     timePassed = timePassed += 1;
     timeLeft = TIME_LIMIT - timePassed;
     document.getElementById("base-timer-label").innerHTML = formatTime(
@@ -89,12 +107,9 @@ function startTimer() {
     setCircleDasharray();
     setRemainingPathColor(timeLeft);
 
-    if (timeLeft <= 1) {
-      clearInterval(timerInterval);
-    }
-
     if (timeLeft <= 0) {
-        onTimesUp();
+      clearInterval(timerInterval);
+      onTimesUp();
     }
   }, 1000);
 }
@@ -172,16 +187,14 @@ function navBar() {
   }
 }
 
-function choseOption(id, timer){
-  clearInterval(timer);
+function choseOption(id){
+  clearInterval(chooseTimer);
   document.getElementById('chosenWord').innerHTML = document.getElementById(id).innerHTML;
-  if(id === 'choice-1'){
-  
-  }else if(id === 'choice-2'){
 
-  }else{
+  var chosenWord = document.getElementById('chosenWord').innerHTML;
 
-  }
+  socket.emit("makechoice", {"choice":chosenWord});
+
   closeChoose();
   startDrawing();
 }
@@ -217,10 +230,18 @@ function handleSensor(e){
   }
   
   dist = angles.map((angle, i) => calcDist(angle, initPos[i]));
-  console.log(dist)
+  // console.log(dist);
   // array will be made of [x, y, isPen, colour]
   let penColour = "#cf060a"; 
   let data_out = [dist[0], dist[1], pen, penColour];
+  if (stopDraw){
+    data_out[0] = -9999;
+    data_out[1] = -9999;
+    data_out[2] = true;
+    stopDraw = false;
+    
+  }
+  console.log(data_out);
   //send to_send
   socket.emit("drawdata", data_out);
 }
@@ -257,29 +278,26 @@ function startChosing(choice){
   document.getElementById('choice-2').innerHTML = choice[1];
   document.getElementById('choice-3').innerHTML = choice[2];
   var choosingTime = 10;
-  var chooseTimer = setInterval(function(){
+  chooseTimer = setInterval(function(){
     choosingTime--;
     document.getElementById('chooseTimer').innerHTML =choosingTime;
     if(choosingTime==0){
       var random = Math.floor(Math.random() * 3)+1;
       if(random == '1'){
-        choseOption("choice-1", chooseTimer);
+        choseOption("choice-1");
       }else if(random == '2'){
-        choseOption("choice-2", chooseTimer);
+        choseOption("choice-2");
       }else{
-        choseOption("choice-3", chooseTimer);
+        choseOption("choice-3");
       }
     }
     
   },1000);
 }
-function sendOption(){
-  //use this function to send data to server
-}
 
-
+//The clear button
 function canvasClear(){
-
+    startFullRound(["w1", "w2", "w3"]);
 }
 
 function flipCalibrate(){
