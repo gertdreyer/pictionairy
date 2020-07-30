@@ -218,7 +218,7 @@ exports = module.exports = function (io) {
                 let gamestate = await getGameState(gameid);
                 socket.emit('gamestate', gamestate);
             } catch (err) {
-                socket.emit('error', { error: "Could not retrieve gamestate" })
+                socket.emit('error', { error: "Could not retrieve gamestate", info: err })
             }
         });
         socket.on('drawdata', async (data) => {

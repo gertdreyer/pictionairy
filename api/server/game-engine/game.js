@@ -217,6 +217,7 @@ export default class Game {
             this.currentPlayer.setPlayerPoints(
                 this.currentPlayer.getPlayerPoints() + time
             );
+            console.log(this.currentPlayer.getPlayerPoints());
             if (this.checkRoundEndStatus()) {
                 this.startNewRound();
             } else {
