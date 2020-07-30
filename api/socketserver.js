@@ -7,7 +7,7 @@ const JWTSECRET = process.env.JWT_SECRET || "this-should-be-some-super-secret-ke
 
 // Generate UID used for gameid... 
 function generateGameId(){
-
+    let ts = s;
 } 
 
 // Added layer of abstraction... Future implementations
@@ -179,7 +179,7 @@ exports = module.exports = function (io) {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             let gamestate = await getGameState(gameid);
             console.log(gamestate.currentPlayer);
-            if (username == gamestate.currentPlayer.username) {
+            if (username == gamestate.currentPlayer.playerUID) {
                 wordopts = await gamestate.generateWords(gamestate.roundNumber);
                 console.log(wordopts);
                 socket.emit('wordoptions', { options: wordopts })
@@ -192,7 +192,7 @@ exports = module.exports = function (io) {
             let { choice } = dataobj;
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             let gamestate = await getGameState(gameid);
-            if (username == gamestate.currentPlayer) {
+            if (username == gamestate.currentPlayer.username) {
                 gamestate.setWord(choice);
                 await updateGameState(gamestate);
             } else {
