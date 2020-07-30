@@ -1,7 +1,7 @@
 import admin from "firebase-admin";
 
 admin.initializeApp({
-    credential: {
+    credential: admin.credential.credential({
         "type": "service_account",
         "project_id": "wordstore-dae44",
         "private_key_id": "5352fabfc2bbfd12f8ff4efc0ae20a6cb591deed",
@@ -12,7 +12,7 @@ admin.initializeApp({
         "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
         "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-epin8%40wordstore-dae44.iam.gserviceaccount.com"
-      }
+      })
       ,
     databaseURL: "https://wordstore-dae44.firebaseio.com",
 });
