@@ -3,7 +3,7 @@ services:
   app:
     container_name: app
     restart: always
-    image: devs/api
+    image: devs/api:new
     env_file:
       - .env
     ports:
