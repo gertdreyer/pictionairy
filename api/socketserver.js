@@ -27,8 +27,6 @@ async function updateGameState(updated_gamestate) {
                 gamestate: updated_gamestate
             },
         );
-        console.log("Result for update:");
-        console.log(result);
     } catch (error) {
         console.log("Error SHT420");
         console.log(error);
