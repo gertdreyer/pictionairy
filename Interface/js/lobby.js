@@ -67,8 +67,9 @@ function initServerConnection() {
                 controller = ' (Ready)'
             }
 
-            if (data.turnStartTime != null) {
+            if (data.gameStarted) {
                 controller = '';
+                document.getElementById('startgame').disabled = true;
             }
                 
             if((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID === data.players[i].playerUID){
@@ -149,8 +150,7 @@ function startTimer(){
     }, 1000);
 }
 
-function startGame() {
-    document.getElementById('startgame').disabled = true;
+function startGame() {    
     clearUI();
     clearPlayers();
     socket.emit("startnewround");
