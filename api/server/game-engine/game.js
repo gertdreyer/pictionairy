@@ -117,6 +117,7 @@ export default class Game {
      * @param {string} word
      */
     setWord(newWord) {
+        this.isWordSet = true;
         this.currentWord = newWord;
         this.turnStartTime = new Date();
     }
@@ -232,6 +233,7 @@ export default class Game {
      * @returns bool for turn started
      */
     startNewTurn() {
+        this.isWordSet = false;
         this.currentWord = "";
         let playersToDraw = this.players.filter(
             (player) =>  player.getDrawTurnCount() != this.roundNumber && player.controller != ""
