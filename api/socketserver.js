@@ -188,7 +188,7 @@ exports = module.exports = function (io) {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             console.log("makechoice", choice);
             let gamestate = await getGameState(gameid);
-            if (username == gamestate.currentPlayplayerUID) {
+            if (username == gamestate.currentPlayer.playerUID) {
                 gamestate.setWord(choice);
                 await updateGameState(gamestate);
                 broadcastGameState(socket, gamestate);
