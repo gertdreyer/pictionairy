@@ -264,6 +264,14 @@ export default class Game {
         }
     }
 
+    startNewRoundOrTurn() {
+        if (this.checkRoundEndStatus()) {
+            this.startNewRound();
+        } else {
+            this.startNewTurn();
+        }
+    }
+
     /**
      * @description Checks whether all players have connected controllers
      * @returns bool for turn started

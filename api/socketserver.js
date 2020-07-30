@@ -188,7 +188,7 @@ exports = module.exports = function (io) {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             console.log("makechoice", choice);
             let gamestate = await getGameState(gameid);
-            if (username == gamestate.currentPlayer.playerUID) {
+            if (username == gamestate.currentPlayplayerUID) {
                 gamestate.setWord(choice);
                 await updateGameState(gamestate);
                 broadcastGameState(socket, gamestate);
@@ -229,6 +229,18 @@ exports = module.exports = function (io) {
             socket.to(gameid).emit("drawdata", data);
             // console.log("drawdata", data);
         });
+
+        socket.on('timerexpired', async ()=> {
+            let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
+            try {
+                let gamestate = await getGameState(gameid);
+                gamestate.startNewRoundOrTurn();
+                await updateGameState(gamestate);
+                broadcastGameState(gamestate);
+            }catch (err) {
+                socket.emit("error", err)
+            }
+        })
 
         /// DUMMY ENDPOINTS DONT DELETE
         socket.on('testing', async (event) => {
