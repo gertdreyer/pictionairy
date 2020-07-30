@@ -50,7 +50,7 @@ function initServerConnection() {
     var list = [];
     var prevTime = null;
     var prevActivePlayer = null;
-    
+
     //Callback for when the gamestate changes
     socket.on("gamestate", function(data) {
         console.log(data);
@@ -78,15 +78,18 @@ function initServerConnection() {
                 document.getElementById("players").innerHTML += data.players[i].playerUID+ ' - ' + data.players[i].points + controller + '&#13;&#10;';
             }
         }
-        if(list[list.length-1] !== (data.lastGuess.playerUID + ": " + data.lastGuess.guessMade) && data.lastGuess.playerUID != ''){
-            document.getElementById("guesses").innerHTML += data.lastGuess.playerUID + ": " + data.lastGuess.guessMade + '&#13;&#10;';
-            list.push(data.lastGuess.playerUID + ": " + data.lastGuess.guessMade);
-        }
 
         if (data.turnStartTime != prevTime) {
             //Start new timer
             prevTime = data.turnStartTime;
             startTimer();
+
+            document.getElementById("guesses").innerHTML += "&#13;&#10;====ROUND " + data.roundNumber + " (" + data.currentPlayer.playerUID + ")====&#13;&#10;";
+        }
+
+        if(list[list.length-1] !== (data.lastGuess.playerUID + ": " + data.lastGuess.guessMade) && data.lastGuess.playerUID != ''){
+            document.getElementById("guesses").innerHTML += data.lastGuess.playerUID + ": " + data.lastGuess.guessMade + '&#13;&#10;';
+            list.push(data.lastGuess.playerUID + ": " + data.lastGuess.guessMade);
         }
 
         if ((data.currentPlayer != null || data.currentPlayer != undefined) && data.currentPlayer.playerUID === localStorage.getItem("userId")) {
@@ -107,6 +110,8 @@ function initServerConnection() {
             clearInterval(roundTimer);
             document.getElementById('guessSubmit').disabled = true;
             document.getElementById('guessSubmitBtn').disabled = true;
+
+            document.getElementById("guesses").innerHTML = "YOUR GAME HAS ENDED CLICK ON START GAME TO START AGAIN.";
         }
 
         if (data.roundNumber == 0) {
@@ -132,7 +137,6 @@ function clearUI() {
     fullPath = [];
     clearInterval(roundTimer);
     updateTimer(0);
-    clearGuesses();
 }
 
 function startTimer(){
