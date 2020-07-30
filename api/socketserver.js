@@ -5,6 +5,11 @@ import { GameState, User } from "./db.js";
 const JWTSECRET = process.env.JWT_SECRET || "this-should-be-some-super-secret-key";
 
 
+// Generate UID used for gameid... 
+function generateGameId(){
+
+} 
+
 // Added layer of abstraction... Future implementations
 // can change the get procedure.
 async function getGameState(gameid) {
@@ -174,7 +179,7 @@ exports = module.exports = function (io) {
             let gameid = Object.keys(socket.rooms).filter(item => item != socket.id)[0];
             let gamestate = await getGameState(gameid);
             console.log(gamestate.currentPlayer);
-            if (username == gamestate.currentPlayer) {
+            if (username == gamestate.currentPlayer.username) {
                 wordopts = await gamestate.generateWords(gamestate.roundNumber);
                 console.log(wordopts);
                 socket.emit('wordoptions', { options: wordopts })
